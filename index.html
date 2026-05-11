@@ -1,133 +1,106 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>ZENON AETHER-OS | FIXED ELITE</title>
-    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils"></script>
-
+    <title>ABYUSIF | THE DARK TEMPLE</title>
     <style>
-        :root { --red: #ff0000; --dark: #8B0000; --black: #000; }
-        body, html { margin: 0; background: var(--black); color: var(--red); font-family: 'Courier New', monospace; overflow: hidden; height: 100%; }
+        :root { --red: #ff0000; --bg: #000; --card: #0a0a0a; }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
+        
+        body { background: var(--bg); color: white; font-family: 'Courier New', monospace; overflow-x: hidden; }
 
-        /* اللوجو الخلفي الثابت (تصميم مرعب) */
-        #bg-logo { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 350px; height: 350px; z-index: 1; opacity: 0.15; filter: drop-shadow(0 0 10px var(--red)); }
+        /* العلامة المائية KIMO */
+        #watermark { position: fixed; bottom: 10px; right: 10px; opacity: 0.1; font-size: 50px; z-index: 1000; pointer-events: none; text-shadow: 0 0 10px var(--red); }
 
-        /* الكاميرا والهيكل */
-        #input_video { display: none; }
-        #output_canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 99; }
+        /* الماوس الهوائي بستايل أبيوسف */
+        #cyber-cursor { position: fixed; width: 25px; height: 25px; border: 2px solid var(--red); border-radius: 50%; pointer-events: none; z-index: 1001; mix-blend-mode: difference; box-shadow: 0 0 20px var(--red); }
 
-        #ui-layer { position: relative; z-index: 100; display: flex; flex-direction: column; align-items: center; padding-top: 40px; }
-        .header { font-size: 3rem; text-shadow: 0 0 15px var(--red); letter-spacing: 12px; margin-bottom: 20px; }
+        /* تأثير الجليتش في الهيرو */
+        .hero {
+            height: 100vh; width: 100%;
+            background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), 
+                        url('https://images.genius.com/07971701556093866687895747683494.1000x1000x1.jpg'); /* صورة افتراضية لأبيوسف */
+            background-size: cover; background-position: center;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+        }
 
-        /* بار البحث */
-        #search-input { width: 70%; height: 60px; background: rgba(10,0,0,0.9); border: 2px solid var(--red); color: #fff; font-size: 1.5rem; text-align: center; border-radius: 10px; box-shadow: 0 0 20px rgba(255,0,0,0.2); }
+        .aby-title {
+            font-size: 9rem; font-weight: 900; color: transparent; -webkit-text-stroke: 1.5px var(--red);
+            text-transform: uppercase; letter-spacing: 20px; animation: glow 2s infinite alternate;
+        }
 
-        /* الكيبورد */
-        #kbd { display: none; grid-template-columns: repeat(10, 1fr); gap: 10px; width: 80%; margin-top: 20px; background: rgba(5,0,0,0.95); padding: 20px; border: 1px solid var(--red); }
-        .key { padding: 15px; border: 1px solid var(--dark); background: #000; color: #fff; text-align: center; cursor: none; transition: 0.2s; }
-        .key.active { background: var(--red); color: #000; box-shadow: 0 0 30px var(--red); transform: scale(1.1); }
+        /* معرض الصور المطور */
+        .gallery {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px; padding: 20px; background: var(--bg);
+        }
 
-        /* الأزرار السفلى */
-        .dock { display: flex; gap: 30px; margin-top: 40px; }
-        .btn { width: 120px; height: 120px; border: 2px solid var(--red); display: flex; flex-direction: column; justify-content: center; align-items: center; background: #050000; transition: 0.4s; }
-        .btn.active { background: var(--red); color: #000; box-shadow: 0 0 50px var(--red); }
+        .gallery-item {
+            height: 380px; overflow: hidden; border: 1px solid #1a1a1a; position: relative;
+            background: var(--card); transition: 0.4s;
+        }
 
-        /* النيشان */
-        #crosshair { position: fixed; width: 40px; height: 40px; border: 2px solid #fff; border-radius: 50%; pointer-events: none; z-index: 1001; display: none; box-shadow: 0 0 15px var(--red); }
+        .gallery-item img {
+            width: 100%; height: 100%; object-fit: cover; transition: 0.6s;
+            filter: grayscale(100%) contrast(160%); /* الستايل النيجاتيف */
+        }
+
+        /* عند الوقوف على الصورة */
+        .gallery-item:hover img { filter: grayscale(0%) contrast(100%) saturate(150%); transform: scale(1.08) skewY(2deg); }
+        .gallery-item:hover { border-color: var(--red); box-shadow: 0 0 30px var(--red); }
+
+        /* اللوجوهات متوزعة */
+        .floating-icon { position: absolute; opacity: 0.1; width: 150px; pointer-events: none; z-index: 1; filter: grayscale(1); transition: 1s; }
+        .hero:hover .floating-icon { filter: grayscale(0) drop-shadow(0 0 20px var(--red)); opacity: 0.2; }
+
+        @keyframes glow { from { text-shadow: 0 0 10px var(--red); } to { text-shadow: 0 0 30px var(--red), 0 0 50px #fff; } }
+        @keyframes scroll { from { transform: translateX(100%); } to { transform: translateX(-100%); } }
+
+        .about-section { padding: 100px 50px; text-align: center; border-top: 1px solid #1a1a1a; background: var(--card); }
+        .about-section h2 { color: var(--red); font-size: 3rem; margin-bottom: 30px; letter-spacing: 5px; }
+        .about-section p { font-size: 1.2rem; max-width: 800px; margin: 0 auto; color: #888; line-height: 2; }
     </style>
 </head>
 <body>
 
-    <div id="bg-logo">
-        <svg viewBox="0 0 100 100">
-            <path d="M20 20 L40 50 L20 80 M80 20 L60 50 L80 80 M40 50 L60 50 M30 70 Q50 90 70 70" stroke="red" stroke-width="3" fill="none" />
-        </svg>
-    </div>
+    <div id="watermark">KIMO_SYS</div>
+    <div id="cyber-cursor"></div>
 
-    <div id="crosshair"></div>
-    <video id="input_video" autoplay muted></video>
-    <canvas id="output_canvas"></canvas>
+    <section class="hero">
+        <img src="https://i.ibb.co/3s8sF8x/X-LOGO.png" class="floating-icon" style="top: 10%; left: 10%;">
+        <img src="https://i.ibb.co/zH8XyQz/MASK-LOGO.png" class="floating-icon" style="bottom: 20%; right: 15%;">
+        <img src="https://i.ibb.co/Y27M7W0/SAD-LOGO.png" class="floating-icon" style="top: 40%; left: 50%;">
 
-    <div id="ui-layer">
-        <div class="header">ZENON_AETHER</div>
-        <input type="text" id="search-input" placeholder="WAVE TO START" readonly>
+        <h1 class="aby-title">ABYUSIF</h1>
+        <p style="letter-spacing: 7px; color: #666; font-size: 14px;">[ THE DARK KINGDOM ]</p>
+    </section>
 
-        <div id="kbd"></div>
+    <section class="about-section">
+        <h2>عـن يـوسـف</h2>
+        <p>مغير قواعد اللعبة. عزرائيل السين المصري. من "أنا مش زيهم" لحد "الهروب من المنهج"، أبيوسف مش بس رابر، أبيوسف حالة نفسية، مدرسة في الـ Wordplay، والملك المتوج على عرش السين. كل بار هو رصاصة.</p>
+    </section>
 
-        <div class="dock">
-            <div class="btn" id="b-search"><b>SEARCH</b></div>
-            <div class="btn" id="b-voice"><b>VOICE</b></div>
-            <div class="btn" id="b-clear"><b>CLEAR</b></div>
-        </div>
-    </div>
+    <section class="gallery">
+        <div class="gallery-item"><img src="https://i.scdn.co/image/ab6761610000e5eb387f3f38072efd716f4e1f72"></div>
+        <div class="gallery-item"><img src="https://i.ytimg.com/vi/D9nZzV9K-f0/maxresdefault.jpg"></div>
+        <div class="gallery-item"><img src="https://images.genius.com/669d0c81219b48c1a82f342f53946a4d.1000x1000x1.jpg"></div>
+        <div class="gallery-item"><img src="https://i1.sndcdn.com/artworks-000551061909-5z2n9s-t500x500.jpg"></div>
+        <div class="gallery-item"><img src="https://i.genius.com/56543b3558b73a386b1f2e1f579549f6.1000x1000x1.jpg"></div>
+        <div class="gallery-item"><img src="https://i.genius.com/b96655c6b96655c6b96655c6.1000x1000x1.jpg"></div>
+    </section>
 
-    <audio id="click-sound" src="https://www.soundjay.com/buttons/button-16.mp3"></audio>
+    <footer style="padding: 40px; text-align: center; border-top: 1px solid #1a1a1a; font-size: 12px; color: #444;">
+        <p>MADE BY <span style="color: var(--red);">KIMO</span> FOR THE LEGEND | AETHER-OS PROTOTYPE</p>
+    </footer>
 
     <script>
-        const video = document.getElementById('input_video');
-        const canvas = document.getElementById('output_canvas');
-        const ctx = canvas.getContext('2d');
-        const crosshair = document.getElementById('crosshair');
-        const searchInput = document.getElementById('search-input');
-        const kbd = document.getElementById('kbd');
-        const sound = document.getElementById('click-sound');
-
-        // بناء الكيبورد
-        "QWERTYUIOPASDFGHJKLZXCVBNM1234567890".split("").forEach(c => {
-            const k = document.createElement('div');
-            k.className = 'key'; k.id = 'k-'+c; k.innerText = c;
-            kbd.appendChild(k);
+        // كود الماوس الهوائي
+        const cursor = document.getElementById('cyber-cursor');
+        document.addEventListener('mousemove', e => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
         });
-
-        const hands = new Hands({locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`});
-        hands.setOptions({ maxNumHands: 1, modelComplexity: 1, minDetectionConfidence: 0.8, minTrackingConfidence: 0.8 });
-
-        hands.onResults(res => {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            if (res.multiHandLandmarks && res.multiHandLandmarks[0]) {
-                const marks = res.multiHandLandmarks[0];
-                
-                // رسم الهيكل النيون
-                drawConnectors(ctx, marks, HAND_CONNECTIONS, {color: '#ff0000', lineWidth: 4});
-                drawLandmarks(ctx, marks, {color: '#fff', radius: 2});
-
-                const x = (1 - marks[8].x) * window.innerWidth;
-                const y = marks[8].y * window.innerHeight;
-
-                crosshair.style.display = 'block';
-                crosshair.style.left = x - 20 + 'px';
-                crosshair.style.top = y - 20 + 'px';
-
-                detectTouch(x, y);
-            } else { crosshair.style.display = 'none'; }
-        });
-
-        let lastAction = 0;
-        function detectTouch(x, y) {
-            const targets = document.querySelectorAll('.btn, .key, #search-input');
-            targets.forEach(t => {
-                const r = t.getBoundingClientRect();
-                if (x > r.left && x < r.right && y > r.top && y < r.bottom) {
-                    t.classList.add('active');
-                    if (Date.now() - lastAction > 1200) {
-                        perform(t);
-                        lastAction = Date.now() + 5000; // Delay
-                    }
-                } else { t.classList.remove('active'); }
-            });
-        }
-
-        function perform(t) {
-            sound.currentTime = 0; sound.play();
-            if (t.id === 'search-input') kbd.style.display = 'grid';
-            if (t.id.startsWith('k-')) searchInput.value += t.innerText;
-            if (t.id === 'b-clear') { searchInput.value = ''; kbd.style.display = 'none'; }
-            if (t.id === 'b-search') alert("Searching for: " + searchInput.value);
-        }
-
-        new Camera(video, { onFrame: async () => { await hands.send({image: video}); }, width: 1280, height: 720 }).start();
     </script>
 </body>
 </html>
