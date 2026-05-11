@@ -1,156 +1,182 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PRINT - NEURAL ART 2026</title>
+    <title>ZENON AETHER-OS | AIR BROWSER</title>
+    
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils"></script>
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils"></script>
+
     <style>
-        :root { --neon: #00ffff; --pink: #ff00ff; --surface: rgba(255, 255, 255, 0.08); }
-        body { margin: 0; background: #000; overflow: hidden; font-family: 'Segoe UI', sans-serif; }
+        :root { --main-red: #8B0000; --glow-red: #ff0000; --bg-black: #000000; }
+        body, html { margin: 0; padding: 0; background: var(--bg-black); color: var(--main-red); font-family: 'Courier New', monospace; overflow: hidden; height: 100%; }
+
+        /* العلامة المائية الثابتة */
+        #watermark { position: fixed; bottom: 20px; right: 20px; font-size: 40px; font-weight: bold; opacity: 0.15; z-index: 1000; pointer-events: none; letter-spacing: 5px; }
+
+        /* شاشة الكاميرا والتحليل */
+        #input_video { position: fixed; width: 240px; height: 180px; bottom: 20px; left: 20px; border: 2px solid var(--main-red); border-radius: 15px; transform: scaleX(-1); z-index: 100; opacity: 0.6; }
+        #output_canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 99; }
+
+        /* واجهة المتصفح */
+        #ui-layer { position: relative; z-index: 10; padding: 30px; text-align: center; }
+        .header-logo { font-size: 3rem; text-shadow: 0 0 15px var(--glow-red); margin-bottom: 10px; }
         
-        /* واجهة راقية جداً */
-        .air-ui { position: fixed; top: 40px; left: 50%; transform: translateX(-50%); display: flex; gap: 40px; z-index: 1000; padding: 20px; background: rgba(255,255,255,0.03); border-radius: 30px; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
-        .air-btn { width: 100px; height: 100px; background: var(--surface); border: 2px solid transparent; border-radius: 25px; display: flex; justify-content: center; align-items: center; font-size: 45px; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); cursor: none; }
-        .air-btn.hovered { transform: scale(1.15) translateY(-10px); border-color: var(--neon); box-shadow: 0 20px 40px rgba(0, 255, 255, 0.3); background: rgba(0, 255, 255, 0.1); }
+        #search-container { margin: 20px auto; width: 80%; position: relative; }
+        #search-bar { width: 100%; height: 60px; background: #0a0a0a; border: 2px solid var(--main-red); border-radius: 30px; color: white; padding: 0 25px; font-size: 1.5rem; outline: none; box-shadow: inset 0 0 10px #ff000033; }
+
+        /* الأيقونات الهوائية */
+        .dock { display: flex; justify-content: center; gap: 40px; margin-top: 50px; }
+        .air-item { width: 100px; height: 100px; background: #0f0f0f; border: 3px solid var(--main-red); border-radius: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: 0.4s; position: relative; overflow: hidden; }
+        .air-item span { font-size: 10px; margin-top: 5px; font-weight: bold; }
+        .air-item.hovered { background: var(--main-red); color: white; transform: scale(1.2); box-shadow: 0 0 30px var(--glow-red); }
+
+        /* كيبورد الهواء (مخفي ويظهر عند البحث) */
+        #air-keyboard { display: grid; grid-template-columns: repeat(10, 1fr); gap: 10px; width: 90%; margin: 40px auto; display: none; }
+        .key { padding: 15px; border: 1px solid var(--main-red); background: #050505; text-align: center; border-radius: 5px; }
+
+        /* منطقة النتائج بنظام Zenon */
+        #results-area { width: 90%; height: 400px; margin: 30px auto; background: #050505; border: 1px solid #1a1a1a; border-radius: 15px; padding: 20px; overflow-y: auto; text-align: left; }
+        .result-item { border-left: 4px solid var(--main-red); margin-bottom: 20px; padding: 10px; background: #0a0000; animation: slideIn 0.5s ease; }
         
-        canvas { position: absolute; inset: 0; transform: scaleX(-1); }
-        /* الكاميرا مخفية تماماً ولكنها تعمل في الخلفية */
-        video { position: absolute; visibility: hidden; pointer-events: none; }
+        @keyframes slideIn { from { transform: translateX(-100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
         
-        #cursor { position: fixed; width: 20px; height: 20px; background: white; border-radius: 50%; pointer-events: none; z-index: 2000; box-shadow: 0 0 15px #fff; transition: transform 0.1s; display: none; }
-        
-        .footer { position: fixed; bottom: 20px; left: 30px; color: var(--neon); font-size: 14px; letter-spacing: 3px; font-weight: bold; opacity: 0.8; }
-        
-        /* أنيميشن الدخول */
-        @keyframes fadeIn { from { opacity: 0; transform: translate(-50%, -100%); } to { opacity: 1; transform: translate(-50%, 0); } }
-        .air-ui { animation: fadeIn 1s ease-out; }
+        /* مؤشر الماوس الهوائي */
+        #cursor { position: fixed; width: 25px; height: 25px; background: rgba(255, 0, 0, 0.5); border: 2px solid white; border-radius: 50%; pointer-events: none; z-index: 1001; display: none; box-shadow: 0 0 15px red; }
     </style>
 </head>
 <body>
 
-<div class="air-ui">
-    <div class="air-btn" id="btn-clear">🗑️</div>
-    <div class="air-btn" id="btn-brush">🎨</div>
-    <div class="air-btn" id="btn-save">💾</div>
-</div>
+    <div id="watermark">KIMO_DEV</div>
+    <div id="cursor"></div>
+    <video id="input_video" autoplay muted></video>
+    <canvas id="output_canvas"></canvas>
 
-<div id="cursor"></div>
-<video id="webcam" autoplay playsinline></video>
-<canvas id="main-canvas"></canvas>
-<div class="footer">2026 POWERED BY KIMO</div>
+    <div id="ui-layer">
+        <div class="header-logo">ZENON AETHER OS</div>
+        <p style="color: #444;">TOUCHLESS INTERFACE ACTIVE</p>
 
-<script>
-const video = document.getElementById('webcam');
-const canvas = document.getElementById('main-canvas');
-const ctx = canvas.getContext('2d');
-const cursor = document.getElementById('cursor');
+        <div id="search-container">
+            <input type="text" id="search-bar" placeholder="[ WAITING FOR GESTURE ]" readonly>
+        </div>
 
-let points = [];
-let color = '#00ffff';
-let audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        <div class="dock">
+            <div class="air-item" id="nav-back"><b><</b><span>BACK</span></div>
+            <div class="air-item" id="nav-home"><b>H</b><span>HOME</span></div>
+            <div class="air-item" id="nav-voice"><b>V</b><span>VOICE</span></div>
+            <div class="air-item" id="nav-clear"><b>X</b><span>CLEAR</span></div>
+        </div>
 
-// صوت نقر احترافي
-function playClickSfx() {
-    const osc = audioCtx.createOscillator();
-    const g = audioCtx.createGain();
-    osc.type = 'sine';
-    osc.frequency.setValueAtTime(1200, audioCtx.currentTime);
-    g.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.1);
-    osc.connect(g); g.connect(audioCtx.destination);
-    osc.start(); osc.stop(audioCtx.currentTime + 0.1);
-}
+        <div id="results-area">
+            <div id="status-display">Initializing Neural Link... Camera Ready.</div>
+        </div>
+    </div>
 
-const hands = new Hands({locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`});
-hands.setOptions({ maxNumHands: 1, modelComplexity: 1, minDetectionConfidence: 0.8, minTrackingConfidence: 0.8 });
+    <audio id="beep" src="https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3"></audio>
 
-hands.onResults(results => {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    <script>
+        const videoElement = document.getElementById('input_video');
+        const canvasElement = document.getElementById('output_canvas');
+        const canvasCtx = canvasElement.getContext('2d');
+        const cursor = document.getElementById('cursor');
+        const beep = document.getElementById('beep');
+        const searchBar = document.getElementById('search-bar');
+        const statusDisplay = document.getElementById('status-display');
 
-    if (results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
-        const landmarks = results.multiHandLandmarks[0];
-        cursor.style.display = 'block';
-        
-        // 1. تجسيد الإيد كخطوط متصلة (Skeleton)
-        drawConnectors(ctx, landmarks, HAND_CONNECTIONS, {color: 'rgba(255, 255, 255, 0.4)', lineWidth: 2});
-        drawLandmarks(ctx, landmarks, {color: color, lineWidth: 1, radius: 3});
+        let isVoiceActive = false;
 
-        const tip = landmarks[8]; // السبابة
-        const thumb = landmarks[4]; // الإبهام
-        const x = (1 - tip.x) * canvas.width;
-        const y = tip.y * canvas.height;
+        // إعداد تتبع اليد
+        const hands = new Hands({locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`});
+        hands.setOptions({ maxNumHands: 1, modelComplexity: 1, minDetectionConfidence: 0.8, minTrackingConfidence: 0.8 });
 
-        // تحريك المؤشر مع السبابة
-        cursor.style.left = x + 'px';
-        cursor.style.top = y + 'px';
+        function onResults(results) {
+            canvasCtx.save();
+            canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+            
+            if (results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
+                const landmarks = results.multiHandLandmarks[0];
+                
+                // رسم اليد على الكاميرا بستايل أحمر
+                drawConnectors(canvasCtx, landmarks, HAND_CONNECTIONS, {color: '#8B0000', lineWidth: 4});
+                drawLandmarks(canvasCtx, landmarks, {color: '#FF0000', radius: 3});
 
-        // 2. الرسم بالسبابة (عند ملامسة الإبهام)
-        const dist = Math.hypot(tip.x - thumb.x, tip.y - thumb.y);
-        if (dist < 0.05) {
-            points.push({ x, y, c: color });
-        }
+                // تتبع صباع السبابة (Mouse)
+                const indexFinger = landmarks[8];
+                const x = (1 - indexFinger.x) * window.innerWidth;
+                const y = indexFinger.y * window.innerHeight;
 
-        // 3. النقر بالسبابة (تفاعل ذكي)
-        checkCollision(x, y);
-    } else {
-        cursor.style.display = 'none';
-    }
+                cursor.style.display = 'block';
+                cursor.style.left = x + 'px';
+                cursor.style.top = y + 'px';
 
-    // رسم الخطوط (سلسلة الكتابة)
-    ctx.lineCap = 'round';
-    ctx.lineJoin = 'round';
-    ctx.lineWidth = 6;
-    for(let i = 1; i < points.length; i++) {
-        ctx.strokeStyle = points[i].c;
-        ctx.shadowBlur = 10;
-        ctx.shadowColor = points[i].c;
-        ctx.beginPath();
-        ctx.moveTo(points[i-1].x, points[i-1].y);
-        ctx.lineTo(points[i].x, points[i].y);
-        ctx.stroke();
-    }
-});
-
-function checkCollision(x, y) {
-    const btns = document.querySelectorAll('.air-btn');
-    btns.forEach(btn => {
-        const r = btn.getBoundingClientRect();
-        if (x > r.left && x < r.right && y > r.top && y < r.bottom) {
-            if (!btn.classList.contains('hovered')) {
-                btn.classList.add('hovered');
-                setTimeout(() => {
-                    if (btn.classList.contains('hovered')) {
-                        playClickSfx();
-                        execute(btn.id);
-                    }
-                }, 1000); // ثانية واحدة للتفعيل
+                handleGestures(x, y, landmarks);
+            } else {
+                cursor.style.display = 'none';
             }
-        } else {
-            btn.classList.remove('hovered');
+            canvasCtx.restore();
         }
-    });
-}
 
-function execute(id) {
-    if (id === 'btn-clear') points = [];
-    if (id === 'btn-brush') color = `hsl(${Math.random()*360}, 100%, 60%)`;
-    if (id === 'btn-save') {
-        const link = document.createElement('a');
-        link.download = 'PRINT_KIMO_2026.png';
-        link.href = canvas.toDataURL();
-        link.click();
-    }
-}
+        let hoverTarget = null;
+        let hoverStartTime = 0;
 
-const camera = new Camera(video, {
-    onFrame: async () => { await hands.send({image: video}); },
-    width: 1280, height: 720
-});
-camera.start();
-</script>
+        function handleGestures(x, y, landmarks) {
+            const items = document.querySelectorAll('.air-item');
+            let found = false;
+
+            items.forEach(item => {
+                const rect = item.getBoundingClientRect();
+                if (x > rect.left && x < rect.right && y > rect.top && y < rect.bottom) {
+                    found = true;
+                    if (hoverTarget !== item) {
+                        hoverTarget = item;
+                        hoverStartTime = Date.now();
+                        item.classList.add('hovered');
+                        beep.play();
+                    } else if (Date.now() - hoverStartTime > 1200) {
+                        // تفعيل بعد ثانية
+                        triggerAction(item.id);
+                        hoverStartTime = Date.now() + 10000; // منع تكرار الضغط
+                    }
+                } else {
+                    item.classList.remove('hovered');
+                }
+            });
+
+            if (!found) { hoverTarget = null; }
+        }
+
+        function triggerAction(id) {
+            if (id === 'nav-voice') startVoiceSearch();
+            if (id === 'nav-clear') { searchBar.value = ''; statusDisplay.innerHTML = 'System Wiped.'; }
+            if (id === 'nav-home') { statusDisplay.innerHTML = '<div class="result-item">Welcome back, KIMO. AI Core Online.</div>'; }
+        }
+
+        // البحث الصوتي الذكي
+        function startVoiceSearch() {
+            const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+            recognition.lang = 'ar-EG';
+            recognition.start();
+            statusDisplay.innerHTML = "Listening to your voice...";
+
+            recognition.onresult = (event) => {
+                const transcript = event.results[0][0].transcript;
+                searchBar.value = transcript;
+                statusDisplay.innerHTML = `<div class="result-item">Searching for: <b style="color:white">${transcript}</b><br>Zenon AI is processing data...</div>`;
+                // محاكاة نتائج ذكاء اصطناعي
+                setTimeout(() => {
+                    statusDisplay.innerHTML += `<div class="result-item">AI Result: Everything about ${transcript} is now filtered through Zenon Security Protocol. No trackers found.</div>`;
+                }, 1500);
+            };
+        }
+
+        const camera = new Camera(videoElement, {
+            onFrame: async () => { await hands.send({image: videoElement}); },
+            width: 640, height: 480
+        });
+        camera.start();
+        hands.onResults(onResults);
+    </script>
 </body>
 </html>
