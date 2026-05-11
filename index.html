@@ -2,105 +2,58 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>ABYUSIF | THE DARK TEMPLE</title>
+    <title>BRAND STORE | كـيمـو</title>
     <style>
-        :root { --red: #ff0000; --bg: #000; --card: #0a0a0a; }
+        :root { --red: #ff0000; --gold: #ffd700; --3d-shadow: 5px 5px 15px rgba(0,0,0,0.8); }
+        body { background: #000; color: #fff; font-family: 'Segoe UI', sans-serif; overflow-x: hidden; }
+
+        /* ستايل أمازون برو */
+        nav { background: #111; padding: 20px; display: flex; justify-content: space-between; border-bottom: 2px solid var(--red); }
         
-        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; padding: 40px; }
+
+        /* كارت 3D */
+        .card {
+            background: #0a0a0a; border: 1px solid #222; padding: 15px;
+            transform: perspective(1000px) rotateX(5deg);
+            transition: 0.5s; box-shadow: var(--3d-shadow);
+        }
+        .card:hover { transform: perspective(1000px) rotateX(0deg) scale(1.05); border-color: var(--red); }
+
+        .price { color: var(--gold); font-size: 1.5rem; font-weight: bold; }
         
-        body { background: var(--bg); color: white; font-family: 'Courier New', monospace; overflow-x: hidden; }
-
-        /* العلامة المائية KIMO */
-        #watermark { position: fixed; bottom: 10px; right: 10px; opacity: 0.1; font-size: 50px; z-index: 1000; pointer-events: none; text-shadow: 0 0 10px var(--red); }
-
-        /* الماوس الهوائي بستايل أبيوسف */
-        #cyber-cursor { position: fixed; width: 25px; height: 25px; border: 2px solid var(--red); border-radius: 50%; pointer-events: none; z-index: 1001; mix-blend-mode: difference; box-shadow: 0 0 20px var(--red); }
-
-        /* تأثير الجليتش في الهيرو */
-        .hero {
-            height: 100vh; width: 100%;
-            background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), 
-                        url('https://images.genius.com/07971701556093866687895747683494.1000x1000x1.jpg'); /* صورة افتراضية لأبيوسف */
-            background-size: cover; background-position: center;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
+        /* زرار واتساب */
+        .btn-buy {
+            background: #25d366; color: white; padding: 10px; border: none;
+            width: 100%; border-radius: 5px; cursor: pointer; font-weight: bold;
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            text-decoration: none; margin-top: 10px;
         }
 
-        .aby-title {
-            font-size: 9rem; font-weight: 900; color: transparent; -webkit-text-stroke: 1.5px var(--red);
-            text-transform: uppercase; letter-spacing: 20px; animation: glow 2s infinite alternate;
-        }
-
-        /* معرض الصور المطور */
-        .gallery {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 15px; padding: 20px; background: var(--bg);
-        }
-
-        .gallery-item {
-            height: 380px; overflow: hidden; border: 1px solid #1a1a1a; position: relative;
-            background: var(--card); transition: 0.4s;
-        }
-
-        .gallery-item img {
-            width: 100%; height: 100%; object-fit: cover; transition: 0.6s;
-            filter: grayscale(100%) contrast(160%); /* الستايل النيجاتيف */
-        }
-
-        /* عند الوقوف على الصورة */
-        .gallery-item:hover img { filter: grayscale(0%) contrast(100%) saturate(150%); transform: scale(1.08) skewY(2deg); }
-        .gallery-item:hover { border-color: var(--red); box-shadow: 0 0 30px var(--red); }
-
-        /* اللوجوهات متوزعة */
-        .floating-icon { position: absolute; opacity: 0.1; width: 150px; pointer-events: none; z-index: 1; filter: grayscale(1); transition: 1s; }
-        .hero:hover .floating-icon { filter: grayscale(0) drop-shadow(0 0 20px var(--red)); opacity: 0.2; }
-
-        @keyframes glow { from { text-shadow: 0 0 10px var(--red); } to { text-shadow: 0 0 30px var(--red), 0 0 50px #fff; } }
-        @keyframes scroll { from { transform: translateX(100%); } to { transform: translateX(-100%); } }
-
-        .about-section { padding: 100px 50px; text-align: center; border-top: 1px solid #1a1a1a; background: var(--card); }
-        .about-section h2 { color: var(--red); font-size: 3rem; margin-bottom: 30px; letter-spacing: 5px; }
-        .about-section p { font-size: 1.2rem; max-width: 800px; margin: 0 auto; color: #888; line-height: 2; }
+        .seller-badge { background: var(--red); padding: 2px 8px; font-size: 10px; border-radius: 3px; }
     </style>
 </head>
 <body>
 
-    <div id="watermark">KIMO_SYS</div>
-    <div id="cyber-cursor"></div>
+<nav>
+    <h2>BRAND STORE</h2>
+    <div>
+        <button class="seller-badge">لوحة البائع</button>
+        <span>🛒 السلة</span>
+    </div>
+</nav>
 
-    <section class="hero">
-        <img src="https://i.ibb.co/3s8sF8x/X-LOGO.png" class="floating-icon" style="top: 10%; left: 10%;">
-        <img src="https://i.ibb.co/zH8XyQz/MASK-LOGO.png" class="floating-icon" style="bottom: 20%; right: 15%;">
-        <img src="https://i.ibb.co/Y27M7W0/SAD-LOGO.png" class="floating-icon" style="top: 40%; left: 50%;">
+<div class="product-grid">
+    <div class="card">
+        <img src="https://via.placeholder.com/200" style="width:100%; border-radius:10px;">
+        <h3>هودي أوفر سايز - براند كيمو</h3>
+        <p>المقاس: XL, L, M</p>
+        <div class="price">500 EGP</div>
+        <a href="https://wa.me/201000000000?text=أنا مهتم بالهودي" class="btn-buy">
+            تواصل عبر واتساب
+        </a>
+    </div>
+</div>
 
-        <h1 class="aby-title">ABYUSIF</h1>
-        <p style="letter-spacing: 7px; color: #666; font-size: 14px;">[ THE DARK KINGDOM ]</p>
-    </section>
-
-    <section class="about-section">
-        <h2>عـن يـوسـف</h2>
-        <p>مغير قواعد اللعبة. عزرائيل السين المصري. من "أنا مش زيهم" لحد "الهروب من المنهج"، أبيوسف مش بس رابر، أبيوسف حالة نفسية، مدرسة في الـ Wordplay، والملك المتوج على عرش السين. كل بار هو رصاصة.</p>
-    </section>
-
-    <section class="gallery">
-        <div class="gallery-item"><img src="https://i.scdn.co/image/ab6761610000e5eb387f3f38072efd716f4e1f72"></div>
-        <div class="gallery-item"><img src="https://i.ytimg.com/vi/D9nZzV9K-f0/maxresdefault.jpg"></div>
-        <div class="gallery-item"><img src="https://images.genius.com/669d0c81219b48c1a82f342f53946a4d.1000x1000x1.jpg"></div>
-        <div class="gallery-item"><img src="https://i1.sndcdn.com/artworks-000551061909-5z2n9s-t500x500.jpg"></div>
-        <div class="gallery-item"><img src="https://i.genius.com/56543b3558b73a386b1f2e1f579549f6.1000x1000x1.jpg"></div>
-        <div class="gallery-item"><img src="https://i.genius.com/b96655c6b96655c6b96655c6.1000x1000x1.jpg"></div>
-    </section>
-
-    <footer style="padding: 40px; text-align: center; border-top: 1px solid #1a1a1a; font-size: 12px; color: #444;">
-        <p>MADE BY <span style="color: var(--red);">KIMO</span> FOR THE LEGEND | AETHER-OS PROTOTYPE</p>
-    </footer>
-
-    <script>
-        // كود الماوس الهوائي
-        const cursor = document.getElementById('cyber-cursor');
-        document.addEventListener('mousemove', e => {
-            cursor.style.left = e.clientX + 'px';
-            cursor.style.top = e.clientY + 'px';
-        });
-    </script>
 </body>
 </html>
