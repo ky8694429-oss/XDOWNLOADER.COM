@@ -2,635 +2,202 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>المواجهة التكتيكية | Tactical Warfare Pro</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XDownloader - أقوى منصة لتحميل الفيديوهات</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts (Cairo) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
     <style>
-        /* 1. المظهر البصري والألوان (Realistic Visual Style) */
-        :root {
-            --bg-matte-black: #0b0c0e;
-            --cool-grey-dark: #1a1c1e;
-            --cool-grey-light: #2c2f33;
-            --military-olive: #3b4234;
-            --military-olive-hover: #4c5543;
-            --steel-blue: #1e293b;
-            --text-pure: #f8fafc;
-            --gold-coins: #d97706;
-            --gems-cash: #06b6d4;
-        }
-
-        * {
-            box-sizing: border-box;
-            user-select: none;
-            -webkit-tap-highlight-color: transparent;
-            font-family: 'Cairo', sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-
         body {
-            background-color: var(--bg-matte-black);
-            color: var(--text-pure);
-            height: 100vh;
-            overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            font-family: 'Cairo', sans-serif;
+            background-color: #0b0f19;
         }
-
-        /* حاوية اللعبة الرئيسية */
-        .game-viewport {
-            position: relative;
-            width: 100vw;
-            height: 100vh;
-            background-color: #000;
+        .glow-effect {
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.2);
         }
-
-        /* 3D Cinematic Canvas */
-        #renderCanvas {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
+        .gradient-text {
+            background: linear-gradient(135deg, #6366f1, #a855f7, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
-
-        /* واجهة المستخدم الفوقية */
-        .ui-overlay {
-            position: absolute;
-            inset: 0;
-            z-index: 10;
-            pointer-events: none;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            padding: 30px;
-        }
-
-        .ui-element { pointer-events: auto; }
-
-        /* شريط العملات والموارد */
-        .top-currency-bar {
-            display: flex;
-            gap: 20px;
-            align-self: flex-start;
-        }
-
-        .currency-box {
-            background: rgba(26, 28, 30, 0.85);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 8px 20px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-weight: 900;
-            font-size: 16px;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-        }
-
-        .coin-txt { color: var(--gold-coins); }
-        .gem-txt { color: var(--gems-cash); }
-
-        /* القائمة الرئيسية الجانبية */
-        .main-menu-panel {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            width: 320px;
-            background: linear-gradient(90deg, rgba(11, 12, 14, 0.95), rgba(11, 12, 14, 0.4));
-            height: auto;
-            padding: 40px;
-            position: absolute;
-            right: 0;
-            top: 15%;
-            bottom: 15%;
-            justify-content: center;
-            border-right: 4px solid var(--military-olive);
-        }
-
-        /* تصميم الأزرار التكتيكية الاحترافية */
-        .tactic-btn {
-            background: var(--cool-grey-dark);
-            color: var(--text-pure);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            padding: 16px 25px;
-            border-radius: 8px;
-            font-size: 18px;
-            font-weight: 700;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-        }
-
-        .tactic-btn::before {
-            content: '';
-            position: absolute;
-            top: 0; left: -100%;
-            width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
-            transition: 0.5s;
-        }
-
-        .tactic-btn:hover::before { left: 100%; }
-
-        .tactic-btn:hover {
-            background: var(--cool-grey-light);
-            transform: translateX(-5px);
-            border-color: rgba(255,255,255,0.3);
-        }
-
-        .tactic-btn.primary-btn {
-            background: var(--military-olive);
-            border-color: rgba(255, 255, 255, 0.2);
-            font-weight: 900;
-            font-size: 20px;
-            box-shadow: 0 0 20px rgba(59, 66, 52, 0.4);
-        }
-
-        .tactic-btn.primary-btn:hover {
-            background: var(--military-olive-hover);
-            box-shadow: 0 0 30px rgba(59, 66, 52, 0.6);
-        }
-
-        /* النوافذ الفرعية (Modals) */
-        .tactic-modal {
-            position: absolute;
-            inset: 0;
-            background: rgba(11, 12, 14, 0.92);
-            backdrop-filter: blur(15px);
-            z-index: 100;
-            display: none;
-            justify-content: center;
-            align-items: center;
-            padding: 40px;
-        }
-
-        .modal-content {
-            background: var(--cool-grey-dark);
-            border: 2px solid var(--cool-grey-light);
-            width: 100%;
-            max-width: 800px;
-            border-radius: 20px;
-            padding: 35px;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.8);
-            position: relative;
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 2px solid var(--cool-grey-light);
-            padding-bottom: 15px;
-            margin-bottom: 25px;
-        }
-
-        .modal-title { font-size: 24px; font-weight: 900; color: var(--text-pure); }
-        .close-modal-btn { background: none; border: none; color: #64748b; font-size: 24px; cursor: pointer; }
-        .close-modal-btn:hover { color: var(--text-pure); }
-
-        /* شبكة عرض الأسلحة والمتجر */
-        .item-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-
-        .item-card {
-            background: var(--cool-grey-light);
-            border: 1px solid rgba(255,255,255,0.05);
-            border-radius: 12px;
-            padding: 20px;
-            text-align: center;
-            transition: 0.2s;
-        }
-
-        .item-card:hover { transform: translateY(-5px); border-color: var(--military-olive); }
-        .item-preview { height: 100px; display: flex; align-items: center; justify-content: center; font-size: 50px; color: #94a3b8; margin-bottom: 15px; }
-        .item-name { font-weight: 700; font-size: 16px; margin-bottom: 10px; }
-        .item-price { font-size: 14px; font-weight: 900; color: var(--gold-coins); margin-bottom: 15px; }
-
-        /* أنيميشن تفتيح الباكدجات السينمائي */
-        .crate-opening-zone {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 300px;
-        }
-
-        .tactical-crate-box {
-            font-size: 100px;
-            color: var(--military-olive);
-            cursor: pointer;
-            transition: 0.3s;
-            animation: crate-idle 3s infinite ease-in-out;
-        }
-
-        @keyframes crate-idle {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-10px) rotate(2deg); }
-        }
-
-        .crate-shake { animation: crate-shake-anim 0.1s infinite; }
-        @keyframes crate-shake-anim {
-            0% { transform: translate(2px, 1px) rotate(0deg); }
-            10% { transform: translate(-1px, -2px) rotate(-1deg); }
-            20% { transform: translate(-3px, 0px) rotate(1deg); }
-            30% { transform: translate(0px, 2px) rotate(0deg); }
-            40% { transform: translate(1px, -1px) rotate(1deg); }
-            50% { transform: translate(-1px, 2px) rotate(-1deg); }
-            60% { transform: translate(-3px, 1px) rotate(0deg); }
-            70% { transform: translate(2px, 1px) rotate(-1deg); }
-            80% { transform: translate(-1px, -1px) rotate(1deg); }
-            90% { transform: translate(2px, 2px) rotate(0deg); }
-            100% { transform: translate(1px, -2px) rotate(-1deg); }
-        }
-
-        /* شاشة نهاية المباراة التكتيكية */
-        .match-end-screen {
-            position: absolute;
-            inset: 0;
-            background: rgba(0,0,0,0.95);
-            z-index: 500;
-            display: none;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-        }
-
-        .result-title { font-size: 80px; font-weight: 900; letter-spacing: 4px; margin-bottom: 20px; text-shadow: 0 0 40px rgba(255,255,255,0.2); }
-        .result-title.victory { color: #22c55e; text-shadow: 0 0 50px rgba(34, 197, 94, 0.4); }
-        .result-title.defeat { color: #ef4444; text-shadow: 0 0 50px rgba(239, 68, 68, 0.4); }
-
-        .reward-summary { background: var(--cool-grey-dark); padding: 30px; border-radius: 16px; border: 1px solid var(--cool-grey-light); min-width: 350px; }
-        .reward-row { display: flex; justify-content: space-between; margin: 15px 0; font-size: 18px; font-weight: 700; }
-
-        /* واجهة اللعب الحية */
-        #game-play-ui { display: none; position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%); z-index: 20; width: 90%; max-width: 600px; display: none; justify-content: space-between; pointer-events: none; }
-        .crosshair { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 10px; height: 10px; border: 2px solid rgba(255,255,255,0.6); border-radius: 50%; pointer-events: none; z-index: 15; display: none; }
     </style>
 </head>
-<body>
+<body class="text-gray-100 min-h-screen flex flex-col justify-between selection:bg-indigo-500 selection:text-white">
 
-    <div class="game-viewport">
-        <!-- 3D Environment Simulated Engine Canvas -->
-        <canvas id="renderCanvas"></canvas>
-        <div class="crosshair" id="hud-crosshair"></div>
-
-        <!-- الطبقة العلوية للواجهات (UI Overlay) -->
-        <div class="ui-overlay" id="main-hud-layer">
-            
-            <!-- 2. عدادات العملات الفوقية -->
-            <div class="top-currency-bar ui-element">
-                <div class="currency-box">
-                    <i class="fa-solid fa-coins" style="color: var(--gold-coins);"></i>
-                    <span id="player-gold-display" class="coin-txt">10,000</span>
+    <!-- Header / Navbar -->
+    <header class="border-b border-gray-800 bg-gray-900/50 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <div class="bg-indigo-600 p-2 rounded-xl text-white shadow-lg shadow-indigo-500/30">
+                    <i class="fa-solid fa-cloud-arrow-down text-xl"></i>
                 </div>
-                <div class="currency-box">
-                    <i class="fa-solid fa-gem" style="color: var(--gems-cash);"></i>
-                    <span id="player-gems-display" class="gem-txt">250</span>
-                </div>
-                <div class="currency-box" style="color: #94a3b8;">
-                    <i class="fa-solid fa-shield-halved"></i>
-                    <span id="player-xp-display">XP: 0</span>
-                </div>
+                <span class="text-2xl font-black tracking-wider gradient-text">XDownloader</span>
             </div>
-
-            <!-- القائمة الرئيسية الاحترافية -->
-            <div class="main-menu-panel ui-element" id="primary-menu">
-                <button class="tactic-btn primary-btn" onclick="triggerMatchmaking()">
-                    <i class="fa-solid fa-gun"></i> بدء المعركة (PLAY)
-                </button>
-                <button class="tactic-btn" onclick="openModal('armory-modal')">
-                    <i class="fa-solid fa-screwdriver-wrench"></i> الترسانة / الأسلحة
-                </button>
-                <button class="tactic-btn" onclick="openModal('store-modal')">
-                    <i class="fa-solid fa-boxes-stacked"></i> المتجر والباكدجات
-                </button>
+            <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-gray-400">
+                <a href="#" class="text-indigo-400 border-b-2 border-indigo-500 pb-1">الرئيسية</a>
+                <a href="#" class="hover:text-white transition">المنصات المدعومة</a>
+                <a href="#" class="hover:text-white transition">الشروط</a>
+            </nav>
+            <div>
+                <span class="bg-gray-800 text-xs text-indigo-400 px-3 py-1.5 rounded-full font-semibold border border-gray-700">v1.0.0 Pro</span>
             </div>
         </div>
+    </header>
 
-        <!-- واجهة الترسانة (Armory) -->
-        <div id="armory-modal" class="tactic-modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <div class="modal-title"><i class="fa-solid fa-gun"></i> ترسانة الأسلحة التكتيكية</div>
-                    <button class="close-modal-btn" onclick="closeModal('armory-modal')">&times;</button>
-                </div>
-                <div class="item-grid">
-                    <div class="item-card">
-                        <div class="item-preview"><i class="fa-solid fa-person-rifle"></i></div>
-                        <div class="item-name">سلاح هجومي تكتيكي M4A1</div>
-                        <div class="item-price">5,000 عملة مجانية</div>
-                        <button class="tactic-btn primary-btn" style="padding:10px; font-size:14px; margin:0 auto;" onclick="buyWeapon('M4A1', 5000)">شراء وتجهيز</button>
+    <!-- Main Content -->
+    <main class="flex-grow flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+        <!-- Background Decorative Lights -->
+        <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-indigo-600/10 rounded-full blur-3xl -z-10 animate-pulse"></div>
+        <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-pink-600/10 rounded-full blur-3xl -z-10 animate-pulse" style="animation-delay: 2s;"></div>
+
+        <div class="max-w-3xl w-full text-center space-y-8">
+            <!-- Hero Text -->
+            <div class="space-y-3">
+                <h1 class="text-4xl sm:text-6xl font-black tracking-tight leading-none text-white">
+                    حمل من <span class="gradient-text">أي منصة</span> في ثوانٍ
+                </h1>
+                <p class="text-gray-400 text-base sm:text-lg max-w-xl mx-auto font-light">
+                    أسرع أداة لتحميل الفيديوهات والمقاطع الصوتية بجودة عالية وبدون إعلانات مزعجة.
+                </p>
+            </div>
+
+            <!-- Main Input Card -->
+            <div class="bg-gray-900/80 border border-gray-800 p-6 sm:p-8 rounded-3xl glow-effect backdrop-blur-xl relative">
+                <form id="downloadForm" class="space-y-4">
+                    <div class="relative flex items-center">
+                        <!-- Input Field -->
+                        <div class="absolute right-4 text-gray-500 text-lg">
+                            <i class="fa-solid fa-link"></i>
+                        </div>
+                        <input 
+                            type="url" 
+                            id="videoUrl"
+                            required
+                            placeholder="ضع رابط الفيديو هنا (TikTok, Instagram, YouTube...)" 
+                            class="w-full bg-gray-950/80 border border-gray-800 rounded-2xl py-4 pr-12 pl-4 text-white placeholder-gray-500 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 text-left transition-all font-sans text-base"
+                        >
                     </div>
-                    <div class="item-card">
-                        <div class="item-preview" style="color: var(--gems-cash);"><i class="fa-solid fa-crosshairs"></i></div>
-                        <div class="item-name">تمويه غابات رقمي (Skin)</div>
-                        <div class="item-price" style="color: var(--gems-cash);">50 جوهرة مدفوعة</div>
-                        <button class="tactic-btn" style="padding:10px; font-size:14px; margin:0 auto; background: var(--steel-blue);" onclick="buySkin('Digital Wood', 50)">تجهيز المظهر</button>
+
+                    <!-- Action Button -->
+                    <button 
+                        type="submit" 
+                        class="w-full bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 hover:from-indigo-500 hover:to-pink-500 text-white font-bold py-4 px-6 rounded-2xl transition duration-300 transform active:scale-[0.98] shadow-lg shadow-indigo-500/20 flex items-center justify-center gap-3 text-lg cursor-pointer"
+                    >
+                        <span>جلب رابط التحميل</span>
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    </button>
+                </form>
+
+                <!-- Status & Results Container (Hidden by default, shown via JS) -->
+                <div id="resultSection" class="mt-8 pt-6 border-t border-gray-800/60 hidden space-y-4">
+                    <!-- Loading Spinner -->
+                    <div id="loadingState" class="hidden flex-col items-center justify-center py-6 space-y-3">
+                        <div class="w-10 h-10 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
+                        <p class="text-gray-400 text-sm animate-pulse">جاري فحص الرابط واستخراج الجودات...</p>
+                    </div>
+
+                    <!-- Error State -->
+                    <div id="errorState" class="hidden bg-red-900/20 border border-red-500/30 text-red-400 p-4 rounded-xl text-sm flex items-center gap-3">
+                        <i class="fa-solid fa-circle-exclamation text-base"></i>
+                        <span id="errorMessage">عذراً، الرابط غير مدعوم أو غير صالح!</span>
+                    </div>
+
+                    <!-- Success State (Video Info & Download Links) -->
+                    <div id="successState" class="hidden text-right space-y-4 animate-fadeIn">
+                        <div class="flex flex-col sm:flex-row gap-4 bg-gray-950/40 p-4 rounded-2xl border border-gray-800/50">
+                            <!-- Video Thumbnail Placeholder -->
+                            <div class="w-full sm:w-40 h-24 bg-gray-800 rounded-xl overflow-hidden flex items-center justify-center relative">
+                                <i class="fa-solid fa-video text-2xl text-gray-600"></i>
+                                <img id="videoThumb" src="" alt="" class="w-full h-full object-cover absolute inset-0 hidden">
+                            </div>
+                            <!-- Video Details -->
+                            <div class="flex-grow flex flex-col justify-center">
+                                <h3 id="videoTitle" class="text-base font-bold text-white line-clamp-2 mb-1">عنوان الفيديو يظهر هنا...</h3>
+                                <p id="videoSource" class="text-xs text-gray-500 font-mono">Platform: Unknown</p>
+                            </div>
+                        </div>
+
+                        <!-- Download Options Buttons -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2" id="downloadButtonsContainer">
+                            <!-- Buttons will be injected dynamically via script -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Supported Platforms Badges -->
+            <div class="space-y-3">
+                <p class="text-xs font-semibold uppercase tracking-wider text-gray-500">المنصات الأكثر تحميلاً</p>
+                <div class="flex flex-wrap justify-center gap-4 text-xl text-gray-400">
+                    <div class="flex items-center gap-1.5 bg-gray-900/40 px-3 py-1.5 rounded-xl border border-gray-800 text-sm hover:text-red-500 hover:border-red-500/30 transition cursor-default">
+                        <i class="fa-brands fa-youtube"></i> <span class="font-medium text-xs">YouTube</span>
+                    </div>
+                    <div class="flex items-center gap-1.5 bg-gray-900/40 px-3 py-1.5 rounded-xl border border-gray-800 text-sm hover:text-pink-500 hover:border-pink-500/30 transition cursor-default">
+                        <i class="fa-brands fa-instagram"></i> <span class="font-medium text-xs">Instagram</span>
+                    </div>
+                    <div class="flex items-center gap-1.5 bg-gray-900/40 px-3 py-1.5 rounded-xl border border-gray-800 text-sm hover:text-white hover:border-white/30 transition cursor-default">
+                        <i class="fa-brands fa-tiktok"></i> <span class="font-medium text-xs">TikTok</span>
+                    </div>
+                    <div class="flex items-center gap-1.5 bg-gray-900/40 px-3 py-1.5 rounded-xl border border-gray-800 text-sm hover:text-blue-500 hover:border-blue-500/30 transition cursor-default">
+                        <i class="fa-brands fa-facebook"></i> <span class="font-medium text-xs">Facebook</span>
                     </div>
                 </div>
             </div>
         </div>
+    </main>
 
-        <!-- واجهة المتجر والباكدجات (Store & Crates) -->
-        <div id="store-modal" class="tactic-modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <div class="modal-title"><i class="fa-solid fa-box-open"></i> صناديق الإمداد عسكرية</div>
-                    <button class="close-modal-btn" onclick="closeModal('store-modal')">&times;</button>
-                </div>
-                <div class="crate-opening-zone">
-                    <div id="crate-graphic" class="tactical-crate-box" onclick="processCrateOpening()">
-                        <i class="fa-solid fa-box-tissue"></i>
-                    </div>
-                    <p id="crate-status-text" style="margin-top: 20px; font-weight: 700; color: #94a3b8;">اضغط على صندوق الإمدادات لفتحه (التكلفة: 1000 عملة)</p>
-                    <div id="crate-reward-display" style="margin-top: 15px; font-size: 22px; font-weight: 900; display: none;"></div>
-                </div>
-            </div>
-        </div>
+    <!-- Footer -->
+    <footer class="border-t border-gray-900 bg-gray-950/80 py-6 text-center text-xs text-gray-500">
+        <p>© 2026 XDownloader. جميع الحقوق محفوظة.</p>
+    </footer>
 
-        <!-- 5. شاشة انتهاء الجولة التكتيكية (Match End Screen) -->
-        <div id="match-end-screen" class="match-end-screen">
-            <div id="match-result-title" class="result-title victory">VICTORY</div>
-            <div class="reward-summary">
-                <h3 style="margin-bottom: 15px; border-bottom: 1px solid var(--cool-grey-light); padding-bottom: 5px;">مكافآت انتهاء المهمة</h3>
-                <div class="reward-row">
-                    <span>العملات المكتسبة:</span>
-                    <span id="reward-gold" style="color: var(--gold-coins);">+0</span>
-                </div>
-                <div class="reward-row">
-                    <span>الخبرة المكتسبة (XP):</span>
-                    <span id="reward-xp" style="color: #38bdf8;">+0</span>
-                </div>
-                <button class="tactic-btn primary-btn" style="width:100%; justify-content:center; margin-top:20px;" onclick="returnToMenu()">العودة للمقر الرئيسي</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- المحرك الصوتي والبرمجي المتكامل للعبة -->
+    <!-- Frontend Logic (Interactions Handling) -->
     <script>
-        // إعدادات وقاعدة بيانات اللاعب الافتراضية
-        let playerData = {
-            gold: 10000,
-            gems: 250,
-            xp: 0,
-            weapons: ['Default_Pistol'],
-            skins: []
-        };
+        document.getElementById('downloadForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const urlInput = document.getElementById('videoUrl').value.trim();
+            
+            const resultSection = document.getElementById('resultSection');
+            const loadingState = document.getElementById('loadingState');
+            const errorState = document.getElementById('errorState');
+            const successState = document.getElementById('successState');
 
-        // نظام محاكاة الصوت التكتيكي الرنيني والواقعي عبر الترددات البرمجية (Web Audio API)
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        function playTacticalSound(freq, type, duration) {
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.type = type;
-            osc.frequency.value = freq;
-            gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            osc.start();
-            osc.stop(audioCtx.currentTime + duration);
-        }
+            // Show result block and start loading
+            resultSection.classList.remove('hidden');
+            loadingState.classList.remove('hidden');
+            errorState.classList.add('hidden');
+            successState.classList.add('hidden');
 
-        // إعدادات السينما الرادارية (Canvas Engine Dynamic Rendering)
-        const canvas = document.getElementById('renderCanvas');
-        const ctx = canvas.getContext('2d');
-        function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
-
-        // 4. حركة الشخصية والفيزيائيات الواقعية (Advanced Locomotion Matrix)
-        let playerSim = {
-            x: window.innerWidth / 2,
-            y: window.innerHeight / 2,
-            targetX: window.innerWidth / 2,
-            inertiaX: 0,
-            weaponJog: 0,
-            jogDir: 1,
-            isMatchPlaying: false,
-            cameraShake: 0
-        };
-
-        // حلقة الرسم ثلاثية الأبعاد التكتيكية بمعدل 60 إطار في الثانية
-        function renderLoop() {
-            ctx.fillStyle = '#0b0c0e'; // لون أسود مطفي مطور
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            // تفعيل تأثير الغبار المتطاير في الهواء المحاكي للبيئة (Atmospheric Dust Effect)
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.03)';
-            for(let i=0; i<15; i++) {
-                let dx = (Math.sin(Date.now() * 0.001 + i) * canvas.width/2) + canvas.width/2;
-                let dy = ((Date.now() * 0.05 + i * 100) % canvas.height);
-                ctx.beginPath();
-                ctx.arc(dx, dy, 2, 0, Math.PI * 2);
-                ctx.fill();
-            }
-
-            if (playerSim.isMatchPlaying) {
-                // محاكاة القصور الذاتي التكتيكي عند التحرك المفاجئ (Inertia Matrix)
-                let diffX = playerSim.targetX - playerSim.x;
-                playerSim.inertiaX += diffX * 0.01;
-                playerSim.inertiaX *= 0.85; // امتصاص التوازن التدريجي
-                playerSim.x += playerSim.inertiaX;
-
-                // محاكاة حركة اهتزاز السلاح الواقعية مع حركة الكتف (Weapon Jogging)
-                playerSim.weaponJog += 0.1 * playerSim.jogDir;
-                if(Math.abs(playerSim.weaponJog) > 5) playerSim.jogDir *= -1;
-
-                // رسم تمثيلي تكتيكي للسلاح مائل مع الحركة الهندسية للكاميرا
-                ctx.save();
-                // نظام محاكاة اهتزاز كاميرا الخوذة (Camera Shake System)
-                if(playerSim.cameraShake > 0) {
-                    ctx.translate((Math.random()-0.5)*playerSim.cameraShake, (Math.random()-0.5)*playerSim.cameraShake);
-                    playerSim.cameraShake *= 0.9;
-                }
-                ctx.fillStyle = '#1e293b';
-                ctx.fillRect(playerSim.x + 80, canvas.height - 200 + playerSim.weaponJog, 120, 45); // عتاد السلاح الأساسي
-                ctx.restore();
-            } else {
-                // رسم الواجهة السينمائية المتحركة في القائمة الرئيسية (3D Cinematic Character Rotation Simulation)
-                ctx.save();
-                let angle = Date.now() * 0.0005;
-                ctx.translate(canvas.width * 0.35, canvas.height * 0.55);
-                ctx.rotate(Math.sin(angle) * 0.15);
-                ctx.fillStyle = '#2c2f33';
-                ctx.fillRect(-60, -150, 120, 260); // تمثيل مجسم الجندي التكتيكي المحرك
-                ctx.fillStyle = '#3b4234';
-                ctx.fillRect(-20, -210, 40, 50); // الخوذة القتالية
-                ctx.restore();
-            }
-
-            requestAnimationFrame(renderLoop);
-        }
-        requestAnimationFrame(renderLoop);
-
-        // التحكم بالنوافذ المنبثقة
-        function openModal(id) {
-            playTacticalSound(300, 'triangle', 0.1);
-            document.getElementById(id).style.display = 'flex';
-        }
-
-        function closeModal(id) {
-            playTacticalSound(200, 'triangle', 0.15);
-            document.getElementById(id).style.display = 'none';
-        }
-
-        // تحديث أرقام العملات بشكل تصاعدي ناعم في الـ UI
-        function updateUIElements() {
-            document.getElementById('player-gold-display').innerText = playerData.gold.toLocaleString();
-            document.getElementById('player-gems-display').innerText = playerData.gems.toLocaleString();
-            document.getElementById('player-xp-display').innerText = `XP: ${playerData.xp}`;
-        }
-
-        // منطق شراء الأسلحة وقفل البيانات
-        function buyWeapon(name, price) {
-            if(playerData.gold >= price) {
-                playerData.gold -= price;
-                playerData.weapons.push(name);
-                updateUIElements();
-                playTacticalSound(880, 'sine', 0.3); // صوت نجاح العملية وتلقيم الترسانة
-                alert(`تم تفعيل وشراء السلاح بنجاح: ${name}`);
-            } else {
-                playTacticalSound(150, 'sawtooth', 0.4);
-                alert("العملات المجانية الحالية غير كافية لإتمام هذه الصفقة العسكرية.");
-            }
-        }
-
-        // 3. برمجة نظام تفتيح الباكدجات المتطور (Probability Matrix System)
-        let isOpeningCrate = false;
-        function processCrateOpening() {
-            if(isOpeningCrate) return;
-            if(playerData.gold < 1000) {
-                playTacticalSound(150, 'sawtooth', 0.4);
-                return alert("لا تملك رصيد كافي لفتح صندوق الإمداد الممتاز.");
-            }
-
-            playerData.gold -= 1000;
-            updateUIElements();
-            isOpeningCrate = true;
-
-            const crateGraphic = document.getElementById('crate-graphic');
-            const statusText = document.getElementById('crate-status-text');
-            const rewardDisplay = document.getElementById('crate-reward-display');
-
-            rewardDisplay.style.display = 'none';
-            statusText.innerText = "جاري الاتصال بمركز الإمداد وفك التشفير...";
-            crateGraphic.classList.add('crate-shake');
-            playTacticalSound(250, 'sawtooth', 0.8);
-
-            // اللغز الرياضي المتطور لندرة الجوائز (Probability Matrix Logic)
+            // محاكاة استجابة الواجهة فوراً لحد ما نربط الـ API في الملفات الجاية
             setTimeout(() => {
-                crateGraphic.classList.remove('crate-shake');
-                isOpeningCrate = false;
+                loadingState.classList.add('hidden');
                 
-                let roll = Math.random() * 100; // نسبة عشوائية من 0 لـ 100
-                let rewardName = "";
-                let rewardColor = "";
-
-                if (roll <= 5) { // 5% ندرة أسطورية (Legendary)
-                    rewardName = "🔥 سكن السلاح الأسطوري: الفولاذ المشع (Legendary)";
-                    rewardColor = "#eab308";
-                    playTacticalSound(1200, 'sine', 0.6);
-                } else if (roll <= 30) { // 25% ندرة متوسطة (Rare)
-                    rewardName = "⚔️ تمويه نادر: الصحراء القاتلة (Rare)";
-                    rewardColor = "#a855f7";
-                    playTacticalSound(700, 'sine', 0.4);
-                } else { // 70% سكن عادي (Common)
-                    rewardName = "📦 سكن نظامي عسكري مطفي (Common)";
-                    rewardColor = "#94a3b8";
-                    playTacticalSound(450, 'triangle', 0.3);
+                if (urlInput) {
+                    // إظهار نتيجة وهمية قوية تؤكد استجابة الواجهة لكل شيء
+                    document.getElementById('videoTitle').innerText = "تم التقاط الرابط بنجاح وجاهز للتحميل";
+                    document.getElementById('videoSource').innerText = "رابط المدخل: " + new URL(urlInput).hostname;
+                    
+                    const container = document.getElementById('downloadButtonsContainer');
+                    container.innerHTML = `
+                        <a href="${urlInput}" target="_blank" class="flex items-center justify-center gap-2 bg-gray-800 hover:bg-gray-700 text-white font-medium py-3 px-4 rounded-xl transition text-sm">
+                            <i class="fa-solid fa-video text-indigo-400"></i> تحميل فيديو MP4 (High)
+                        </a>
+                        <a href="${urlInput}" target="_blank" class="flex items-center justify-center gap-2 bg-gray-800 hover:bg-gray-700 text-white font-medium py-3 px-4 rounded-xl transition text-sm">
+                            <i class="fa-solid fa-music text-pink-400"></i> تحميل صوت MP3
+                        </a>
+                    `;
+                    
+                    successState.classList.remove('hidden');
+                } else {
+                    errorState.classList.remove('hidden');
                 }
-
-                statusText.innerText = "اضغط لفتح صندوق جديد";
-                rewardDisplay.innerText = rewardName;
-                rewardDisplay.style.color = rewardColor;
-                rewardDisplay.style.display = 'block';
-
-                // حفظ الجائزة في ذاكرة المخزن والمحرك العملياتي
-                playerData.skins.push(rewardName);
-            }, 2000); // 2 ثانية أنيميشن التفتيح الواقعي
-        }
-
-        // بدء نظام المواجهة التكتيكية الحية والمحاكاة التلقائية
-        function triggerMatchmaking() {
-            document.getElementById('primary-menu').style.display = 'none';
-            document.getElementById('hud-crosshair').style.display = 'block';
-            playerSim.isMatchPlaying = true;
-            playTacticalSound(400, 'sawtooth', 0.15); // صوت السحب والبدء السريع
-
-            // حركة الفأرة أو التحريك لمحاكاة زوايا السلاح
-            window.addEventListener('mousemove', (e) => {
-                if(playerSim.isMatchPlaying) playerSim.targetX = e.clientX;
-            });
-
-            // انتهاء المباراة بعد 5 ثوانٍ تلقائياً لمحاكاة دورة المعركة (Simulation Match Lifecycle)
-            setTimeout(() => {
-                let winOutcome = Math.random() > 0.4; // نسبة الفوز عشوائية ومحاكية للأداء
-                endTacticalMatch(winOutcome);
-            }, 5000);
-        }
-
-        // 5. برمجة منطق انتهاء المباراة وحفظ البيانات تصاعدياً (Database Match Lifecycle Engine)
-        function endTacticalMatch(isWin) {
-            playerSim.isMatchPlaying = false;
-            document.getElementById('hud-crosshair').style.display = 'none';
-            
-            const endScreen = document.getElementById('match-end-screen');
-            const resultTitle = document.getElementById('match-result-title');
-            const rewardGoldEl = document.getElementById('reward-gold');
-            const rewardXpEl = document.getElementById('reward-xp');
-
-            let rewardGold = 0;
-            let rewardXp = 0;
-
-            if (isWin) {
-                resultTitle.innerText = "VICTORY";
-                resultTitle.className = "result-title victory";
-                rewardGold = 250;
-                rewardXp = 500;
-                playTacticalSound(600, 'sine', 0.5);
-            } else {
-                resultTitle.innerText = "DEFEAT";
-                resultTitle.className = "result-title defeat";
-                rewardGold = 50;
-                rewardXp = 100;
-                playTacticalSound(150, 'sawtooth', 0.6);
-            }
-
-            // تحديث قيم البيانات البرمجية فوراً
-            playerData.gold += rewardGold;
-            playerData.xp += rewardXp;
-
-            rewardGoldEl.innerText = `+${rewardGold}`;
-            rewardXpEl.innerText = `+${rewardXp}`;
-            
-            endScreen.style.display = 'flex';
-        }
-
-        function returnToMenu() {
-            document.getElementById('match-end-screen').style.display = 'none';
-            document.getElementById('primary-menu').style.display = 'flex';
-            updateUIElements(); // تصعيد العدادات في الواجهة ناعماً
-            playTacticalSound(350, 'triangle', 0.2);
-        }
-
-        // التهيئة الابتدائية للموقع
-        updateUIElements();
+            }, 1200);
+        });
     </script>
 </body>
 </html>
