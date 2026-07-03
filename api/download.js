@@ -1,6 +1,5 @@
 // api/download.js
 export default async function handler(req, res) {
-    // تفعيل إعدادات الـ CORS الكاملة لمنع حظر المتصفح
     res.setHeader('Access-Control-Allow-Credentials', true);
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
@@ -21,31 +20,33 @@ export default async function handler(req, res) {
     }
 
     try {
-        // الاتصال المباشر والآمن بسيرفر المعالجة لـ Cobalt من جهة السيرفر
+        // تحديث إعدادات Cobalt لتتوافق مع التحديثات الجديدة وتجنب الحظر
         const response = await fetch('https://api.cobalt.tools/api/json', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+                'Origin': 'https://cobalt.tools',
+                'Referer': 'https://cobalt.tools/',
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
             },
             body: JSON.stringify({
                 url: url,
-                videoQuality: '720', // أعلى جودة مدمجة الصوت متوفرة ومستقرة
-                downloadMode: 'auto',
-                audioFormat: 'mp3',
-                filenamePattern: 'classic'
+                vQuality: '720', // الاختصار الجديد للجودة في التحديث الأخير
+                filenamePattern: 'nerd' // النمط الأكثر استقراراً للسحب
             })
         });
 
-        if (!response.ok) {
-            throw new Error('فشل السيرفر الخارجي في الاستجابة');
+        const data = await response.json();
+
+        // لو Cobalt رجع برضه حظر أو خطأ
+        if (!response.ok || data.status === 'error') {
+            return res.status(400).json({ error: data.text || 'السيرفر مضغوط حالياً، جرب رابط آخر أو أعد المحاولة.' });
         }
 
-        const data = await response.json();
         return res.status(200).json(data);
 
     } catch (error) {
-        return res.status(500).json({ error: 'حدث خطأ أثناء معالجة طلبك، تأكد من صحة الرابط وعموميته.' });
+        return res.status(500).json({ error: 'عطل في شبكة المعالجة، يرجى المحاولة مرة أخرى لاحقاً.' });
     }
 }
