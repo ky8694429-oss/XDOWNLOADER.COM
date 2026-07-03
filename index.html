@@ -215,9 +215,8 @@
         </div>
     </footer>
 
-    <!-- سكربت المحرك الذكي - معالجة كاملة لجميع أنواع البيانات دون أي أخطاء ثانوية -->
+    <!-- سكربت المحرك الذكي - معالجة مباشرة من المتصفح بدون وسيط Vercel لمنع الـ Timeout -->
     <script>
-        // تفعيل زر اللصق من الكليب بورد للموبايل والكمبيوتر توماتيكي
         document.getElementById('pasteBtn').addEventListener('click', async () => {
             try {
                 const text = await navigator.clipboard.readText();
@@ -238,14 +237,12 @@
             const linksContainer = document.getElementById('actionLinksContainer');
             const submitBtn = document.getElementById('submitBtn');
             
-            // تهيئة واجهات العرض والانتظار وتجميد الزر لمنع تكرار الضغط
             wrapper.classList.remove('hidden');
             loader.classList.remove('hidden');
             errorBlock.classList.add('hidden');
             successBlock.classList.add('hidden');
             submitBtn.disabled = true;
 
-            // تحديد فوري للمنصة لرفع شكل الهوية البصرية تلقائياً
             let platform = "Cloud Media";
             if (rawUrl.includes("youtube.com") || rawUrl.includes("youtu.be")) platform = "YouTube";
             else if (rawUrl.includes("tiktok.com")) platform = "TikTok";
@@ -256,28 +253,35 @@
             document.getElementById('resPlatformBadge').innerText = platform;
 
             try {
-                // إرسال الطلب للسيرفر الخلفي Vercel Serverless Function
-                const response = await fetch('/api/download', {
+                // الاتصال المباشر بـ API السيرفر الرئيسي من جهاز العميل لتفادي حظر Vercel
+                const response = await fetch('https://api.cobalt.tools/', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ url: rawUrl })
+                    headers: { 
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json' 
+                    },
+                    body: JSON.stringify({ 
+                        url: rawUrl,
+                        videoQuality: '720'
+                    })
                 });
 
-                if (!response.ok) throw new Error('The extraction server is responding slowly. Please try again.');
-                const data = await response.json();
-
-                // التحقق الصارم من وجود أي أخطاء داخلية راجعة من Cobalt
-                if (data.status === 'error' || data.error) {
-                    throw new Error(data.text || data.error || 'This URL is either private, dead, or unsupported.');
+                if (!response.ok) {
+                    throw new Error('سيرفر الاستخراج الخارجي مضغوط حالياً، يرجى إعادة المحاولة بعد لحظات.');
                 }
 
-                // حقن العناوين وغلاف المقطع
+                const data = await response.json();
+
+                if (data.status === 'error' || data.error) {
+                    throw new Error(data.text || data.error || 'هذا الرابط إما خاص، أو تالف، أو غير مدعوم.');
+                }
+
                 document.getElementById('resTitle').innerText = data.filename || `Direct Stream From ${platform}`;
                 document.getElementById('resThumbnail').src = data.thumbnail || 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=500';
 
-                linksContainer.innerHTML = ''; // تصفير أزرار التحميل السابقة
+                linksContainer.innerHTML = ''; 
 
-                // حالة رقم 1: رابط تحميل مباشر مفرد (فيديو أو صوت كامل)
+                // حالة 1: ملف مباشر
                 if (data.url) {
                     linksContainer.innerHTML = `
                         <a href="${data.url}" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 p-5 rounded-xl transition-all duration-200 text-sm font-black text-white shadow-xl text-center justify-center gap-2 cursor-pointer col-span-1 sm:col-span-2">
@@ -285,7 +289,7 @@
                         </a>
                     `;
                 } 
-                // حالة رقم 2: ألبوم كامل أو صور متعددة وكاروسيل (مثل صور تيك توك)
+                // حالة 2: صور أو ألبوم (كاروسيل تيك توك وإنستا)
                 else if (data.picker) {
                     data.picker.forEach((item, index) => {
                         const isVideo = item.type === 'video';
@@ -300,20 +304,17 @@
                         `;
                     });
                 } else {
-                    throw new Error('No streaming assets found. Make sure the content is publicly accessible.');
+                    throw new Error('لم يتم العثور على روابط بث مباشرة للتحميل من هذا الرابط.');
                 }
 
-                // إغلاق الأنيميشن وإظهار لوحة التحميل
                 loader.classList.add('hidden');
                 successBlock.classList.remove('hidden');
 
             } catch (err) {
-                // كشف الخطأ الحقيقي وعرضه للمستخدم بذكاء
                 loader.classList.add('hidden');
                 errorBlock.classList.remove('hidden');
-                document.getElementById('errorText').innerText = err.message || "An unexpected error occurred while grabbing the media asset.";
+                document.getElementById('errorText').innerText = err.message;
             } finally {
-                // إعادة تفعيل زر التنزيل الرئيسي
                 submitBtn.disabled = false;
             }
         });
