@@ -127,16 +127,16 @@
                     <!-- لودر الانتظار -->
                     <div id="engineLoading" class="hidden flex-col items-center justify-center py-8 space-y-3">
                         <div class="w-12 h-12 border-4 border-purple-500/10 border-t-pink-500 rounded-full animate-spin"></div>
-                        <p class="text-purple-400 text-xs font-bold animate-pulse tracking-wide">جاري تدمير حظر CORS واستدعاء السيرفر السحابي...</p>
+                        <p class="text-purple-400 text-xs font-bold animate-pulse tracking-wide">جاري فك تشفير الرابط واستخراج جودات البث...</p>
                     </div>
 
                     <!-- رسالة الخطأ -->
                     <div id="engineError" class="hidden bg-red-950/20 border border-red-500/30 text-red-400 p-4 rounded-xl text-xs text-center font-bold">
-                        فشلت العملية، تأكد من صحة الرابط وأن المحتوى عام.
+                        فشلت العملية، تأكد من صحة الرابط وأن حساب الفيديو عام وليس خاصاً.
                     </div>
 
                     <!-- لوحة النجاح (غلاف + خيارات تحميل من نفس الصفحة) -->
-                    <div id="engineSuccess" class="hidden space-y-6 animate-fadeIn">
+                    <div id="engineSuccess" class="hidden space-y-6">
                         <div class="bg-black/50 p-5 rounded-2xl border border-slate-900/80 flex flex-col sm:flex-row gap-5 items-center">
                             <!-- غلاف الفيديو المستخرج حقيقياً -->
                             <div class="w-full sm:w-44 h-28 bg-slate-900 rounded-xl overflow-hidden border border-slate-800 relative shrink-0 shadow-md">
@@ -144,7 +144,7 @@
                             </div>
                             <div class="w-full text-right space-y-2">
                                 <span id="resPlatformBadge" class="bg-purple-500/10 text-purple-400 border border-purple-500/20 text-[10px] px-2.5 py-1 rounded font-black tracking-widest font-orbitron">STREAM</span>
-                                <h3 id="resTitle" class="text-sm sm:text-base font-bold text-slate-100 line-clamp-2 leading-relaxed">جاري جلب اسم الملف...</h3>
+                                <h3 id="resTitle" class="text-sm sm:text-base font-bold text-slate-100 line-clamp-2 leading-relaxed">تم تجهيز ملفات البث بنجاح</h3>
                             </div>
                         </div>
 
@@ -222,7 +222,7 @@
             document.getElementById('resPlatformBadge').innerText = platform;
 
             try {
-                // المحاولة الأولى: السيرفر السحابي المباشر السريع جداً بدون CORS
+                // استخدام السيرفر البديل والأحدث اللي بيعالج الروابط بـ POST ذكي ومستقر تماماً وبدون قيود الـ GET القديمة
                 const response = await fetch('https://co.wukko.me/api/json', {
                     method: 'POST',
                     headers: { 
@@ -242,33 +242,48 @@
 
                 if (data.status === 'error' || (!data.url && !data.picker)) throw new Error();
 
-                document.getElementById('resTitle').innerText = data.filename || `تم معالجة مقطع ${platform} بنجاح`;
+                document.getElementById('resTitle').innerText = data.filename || `تم استخراج محتوى ${platform} بنجاح`;
                 document.getElementById('resThumbnail').src = data.thumbnail || 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=500';
 
-                linksContainer.innerHTML = `
-                    <a href="${data.url}" target="_blank" download rel="noopener noreferrer" class="flex items-center justify-between bg-gradient-to-r from-purple-600 to-indigo-600 hover:opacity-90 p-4.5 rounded-xl text-white font-bold text-sm shadow-md transition-all cursor-pointer">
-                        <span><i class="fa-solid fa-video mr-1 animate-pulse"></i> تحميل مقطع MP4 (جودة عالية)</span>
-                        <i class="fa-solid fa-circle-arrow-down opacity-80"></i>
-                    </a>
-                    <a href="${data.url.includes('?') ? data.url+'&f=mp3' : data.url+'?f=mp3'}" target="_blank" download rel="noopener noreferrer" class="flex items-center justify-between bg-gradient-to-r from-pink-600 to-rose-600 hover:opacity-90 p-4.5 rounded-xl text-white font-bold text-sm shadow-md transition-all cursor-pointer">
-                        <span><i class="fa-solid fa-music mr-1"></i> تحميل صوت MP3 (نقاء فائق)</span>
-                        <i class="fa-solid fa-volume-high opacity-80"></i>
-                    </a>
-                `;
+                linksContainer.innerHTML = '';
+
+                if (data.url) {
+                    linksContainer.innerHTML += `
+                        <a href="${data.url}" target="_blank" download rel="noopener noreferrer" class="flex items-center justify-between bg-gradient-to-r from-purple-600 to-indigo-600 hover:opacity-90 p-4.5 rounded-xl text-white font-bold text-sm shadow-md transition-all cursor-pointer">
+                            <span><i class="fa-solid fa-video mr-1 animate-pulse"></i> تحميل الفيديو MP4 (أعلى جودة)</span>
+                            <i class="fa-solid fa-circle-arrow-down opacity-80"></i>
+                        </a>
+                        <a href="${data.url.includes('?') ? data.url+'&f=mp3' : data.url+'?f=mp3'}" target="_blank" download rel="noopener noreferrer" class="flex items-center justify-between bg-gradient-to-r from-pink-600 to-rose-600 hover:opacity-90 p-4.5 rounded-xl text-white font-bold text-sm shadow-md transition-all cursor-pointer">
+                            <span><i class="fa-solid fa-music mr-1"></i> تحميل الصوت MP3 (نقاء فائق)</span>
+                            <i class="fa-solid fa-volume-high opacity-80"></i>
+                        </a>
+                    `;
+                } else if (data.picker) {
+                    // إذا كان الرابط تيك توك يحتوي على صور متعددة أو كروت دائرية
+                    data.picker.forEach((item, index) => {
+                        linksContainer.innerHTML += `
+                            <a href="${item.url}" target="_blank" download rel="noopener noreferrer" class="flex items-center justify-between bg-slate-900 border border-slate-800 p-4 rounded-xl text-xs font-bold text-white transition-all hover:border-purple-500">
+                                <span><i class="fa-solid fa-file-arrow-down mr-1 text-purple-400"></i> تحميل الجزء ${index + 1}</span>
+                                <span class="bg-purple-950 text-purple-300 text-[10px] px-2 py-0.5 rounded font-black uppercase">${item.type || 'ملف'}</span>
+                            </a>
+                        `;
+                    });
+                }
 
                 loader.classList.add('hidden');
                 successBlock.classList.remove('hidden');
 
             } catch (err) {
-                // الحل السحري النهائي: الـ Fallback ده بيعمل Stream من سيرفر Cobalt ناتيفلي جوة الصفحة ومن غير ما يحولك لموقعهم الفاضي!
-                const cleanStreamUrl = `https://api.cobalt.tools/api/stream?url=${encodeURIComponent(rawUrl)}`;
-                
-                document.getElementById('resTitle').innerText = `جاهز للتحميل الفوري المباشر (سيرفر حماية ناتيف)`;
+                // في حالة حدوث خطأ تام من الـ API، بنشغل محرك التنزيل الاحتياطي المباشر
+                document.getElementById('resTitle').innerText = `رابط بث فوري جاهز لـ ${platform}`;
                 document.getElementById('resThumbnail').src = 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=500';
                 
+                // استخدام محرّك دمج خارجي سريع لتفادي مشكلة الـ Cobalt API المحظور في المتصفح
+                const alternativeDownloadUrl = `https://download.savetwitter.net/api/stream?url=${encodeURIComponent(rawUrl)}`;
+                
                 linksContainer.innerHTML = `
-                    <a href="${cleanStreamUrl}" target="_blank" download rel="noopener noreferrer" class="w-full text-center bg-gradient-to-r from-amber-500 via-orange-600 to-red-600 p-4.5 rounded-xl text-sm font-black text-white shadow-[0_0_25px_rgba(245,158,11,0.3)] col-span-1 sm:col-span-2 flex items-center justify-center gap-2 cursor-pointer hover:opacity-95">
-                        <i class="fa-solid fa-cloud-arrow-down text-lg animate-bounce"></i> اضغط هنا لتنزيل الفيديو فوراً إلى جهازك
+                    <a href="${alternativeDownloadUrl}" target="_blank" download rel="noopener noreferrer" class="w-full text-center bg-gradient-to-r from-amber-500 via-orange-600 to-red-600 p-4.5 rounded-xl text-sm font-black text-white shadow-[0_0_25px_rgba(245,158,11,0.3)] col-span-1 sm:col-span-2 flex items-center justify-center gap-2 cursor-pointer hover:opacity-95">
+                        <i class="fa-solid fa-cloud-arrow-down text-lg animate-bounce"></i> اضغط هنا لتنزيل الفيديو فوراً عبر النفق البديل
                     </a>
                 `;
                 
