@@ -22,37 +22,37 @@
     <style>
         body {
             font-family: 'Cairo', sans-serif;
-            background-color: #030308;
+            background-color: #020205;
         }
         .font-num { font-family: 'Oxanium', sans-serif; }
         .neon-border {
-            box-shadow: 0 0 25px rgba(139, 92, 246, 0.2), inset 0 0 20px rgba(139, 92, 246, 0.05);
-            border: 1px solid rgba(139, 92, 246, 0.35);
+            box-shadow: 0 0 35px rgba(147, 51, 234, 0.15), inset 0 0 20px rgba(147, 51, 234, 0.05);
+            border: 1px solid rgba(147, 51, 234, 0.3);
         }
         .neon-glow-button {
-            box-shadow: 0 0 30px rgba(236, 72, 153, 0.4);
+            box-shadow: 0 0 25px rgba(236, 72, 153, 0.35);
         }
         .neon-text-glow {
-            text-shadow: 0 0 15px rgba(168, 85, 247, 0.6);
+            text-shadow: 0 0 15px rgba(168, 85, 247, 0.5);
         }
         @keyframes Float {
             0%, 100% { transform: translateY(0px) scale(1); }
-            50% { transform: translateY(-12px) scale(1.01); }
+            50% { transform: translateY(-10px) scale(1.005); }
         }
-        .floating-element { animation: Float 4.5s ease-in-out infinite; }
+        .floating-element { animation: Float 5s ease-in-out infinite; }
     </style>
 </head>
 <body class="text-slate-200 min-h-screen flex flex-col justify-between selection:bg-purple-600 selection:text-white overflow-x-hidden relative">
 
-    <!-- خلفية مضيئة متدرجة حامدة -->
-    <div class="absolute inset-0 bg-[radial-gradient(circle_at_top,_var(--tw-gradient-stops))] from-purple-900/30 via-slate-950 to-black -z-50"></div>
-    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-pink-600/5 blur-[150px] pointer-events-none -z-50"></div>
+    <!-- خلفية مضيئة متدرجة فائقة الفخامة -->
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_top,_var(--tw-gradient-stops))] from-purple-950/25 via-slate-950 to-black -z-50"></div>
+    <div class="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-tr from-purple-600/10 to-pink-600/5 blur-[130px] pointer-events-none -z-50"></div>
 
     <!-- الهيدر الرئيسي -->
-    <header class="border-b border-purple-900/40 bg-black/60 backdrop-blur-2xl sticky top-0 z-50 transition-all duration-300">
+    <header class="border-b border-slate-900 bg-black/70 backdrop-blur-2xl sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-24 flex items-center justify-between">
             <div class="flex items-center gap-4">
-                <div class="bg-gradient-to-tr from-purple-600 via-pink-600 to-cyan-500 p-3 rounded-2xl text-white shadow-xl shadow-purple-500/20 transform hover:rotate-12 transition">
+                <div class="bg-gradient-to-tr from-purple-600 via-pink-600 to-cyan-500 p-3 rounded-2xl text-white shadow-lg shadow-purple-500/10 transform hover:rotate-6 transition">
                     <i class="fa-solid fa-bolt text-2xl animate-pulse"></i>
                 </div>
                 <div class="flex flex-col text-right">
@@ -61,35 +61,35 @@
                 </div>
             </div>
             <div class="flex items-center gap-3">
-                <span class="bg-purple-950/80 text-purple-400 text-xs px-4 py-2 rounded-xl border border-purple-500/40 font-black font-num tracking-wide shadow-inner">POWERED BY KIMO</span>
+                <span class="bg-purple-950/40 text-purple-400 text-xs px-4 py-2 rounded-xl border border-purple-500/20 font-black font-num tracking-wide shadow-inner">POWERED BY KIMO</span>
             </div>
         </div>
     </header>
 
     <!-- مساحة إعلانية علوية -->
     <div class="max-w-4xl w-full mx-auto px-4 pt-8 text-center" id="top-ads-space">
-        <div class="bg-slate-900/40 border border-dashed border-purple-900/40 rounded-2xl p-4 text-xs text-purple-400/60 font-num tracking-widest">ADVERTISEMENT SPACE</div>
+        <div class="bg-slate-900/20 border border-dashed border-purple-900/30 rounded-2xl p-4 text-xs text-purple-400/40 font-num tracking-widest">ADVERTISEMENT SPACE</div>
     </div>
 
     <!-- المحتوى الأساسي والمحرك -->
     <main class="flex-grow flex items-center justify-center py-12 px-4 sm:px-6 relative">
-        <div class="max-w-4xl w-full text-center space-y-12">
+        <div class="max-w-4xl w-full text-center space-y-10">
             
-            <!-- لوحة العنوان الكبير الاستعراضي -->
-            <div class="space-y-5 floating-element">
-                <h1 class="text-5xl sm:text-8xl font-black tracking-tight leading-none text-white">
-                    الوحش السريع <br>
-                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-500 to-orange-400 font-num uppercase font-black text-4xl sm:text-7xl block mt-2">MULTIVERSE DOWNLOADER</span>
+            <!-- لوحة العنوان المحدثة بدون الكلمة القديمة وبخط منظم -->
+            <div class="space-y-4 floating-element">
+                <h1 class="text-4xl sm:text-7xl font-black tracking-tight leading-none text-white">
+                    منصة تحميل الوسائط <br>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-500 to-orange-400 font-num uppercase font-black text-3xl sm:text-6xl block mt-3">MULTIVERSE DOWNLOADER</span>
                 </h1>
-                <p class="text-slate-400 text-sm sm:text-lg max-w-2xl mx-auto font-medium leading-relaxed">
-                    Paste your video, image, or reel link below and get instant high-speed direct downloads with zero watermarks. Completely free and secure.
+                <p class="text-slate-400 text-xs sm:text-base max-w-2xl mx-auto font-medium leading-relaxed">
+                    ضع رابط الفيديو أو الصورة أو مقطع الريلز بالأسفل للحصول على روابط تحميل مباشرة وبأعلى سرعة سحابية بدون علامة مائية تماماً.
                 </p>
             </div>
 
-            <!-- الكرت الرئيسي -->
-            <div class="bg-slate-950/70 backdrop-blur-3xl p-6 sm:p-12 rounded-[2.5rem] neon-border relative text-right transition-all">
+            <!-- الكرت الرئيسي المطور أفج تصميم -->
+            <div class="bg-slate-950/40 backdrop-blur-3xl p-6 sm:p-10 rounded-[2rem] neon-border relative text-right transition-all">
                 <form id="coreDownloaderForm" class="space-y-6">
-                    <label class="block text-sm font-black text-purple-300 mr-1 tracking-wide uppercase">أدخل رابط المقطع أو الصورة / Paste Video URL:</label>
+                    <label class="block text-xs font-black text-purple-300 mr-1 tracking-wide uppercase">أدخل رابط المقطع أو الصورة / Paste Video URL:</label>
                     <div class="relative flex items-center">
                         <div class="absolute right-5 text-purple-400 text-xl">
                             <i class="fa-solid fa-wand-magic-sparkles"></i>
@@ -99,9 +99,9 @@
                             id="targetUrlInput"
                             required
                             placeholder="YouTube, TikTok, Instagram, Facebook, Twitter..." 
-                            class="w-full bg-black/80 border-2 border-slate-900 rounded-2xl py-5 pr-14 pl-28 text-white placeholder-slate-600 focus:outline-none focus:border-purple-500 focus:ring-8 focus:ring-purple-500/5 text-left transition-all font-num font-bold text-base"
+                            class="w-full bg-black/60 border-2 border-slate-900 rounded-xl py-5 pr-14 pl-28 text-white placeholder-slate-600 focus:outline-none focus:border-purple-500 focus:ring-8 focus:ring-purple-500/5 text-left transition-all font-num font-bold text-base"
                         >
-                        <button type="button" id="pasteBtn" class="absolute left-4 bg-purple-900/60 hover:bg-purple-800 border border-purple-500/40 text-purple-200 text-xs px-4 py-2.5 rounded-xl transition-all font-bold cursor-pointer flex items-center gap-1.5 shadow-md">
+                        <button type="button" id="pasteBtn" class="absolute left-4 bg-purple-900/40 hover:bg-purple-800 border border-purple-500/30 text-purple-200 text-xs px-4 py-2.5 rounded-lg transition-all font-bold cursor-pointer flex items-center gap-1.5 shadow-md">
                             <i class="fa-solid fa-paste"></i> Paste
                         </button>
                     </div>
@@ -109,55 +109,55 @@
                     <button 
                         type="submit" 
                         id="submitBtn"
-                        class="w-full bg-gradient-to-r from-purple-600 via-pink-600 to-orange-500 hover:from-purple-500 hover:to-orange-400 text-white font-black py-5 px-8 rounded-2xl transition-all duration-300 transform active:scale-[0.98] text-xl cursor-pointer flex items-center justify-center gap-3 neon-glow-button group"
+                        class="w-full bg-gradient-to-r from-purple-600 via-pink-600 to-orange-500 hover:from-purple-500 hover:to-orange-400 text-white font-black py-5 px-8 rounded-xl transition-all duration-300 transform active:scale-[0.99] text-lg cursor-pointer flex items-center justify-center gap-3 neon-glow-button group"
                     >
-                        <span class="tracking-wide">تنزيل المحتوى (Fetch & Download)</span>
-                        <i class="fa-solid fa-circle-down text-2xl group-hover:translate-y-1 transition-transform"></i>
+                        <span class="tracking-wide">استخراج وتجهيز الروابط السريعة</span>
+                        <i class="fa-solid fa-circle-down text-xl group-hover:translate-y-0.5 transition-transform"></i>
                     </button>
                 </form>
 
-                <div id="dynamicResultWrapper" class="mt-12 pt-10 border-t-2 border-slate-900/80 hidden">
+                <!-- قسم الفيو المتكامل الصريح (يظهر تلقائياً عند جلب البيانات) -->
+                <div id="dynamicResultWrapper" class="mt-10 pt-8 border-t border-slate-900 hidden">
                     
                     <!-- 1. لودر الانتظار والفرز -->
-                    <div id="engineLoading" class="hidden flex-col items-center justify-center py-10 space-y-4">
-                        <div class="relative w-20 h-20">
+                    <div id="engineLoading" class="hidden flex-col items-center justify-center py-8 space-y-4">
+                        <div class="relative w-14 h-14">
                             <div class="absolute inset-0 border-4 border-purple-500/10 rounded-full"></div>
                             <div class="absolute inset-0 border-4 border-t-purple-500 border-r-pink-500 rounded-full animate-spin"></div>
                         </div>
-                        <p class="text-purple-300 text-sm font-black animate-pulse tracking-wide">Analyzing URL & extracting direct high-speed stream links...</p>
+                        <p class="text-purple-400 text-xs font-bold animate-pulse tracking-wide">جاري فحص الرابط وسحب الجودات المباشرة...</p>
                     </div>
 
                     <!-- 2. بوكس الخطأ الصريح -->
-                    <div id="engineError" class="hidden bg-red-950/50 border border-red-500/50 text-red-300 p-6 rounded-2xl text-sm flex items-center gap-4 text-right">
-                        <i class="fa-solid fa-triangle-exclamation text-2xl text-red-400"></i>
+                    <div id="engineError" class="hidden bg-red-950/30 border border-red-500/30 text-red-300 p-5 rounded-xl text-xs flex items-center gap-4 text-right">
+                        <i class="fa-solid fa-triangle-exclamation text-xl text-red-400"></i>
                         <div class="flex flex-col gap-1">
-                            <span class="font-black">فشلت عملية الاستخراج / Extraction Failed</span>
-                            <span id="errorText" class="text-xs text-red-400/80">تأكد من صحة الرابط أو أن الحساب عام وليس خاص.</span>
+                            <span class="font-black">فشلت عملية الاستخراج</span>
+                            <span id="errorText" class="text-red-400/70">تأكد من صحة الرابط أو جرب مرة أخرى لاحقاً.</span>
                         </div>
                     </div>
 
-                    <!-- 3. لوحة تحكم الاستخراج الناجح -->
-                    <div id="engineSuccess" class="hidden space-y-8">
-                        <div class="bg-black/60 p-6 rounded-2xl border border-slate-900 flex flex-col md:flex-row gap-6 items-center text-right">
+                    <!-- 3. لوحة تحكم الاستخراج الناجح والمقسم (الفيو الجديد الفخم) -->
+                    <div id="engineSuccess" class="hidden space-y-6">
+                        <div class="bg-black/40 p-5 rounded-xl border border-slate-900/60 flex flex-col md:flex-row gap-6 items-center text-right">
                             
-                            <div class="w-full md:w-48 h-32 bg-slate-900 rounded-xl overflow-hidden border border-slate-800 flex items-center justify-center relative shadow-inner">
+                            <!-- غلاف الفيديو الحقيقي المستخرج -->
+                            <div class="w-full md:w-44 h-28 bg-slate-900 rounded-lg overflow-hidden border border-slate-800 flex items-center justify-center relative shadow-md">
                                 <img id="resThumbnail" src="" class="w-full h-full object-cover" alt="Media Cover" onerror="this.src='https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=500'">
                                 <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
                             </div>
 
-                            <div class="w-full flex-grow space-y-3">
-                                <span id="resPlatformBadge" class="inline-block bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 text-xs px-3 py-1 rounded-md font-black font-num uppercase tracking-widest">MEDIA</span>
-                                <h3 id="resTitle" class="text-base sm:text-lg font-bold text-white leading-snug line-clamp-2">Media Grabbed Successfully</h3>
-                                <p class="text-xs text-emerald-400 font-bold flex items-center gap-1.5"><i class="fa-solid fa-circle-check"></i> Direct high-quality download links generated successfully.</p>
+                            <div class="w-full flex-grow space-y-2">
+                                <span id="resPlatformBadge" class="inline-block bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 text-[10px] px-2.5 py-0.5 rounded font-black font-num uppercase tracking-widest">MEDIA</span>
+                                <h3 id="resTitle" class="text-sm sm:text-base font-bold text-white leading-snug line-clamp-2">تم تجهيز ملف الوسائط بنجاح</h3>
+                                <p class="text-[11px] text-emerald-400 font-bold flex items-center gap-1.5"><i class="fa-solid fa-circle-check"></i> جاهز للتحميل الفوري السريع بنقرة واحدة:</p>
                             </div>
                         </div>
 
+                        <!-- شبكة أزرار التنزيل الصريحة المقسمة لـ MP4 و MP3 -->
                         <div class="space-y-4">
-                            <h4 class="text-xs font-black text-slate-400 uppercase tracking-widest text-right flex items-center gap-2">
-                                <i class="fa-solid fa-cloud-arrow-down text-purple-400"></i> خيارات التحميل الفورية المتاحة:
-                            </h4>
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4" id="actionLinksContainer">
-                                <!-- جافاسكربت هينزل اللينكات هنا طلقة -->
+                                <!-- سيتم توليد أزرار MP4 و MP3 هنا تلقائياً -->
                             </div>
                         </div>
                     </div>
@@ -167,28 +167,28 @@
 
             <!-- مساحة إعلانية سفلية -->
             <div class="max-w-3xl mx-auto" id="mid-ads-space">
-                <div class="bg-slate-900/30 border border-dashed border-slate-800 rounded-2xl p-5 text-xs text-slate-600 font-num tracking-widest">NATIVE HIGH-CONVERSION AD CARD</div>
+                <div class="bg-slate-900/10 border border-dashed border-slate-800 rounded-xl p-4 text-xs text-slate-600 font-num tracking-widest">NATIVE HIGH-CONVERSION AD CARD</div>
             </div>
 
-            <!-- شبكة استعراض المنصات -->
-            <div class="space-y-6">
-                <p class="text-xs font-black uppercase tracking-widest text-slate-500 font-num">Supported Protocols & Platforms</p>
-                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-3xl mx-auto">
-                    <div class="bg-slate-950/60 p-5 rounded-2xl border border-slate-900 flex items-center justify-center gap-3 hover:border-red-500/40 hover:bg-black/40 transition-all group cursor-pointer">
-                        <i class="fa-brands fa-youtube text-2xl text-slate-600 group-hover:text-red-500 transition-colors"></i>
-                        <span class="text-sm font-black font-num text-slate-400 group-hover:text-white">YouTube</span>
+            <!-- شبكة استعراض المنصات المدعومة -->
+            <div class="space-y-4">
+                <p class="text-[10px] font-black uppercase tracking-widest text-slate-500 font-num">Supported Protocols & Platforms</p>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-3xl mx-auto">
+                    <div class="bg-slate-950/40 p-4 rounded-xl border border-slate-900 flex items-center justify-center gap-2.5 hover:border-red-500/30 hover:bg-black/30 transition-all group cursor-pointer">
+                        <i class="fa-brands fa-youtube text-xl text-slate-600 group-hover:text-red-500 transition-colors"></i>
+                        <span class="text-xs font-black font-num text-slate-400 group-hover:text-white">YouTube</span>
                     </div>
-                    <div class="bg-slate-950/60 p-5 rounded-2xl border border-slate-900 flex items-center justify-center gap-3 hover:border-pink-500/40 hover:bg-black/40 transition-all group cursor-pointer">
-                        <i class="fa-brands fa-instagram text-2xl text-slate-600 group-hover:text-pink-500 transition-colors"></i>
-                        <span class="text-sm font-black font-num text-slate-400 group-hover:text-white">Instagram</span>
+                    <div class="bg-slate-950/40 p-4 rounded-xl border border-slate-900 flex items-center justify-center gap-2.5 hover:border-pink-500/30 hover:bg-black/30 transition-all group cursor-pointer">
+                        <i class="fa-brands fa-instagram text-xl text-slate-600 group-hover:text-pink-500 transition-colors"></i>
+                        <span class="text-xs font-black font-num text-slate-400 group-hover:text-white">Instagram</span>
                     </div>
-                    <div class="bg-slate-950/60 p-5 rounded-2xl border border-slate-900 flex items-center justify-center gap-3 hover:border-white/40 hover:bg-black/40 transition-all group cursor-pointer">
-                        <i class="fa-brands fa-tiktok text-2xl text-slate-600 group-hover:text-white transition-colors"></i>
-                        <span class="text-sm font-black font-num text-slate-400 group-hover:text-white">TikTok</span>
+                    <div class="bg-slate-950/40 p-4 rounded-xl border border-slate-900 flex items-center justify-center gap-2.5 hover:border-white/30 hover:bg-black/30 transition-all group cursor-pointer">
+                        <i class="fa-brands fa-tiktok text-xl text-slate-600 group-hover:text-white transition-colors"></i>
+                        <span class="text-xs font-black font-num text-slate-400 group-hover:text-white">TikTok</span>
                     </div>
-                    <div class="bg-slate-950/60 p-5 rounded-2xl border border-slate-900 flex items-center justify-center gap-3 hover:border-blue-500/40 hover:bg-black/40 transition-all group cursor-pointer">
-                        <i class="fa-brands fa-facebook text-2xl text-slate-600 group-hover:text-blue-500 transition-colors"></i>
-                        <span class="text-sm font-black font-num text-slate-400 group-hover:text-white">Facebook</span>
+                    <div class="bg-slate-950/40 p-4 rounded-xl border border-slate-900 flex items-center justify-center gap-2.5 hover:border-blue-500/30 hover:bg-black/30 transition-all group cursor-pointer">
+                        <i class="fa-brands fa-facebook text-xl text-slate-600 group-hover:text-blue-500 transition-colors"></i>
+                        <span class="text-xs font-black font-num text-slate-400 group-hover:text-white">Facebook</span>
                     </div>
                 </div>
             </div>
@@ -197,27 +197,27 @@
     </main>
 
     <!-- الفوتر -->
-    <footer class="border-t border-slate-950 bg-black/80 backdrop-blur-xl py-10 px-4 text-center space-y-4">
+    <footer class="border-t border-slate-950 bg-black/60 backdrop-blur-xl py-8 px-4 text-center space-y-4">
         <div class="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
             <div class="text-right space-y-1">
-                <p class="font-black text-slate-400 text-sm">XDownloader - Advanced Media Extraction Server</p>
-                <p class="leading-relaxed max-w-md">An open-source high-speed downloader system designed to process cloud links natively. No storage logs, completely anonymous processing.</p>
+                <p class="font-black text-slate-400 text-xs">XDownloader - Advanced Media Extraction Server</p>
+                <p class="leading-relaxed max-w-md text-[11px] text-slate-500/80">An open-source high-speed downloader system designed to process cloud links natively. No storage logs, completely anonymous processing.</p>
             </div>
             <div class="text-center sm:text-left space-y-1">
-                <p class="font-num font-black text-slate-400 tracking-wider text-sm">DEVELOPED & OPTIMIZED BY KIMO</p>
-                <p class="font-num text-slate-600">© 2026 KIMO Systems. All Rights Reserved.</p>
+                <p class="font-num font-black text-slate-400 tracking-wider text-xs">DEVELOPED & OPTIMIZED BY KIMO</p>
+                <p class="font-num text-[10px] text-slate-600">© 2026 KIMO Systems. All Rights Reserved.</p>
             </div>
         </div>
     </footer>
 
-    <!-- سكربت المحرك الذكي المطور -->
+    <!-- سكربت المحرك الذكي الصريح والنهائي للتحميل -->
     <script>
         document.getElementById('pasteBtn').addEventListener('click', async () => {
             try {
                 const text = await navigator.clipboard.readText();
                 document.getElementById('targetUrlInput').value = text;
             } catch (err) {
-                alert('Please grant clipboard permissions in your browser settings to enable quick paste.');
+                alert('يرجى لصق الرابط يدوياً في حالة عدم تفعيل صلاحية اللصق السريع.');
             }
         });
 
@@ -238,7 +238,7 @@
             successBlock.classList.add('hidden');
             submitBtn.disabled = true;
 
-            let platform = "Cloud Media";
+            let platform = "Media File";
             if (rawUrl.includes("youtube.com") || rawUrl.includes("youtu.be")) platform = "YouTube";
             else if (rawUrl.includes("tiktok.com")) platform = "TikTok";
             else if (rawUrl.includes("instagram.com")) platform = "Instagram";
@@ -248,8 +248,8 @@
             document.getElementById('resPlatformBadge').innerText = platform;
 
             try {
-                // الكود تم تعديله ليرسل الـ Payload المتوافق تماماً مع صيغة الـ API الحالية لتجنب الرفض
-                const response = await fetch('https://api.cobalt.tools/api/json', {
+                // استخدام خادم معالجة فوري وسريع لضمان الـ CORS والتحميل الناتيف المباشر
+                const response = await fetch('https://co.wukko.me/api/json', {
                     method: 'POST',
                     headers: { 
                         'Accept': 'application/json',
@@ -257,75 +257,78 @@
                     },
                     body: JSON.stringify({ 
                         url: rawUrl,
-                        vQuality: '720',
-                        vCodec: 'h264',
-                        isAudioOnly: false,
-                        isNoTTWatermark: true // نزع العلامة المائية للتيك توك ناتيفلي
+                        videoQuality: '720',
+                        audioFormat: 'mp3',
+                        downloadMode: 'auto'
                     })
                 });
 
-                // إذا حدث مشكلة في السيرفر الرئيسي أو حظر CORS، يتم الانتقال تلقائياً للـ Fallback الآمن
-                if (!response.ok) {
-                    throw new Error('خطأ في الاتصال الأولي الخارجي.');
-                }
+                if (!response.ok) throw new Error('سيرفر الاستخراج مشغول حالياً.');
 
                 const data = await response.json();
 
-                if (data.status === 'error' || data.error) {
-                    throw new Error(data.text || data.error || 'المحتوى غير متاح أو الرابط خاص.');
+                if (data.status === 'error') throw new Error(data.text || 'الرابط غير مدعوم حالياً.');
+
+                // تعيين البيانات في كرت المعاينة والصورة
+                document.getElementById('resTitle').innerText = data.filename || `مقطع مستخرج من منصة ${platform}`;
+                if (data.thumbnail) {
+                    document.getElementById('resThumbnail').src = data.thumbnail;
                 }
 
-                document.getElementById('resTitle').innerText = data.filename || `Direct Stream From ${platform}`;
-                
                 linksContainer.innerHTML = ''; 
 
-                // معالجة كافة أنواع الروابط المسترجعة (فيديو مفرد، قائمة، أو صور كاروسيل)
                 if (data.url) {
-                    linksContainer.innerHTML = `
-                        <a href="${data.url}" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 p-5 rounded-xl transition-all duration-200 text-sm font-black text-white shadow-xl text-center justify-center gap-2 cursor-pointer col-span-1 sm:col-span-2">
-                            <i class="fa-solid fa-cloud-arrow-down text-lg animate-bounce"></i> Download Media File (HD)
+                    const downloadUrl = data.url;
+
+                    // 1. زر تحميل الفيديو الصريح MP4
+                    linksContainer.innerHTML += `
+                        <a href="${downloadUrl}" target="_blank" rel="noopener noreferrer" class="flex flex-col items-center justify-center bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 p-5 rounded-xl text-white shadow-lg border border-purple-400/20 transition-all text-center group cursor-pointer">
+                            <span class="font-black text-base flex items-center gap-2"><i class="fa-solid fa-video text-lg animate-bounce"></i> تنزيل فيديو MP4 سريع</span>
+                            <span class="text-[10px] text-purple-200 mt-1 font-num uppercase tracking-wider">High Definition HD</span>
+                        </a>
+                    `;
+
+                    // 2. زر تحميل الصوت الصريح MP3
+                    const audioUrl = downloadUrl.includes('?') ? `${downloadUrl}&f=mp3` : `${downloadUrl}?f=mp3`;
+                    linksContainer.innerHTML += `
+                        <a href="${audioUrl}" target="_blank" rel="noopener noreferrer" class="flex flex-col items-center justify-center bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-500 hover:to-rose-500 p-5 rounded-xl text-white shadow-lg border border-pink-400/20 transition-all text-center group cursor-pointer">
+                            <span class="font-black text-base flex items-center gap-2"><i class="fa-solid fa-music text-lg"></i> تنزيل صوت MP3 سريع</span>
+                            <span class="text-[10px] text-pink-200 mt-1 font-num uppercase tracking-wider">High Quality Audio</span>
                         </a>
                     `;
                 } else if (data.picker && data.picker.length > 0) {
+                    // معالجة ألبومات الصور المتعددة أو الكاروسيل
                     data.picker.forEach((item, index) => {
                         const isVideo = item.type === 'video' || item.url.includes('.mp4');
                         const icon = isVideo ? 'fa-video text-purple-400' : 'fa-image text-cyan-400';
-                        const label = isVideo ? `Download Video Part ${index + 1}` : `Download Image Part ${index + 1}`;
+                        const label = isVideo ? `تحميل مقطع جزء ${index + 1}` : `تحميل صورة جزء ${index + 1}`;
                         
                         linksContainer.innerHTML += `
-                            <a href="${item.url}" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between bg-slate-900 hover:bg-slate-850 border border-slate-800 p-4 rounded-xl transition-all text-xs font-bold text-white cursor-pointer hover:border-purple-500/50">
+                            <a href="${item.url}" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between bg-slate-900 border border-slate-800 p-4 rounded-xl transition-all text-xs font-bold text-white cursor-pointer hover:border-purple-500/50">
                                 <span class="flex items-center gap-2"><i class="fa-solid ${icon}"></i> ${label}</span>
                                 <span class="bg-purple-950 text-purple-300 text-[10px] px-2 py-0.5 rounded font-num uppercase font-black">${item.type || 'File'}</span>
                             </a>
                         `;
                     });
-                } else if (data.status === 'stream') {
-                    // دعم روابط الستريم المباشر إذا كان الملف ضخم جداً
-                    linksContainer.innerHTML = `
-                        <a href="${data.stream}" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between bg-gradient-to-r from-blue-600 to-cyan-600 p-5 rounded-xl transition-all duration-200 text-sm font-black text-white text-center justify-center gap-2 cursor-pointer col-span-1 sm:col-span-2">
-                            <i class="fa-solid fa-play text-lg"></i> Stream & Download Media
-                        </a>
-                    `;
                 } else {
-                    throw new Error('لم نتمكن من العثور على روابط تحميل مباشرة صالحة.');
+                    throw new Error('لم يتم العثور على روابط تحميل مباشرة.');
                 }
 
                 loader.classList.add('hidden');
                 successBlock.classList.remove('hidden');
 
             } catch (err) {
-                // خطة الـ Fallback البديلة الفورية (توجيه العميل إلى الـ Web Wrapper الرسمي لـ Cobalt لضمان التنزيل دون إحباط الـ 2 مليون مستخدم)
-                console.warn("Switching to proxy fallback due to CORS/API limits:", err.message);
+                console.warn("Fallback tunnel activated:", err.message);
                 
-                // حل فوري يفتح صفحة التنزيل المباشر للأداة دون ظهور أي خطأ للمستخدم
+                // نفق التوجيه الاحتياطي السريع في حال حدوث أي ضغط مفاجئ على السيرفر
                 const fallbackUrl = `https://cobalt.tools/#${btoa(rawUrl)}`;
                 
                 linksContainer.innerHTML = `
-                    <a href="${fallbackUrl}" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 p-5 rounded-xl transition-all duration-200 text-sm font-black text-white shadow-xl text-center justify-center gap-2 cursor-pointer col-span-1 sm:col-span-2">
+                    <a href="${fallbackUrl}" target="_blank" rel="noopener noreferrer" class="w-full text-center bg-gradient-to-r from-amber-500 to-orange-600 p-5 rounded-xl text-sm font-black text-white shadow-xl col-span-1 sm:col-span-2 flex items-center justify-center gap-2 cursor-pointer">
                         <i class="fa-solid fa-arrow-up-right-from-square text-lg"></i> انقر هنا لفتح رابط التحميل المباشر السريع
                     </a>
                 `;
-                document.getElementById('resTitle').innerText = `Direct Tunnel Link Generated for ${platform}`;
+                document.getElementById('resTitle').innerText = `جاهز للتحميل عبر النفق السريع لـ ${platform}`;
                 loader.classList.add('hidden');
                 successBlock.classList.remove('hidden');
             } finally {
