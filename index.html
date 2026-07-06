@@ -3,97 +3,148 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KIMO HYPER HUB | المنصة العالمية الذكية</title>
-    <!-- استدعاء خطوط قوية وعالمية من جوجل -->
+    <title>MG_KIMO HYPER NET | المنصة السحابية المتقدمة</title>
+    
+    <!-- استدعاء أقوى الخطوط العالمية للويب -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;600;800&family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Cairo:wght@300;400;700;900&family=Plus+Jakarta+Sans:wght@300;500;700;800&display=swap" rel="stylesheet">
     
     <style>
         /* ==========================================================================
-           1. التصميم والألوان (style.css المدمج) - Cyberpunk Hyper-Neon Style
+           1. نظام الألوان المتطور والتصميم (Cyberpunk Grid Ultra Edition)
            ========================================================================== */
         :root {
-            --bg-dark-core: #05070f;
-            --bg-card-glass: rgba(13, 18, 36, 0.7);
-            --border-neon: rgba(157, 78, 221, 0.2);
-            --border-neon-hover: rgba(6, 182, 212, 0.5);
+            --bg-deep-space: #03050a;
+            --bg-glass-core: rgba(6, 10, 23, 0.75);
+            --border-neon-purple: rgba(157, 78, 221, 0.25);
+            --border-neon-cyan: rgba(6, 182, 212, 0.25);
             --neon-purple: #9d4edd;
             --neon-cyan: #06b6d4;
-            --text-white: #f8fafc;
-            --text-slate: #94a3b8;
-            --success-green: #10b981;
+            --neon-pink: #ff007f;
+            --text-pure: #ffffff;
+            --text-muted: #94a3b8;
+            --neon-green: #10b981;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Plus Jakarta Sans', 'Lexend', sans-serif;
+            font-family: 'Plus Jakarta Sans', 'Cairo', sans-serif;
             scroll-behavior: smooth;
         }
 
         body {
-            background-color: var(--bg-dark-core);
-            color: var(--text-white);
+            background-color: var(--bg-deep-space);
+            color: var(--text-pure);
             min-height: 100vh;
             overflow-x: hidden;
+            background-image: 
+                linear-gradient(rgba(6, 182, 212, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(6, 182, 212, 0.03) 1px, transparent 1px);
+            background-size: 30px 30px;
         }
 
-        /* توهج نيون في الخلفية */
-        .ambient-glow {
-            position: absolute;
-            width: 500px;
-            height: 500px;
+        /* مؤثرات الإضاءة المحيطية الفائقة */
+        .cyber-glow {
+            position: fixed;
+            width: 600px;
+            height: 600px;
             border-radius: 50%;
             pointer-events: none;
-            z-index: -1;
-            filter: blur(140px);
-            opacity: 0.15;
+            z-index: -2;
+            filter: blur(160px);
+            opacity: 0.12;
         }
-        .glow-1 { top: -100px; left: -100px; background: var(--neon-purple); }
-        .glow-2 { top: 400px; right: -100px; background: var(--neon-cyan); }
+        .glow-top-right { top: -200px; right: -100px; background: var(--neon-purple); }
+        .glow-bottom-left { bottom: -200px; left: -100px; background: var(--neon-cyan); }
 
-        /* الهيدر */
+        /* الهيدر الاحترافي */
         header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 5%;
-            background: rgba(5, 7, 15, 0.8);
-            backdrop-filter: blur(15px);
-            border-bottom: 1px solid var(--border-neon);
+            padding: 15px 5%;
+            background: rgba(3, 5, 10, 0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-neon-purple);
             position: sticky;
             top: 0;
             z-index: 1000;
         }
 
-        .logo-wrapper {
+        /* اللوجو المتحرك المتطور الخارق */
+        .animated-logo-container {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 15px;
+            text-decoration: none;
         }
 
-        .kimo-badge {
-            background: linear-gradient(135deg, var(--neon-purple), var(--neon-cyan));
-            padding: 6px 14px;
-            border-radius: 8px;
-            font-weight: 800;
-            font-size: 0.9rem;
+        .mg-kimo-logo-box {
+            position: relative;
+            width: 55px;
+            height: 55px;
+            background: #000;
+            border: 2px solid var(--neon-cyan);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900;
+            font-size: 1.1rem;
+            color: #fff;
             letter-spacing: 1px;
-            box-shadow: 0 0 15px rgba(157, 78, 221, 0.4);
+            box-shadow: 0 0 15px rgba(6, 182, 212, 0.3);
+            animation: logoPulse 3s infinite alternate;
+            overflow: hidden;
         }
 
-        .logo-title {
+        .mg-kimo-logo-box::before {
+            content: '';
+            position: absolute;
+            width: 150%;
+            height: 150%;
+            background: linear-gradient(45deg, transparent, rgba(255, 0, 127, 0.4), transparent);
+            transform: rotate(45deg);
+            top: -25%;
+            left: -25%;
+            animation: logoScan 2.5s infinite linear;
+        }
+
+        @keyframes logoPulse {
+            0% { border-color: var(--neon-cyan); box-shadow: 0 0 12px rgba(6, 182, 212, 0.3); }
+            50% { border-color: var(--neon-pink); box-shadow: 0 0 20px rgba(255, 0, 127, 0.5); }
+            100% { border-color: var(--neon-purple); box-shadow: 0 0 12px rgba(157, 78, 221, 0.3); }
+        }
+
+        @keyframes logoScan {
+            0% { transform: translate(-50%, -50%) rotate(45deg); }
+            100% { transform: translate(50%, 50%) rotate(45deg); }
+        }
+
+        .brand-text-wrapper {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .brand-main-title {
+            font-family: 'Orbitron', sans-serif;
             font-size: 1.4rem;
-            font-weight: 800;
-            letter-spacing: 0.5px;
-        }
-
-        .text-gradient {
-            background: linear-gradient(to right, var(--neon-cyan), var(--neon-purple));
+            font-weight: 900;
+            letter-spacing: 1px;
+            background: linear-gradient(to left, var(--text-pure), var(--neon-cyan));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+        }
+
+        .brand-sub-title {
+            font-size: 0.75rem;
+            color: var(--neon-purple);
+            font-weight: bold;
+            letter-spacing: 2px;
         }
 
         .nav-menu {
@@ -103,592 +154,661 @@
         }
 
         .nav-menu a {
-            color: var(--text-slate);
+            color: var(--text-muted);
             text-decoration: none;
-            font-size: 0.95rem;
-            font-weight: 600;
-            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            font-weight: 700;
+            transition: all 0.3s;
         }
 
         .nav-menu a:hover, .nav-menu a.active {
-            color: var(--text-white);
-            text-shadow: 0 0 10px var(--neon-cyan);
+            color: var(--text-pure);
+            text-shadow: 0 0 8px var(--neon-cyan);
         }
 
-        /* الهيرو سكشن */
-        .hero-section {
+        /* واجهة الهيرو سكشن الفخمة */
+        .hero-dashboard-panel {
             text-align: center;
-            padding: 70px 20px 40px 20px;
-            max-width: 900px;
+            padding: 60px 20px 30px 20px;
+            max-width: 1000px;
             margin: 0 auto;
         }
 
-        .hero-title {
-            font-size: 3rem;
-            font-weight: 800;
-            line-height: 1.2;
-            margin-bottom: 20px;
-            background: linear-gradient(135deg, #ffffff 40%, #c084fc 100%);
+        .hero-title-main {
+            font-size: 3.2rem;
+            font-weight: 900;
+            line-height: 1.15;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, #fff 30%, var(--neon-purple) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        .hero-subtitle {
-            color: var(--text-slate);
-            font-size: 1.15rem;
-            line-height: 1.6;
-        }
-
-        /* الحاوية والتوزيع */
-        .main-container {
-            max-width: 1250px;
+        /* الحاوية الأساسية المرنة */
+        .main-grid-layout {
+            max-width: 1400px;
             margin: 0 auto;
             padding: 20px;
             display: flex;
             flex-direction: column;
-            gap: 35px;
-        }
-
-        .dashboard-section {
-            width: 100%;
-        }
-
-        .dashboard-grid-2col {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
             gap: 30px;
         }
 
-        @media (max-width: 900px) {
-            .dashboard-grid-2col { grid-template-columns: 1fr; }
-            .hero-title { font-size: 2.2rem; }
+        /* تخطيط الكروت المتقدم المتجاوب */
+        .tools-matrix-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+            gap: 25px;
         }
 
-        /* تصميم الكروت الزجاجي (Glassmorphism) */
-        .main-card {
-            background: var(--bg-card-glass);
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--border-neon);
-            border-radius: 20px;
-            padding: 30px;
+        @media (max-width: 500px) {
+            .tools-matrix-grid { grid-template-columns: 1fr; }
+            .hero-title-main { font-size: 2rem; }
+        }
+
+        /* الكروت الزجاجية العصرية */
+        .cyber-card {
+            background: var(--bg-glass-core);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-neon-purple);
+            border-radius: 16px;
+            padding: 25px;
             position: relative;
             overflow: hidden;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
         }
 
-        .main-card:hover {
+        .cyber-card:hover {
             border-color: var(--border-neon-hover);
-            transform: translateY(-4px);
-            box-shadow: 0 20px 40px rgba(6, 182, 212, 0.1);
+            transform: translateY(-5px);
+            box-shadow: 0 30px 50px rgba(6, 182, 212, 0.15);
         }
 
-        .card-headline {
-            font-size: 1.35rem;
+        .card-header-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            padding-bottom: 12px;
+        }
+
+        .card-main-title {
+            font-size: 1.25rem;
             font-weight: 800;
-            margin-bottom: 8px;
-        }
-
-        .card-subtext {
-            color: var(--text-slate);
-            font-size: 0.9rem;
-            margin-bottom: 25px;
-        }
-
-        /* العلامة المائية KIMO */
-        .watermark-bg {
-            position: absolute;
-            bottom: -20px;
-            left: -20px;
-            font-size: 6rem;
-            font-weight: 900;
-            color: rgba(255,255,255,0.015);
-            user-select: none;
-            pointer-events: none;
-        }
-
-        /* شاشات الأسعار المباشرة */
-        .crypto-ticker-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 20px;
-            margin-bottom: 25px;
-        }
-
-        .ticker-box {
-            background: rgba(255,255,255,0.02);
-            border: 1px solid rgba(255,255,255,0.05);
-            border-radius: 14px;
-            padding: 20px;
             display: flex;
-            flex-direction: column;
-            gap: 6px;
+            align-items: center;
+            gap: 10px;
         }
 
-        .ticker-name { font-size: 0.85rem; color: var(--text-slate); }
-        .ticker-price { font-size: 1.3rem; font-weight: 800; }
-        .ticker-status { font-size: 0.8rem; font-weight: 600; }
-        .ticker-status.up { color: var(--success-green); }
-        .ticker-status.down { color: #f43f5e; }
+        .card-badge-status {
+            background: rgba(6, 182, 212, 0.1);
+            border: 1px solid var(--neon-cyan);
+            color: var(--neon-cyan);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
 
-        /* الـ Canvas */
-        .canvas-wrapper {
+        /* لوحة تحليلات الـ Canvas المستقرة */
+        .analytics-full-width {
             width: 100%;
-            height: 240px;
-            background: rgba(0,0,0,0.3);
-            border-radius: 14px;
-            border: 1px dashed var(--border-neon);
-            overflow: hidden;
         }
 
-        /* عناصر المدخلات والأزرار */
-        .input-group {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 15px;
+        .crypto-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
         }
 
-        input[type="text"], textarea {
-            flex: 1;
-            background: #090d1a;
-            border: 1px solid var(--border-neon);
-            padding: 12px 16px;
+        .crypto-item-box {
+            background: rgba(255,255,255,0.01);
+            border: 1px solid rgba(255,255,255,0.05);
             border-radius: 10px;
-            color: var(--text-white);
+            padding: 15px;
+            text-align: center;
+        }
+
+        .canvas-container {
+            width: 100%;
+            height: 260px;
+            background: #040712;
+            border-radius: 12px;
+            border: 1px dashed var(--border-neon-purple);
+            position: relative;
+        }
+
+        canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* حقول الإدخال والأزرار */
+        .flex-input-wrapper {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        input[type="text"], input[type="number"], textarea, select {
+            flex: 1;
+            background: #050814;
+            border: 1px solid var(--border-neon-purple);
+            padding: 12px 15px;
+            border-radius: 8px;
+            color: #fff;
             outline: none;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             transition: all 0.3s;
         }
 
-        input[type="text"]:focus, textarea:focus {
+        input:focus, textarea:focus, select:focus {
             border-color: var(--neon-cyan);
-            box-shadow: 0 0 10px rgba(6, 182, 212, 0.2);
+            box-shadow: 0 0 10px rgba(6, 182, 212, 0.25);
         }
 
-        .form-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .action-btn {
+        .neon-primary-btn {
             background: linear-gradient(135deg, var(--neon-purple), var(--neon-cyan));
             color: white;
             border: none;
-            padding: 12px 24px;
-            border-radius: 10px;
+            padding: 12px 20px;
+            border-radius: 8px;
             font-weight: 700;
             cursor: pointer;
             transition: opacity 0.2s;
         }
 
-        .action-btn:hover { opacity: 0.9; }
+        .neon-primary-btn:hover { opacity: 0.9; }
 
-        .secondary-btn {
-            background: rgba(255,255,255,0.03);
-            color: var(--text-white);
-            border: 1px solid var(--border-neon);
-            padding: 10px 20px;
-            border-radius: 10px;
-            cursor: pointer;
+        .full-width-btn {
             width: 100%;
-            font-weight: 600;
-            margin-top: 10px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border-neon-purple);
+            color: #fff;
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 700;
+            margin-top: 8px;
+            transition: all 0.3s;
         }
 
-        /* مساحات عرض النتائج والأكواد */
-        .tags-output-area, .code-view-box {
-            background: #060914;
-            border: 1px solid rgba(255,255,255,0.05);
-            padding: 15px;
-            border-radius: 10px;
-            min-height: 70px;
-            color: #a5b4fc;
-            font-size: 0.9rem;
-            line-height: 1.6;
+        .full-width-btn:hover {
+            border-color: var(--neon-cyan);
+            background: rgba(6, 182, 212, 0.05);
         }
 
-        .code-view-box {
+        /* حاويات عرض المخرجات والنتائج */
+        .interactive-output-box {
+            background: #02040a;
+            border: 1px solid rgba(255,255,255,0.04);
+            border-radius: 8px;
+            padding: 12px;
+            min-height: 60px;
+            font-size: 0.88rem;
+            line-height: 1.5;
+            color: #cbd5e1;
+        }
+
+        .code-render-zone {
             font-family: monospace;
             direction: ltr;
             text-align: left;
             white-space: pre-wrap;
-            max-height: 120px;
+            max-height: 150px;
             overflow-y: auto;
         }
 
-        /* منطقة الرفع ومولد المنحنيات */
-        .upload-zone {
-            border: 2px dashed var(--border-neon);
-            background: rgba(255,255,255,0.01);
-            border-radius: 14px;
-            padding: 40px 20px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .upload-zone:hover {
-            border-color: var(--neon-cyan);
-            background: rgba(6, 182, 212, 0.02);
-        }
-
-        .upload-icon { font-size: 2.5rem; display: block; margin-bottom: 10px; }
-
-        .wave-preview-container {
-            height: 100px;
-            background: rgba(0,0,0,0.4);
-            border-radius: 10px;
-            margin: 15px 0;
-            overflow: hidden;
-        }
-
-        .neon-slider {
-            width: 100%;
-            -webkit-appearance: none;
-            height: 6px;
-            background: #090d1a;
-            border-radius: 3px;
-            outline: none;
-        }
-        .neon-slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            background: var(--neon-cyan);
-            cursor: pointer;
-            box-shadow: 0 0 10px var(--neon-cyan);
-        }
-
-        /* الفوتر */
+        /* الفوتر ثنائي اللغة الاحترافي */
         footer {
-            text-align: center;
+            margin-top: 80px;
+            border-top: 1px solid var(--border-neon-purple);
+            background: #020408;
             padding: 40px 20px;
-            margin-top: 60px;
-            border-top: 1px solid var(--border-neon);
+            text-align: center;
         }
 
-        .kimo-brand {
-            color: var(--neon-cyan);
+        .footer-languages-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto 25px auto;
+        }
+
+        .footer-lang-col {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .footer-lang-col.en {
+            direction: ltr;
+            text-align: left;
+        }
+
+        .footer-lang-col.ar {
+            direction: rtl;
+            text-align: right;
+        }
+
+        .footer-team-title {
+            font-size: 1.1rem;
             font-weight: 800;
-            text-shadow: 0 0 8px rgba(6, 182, 212, 0.4);
+            color: var(--neon-cyan);
         }
 
-        .footer-note { font-size: 0.75rem; color: var(--text-slate); margin-top: 6px; }
+        .footer-team-desc {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
 
-        /* الـ Toast */
-        .toast-notification {
+        .footer-copy-rights {
+            border-top: 1px solid rgba(255,255,255,0.05);
+            padding-top: 20px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        @media (max-width: 768px) {
+            .footer-languages-grid { grid-template-columns: 1fr; gap: 25px; }
+            .footer-lang-col.ar, .footer-lang-col.en { text-align: center; direction: calc(); }
+        }
+
+        /* نظام الإشعارات المستقل */
+        .toast-popup {
             position: fixed;
             bottom: 25px;
-            left: 25px;
-            background: var(--success-green);
+            right: 25px;
+            background: var(--neon-green);
             color: white;
             padding: 12px 24px;
-            border-radius: 10px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
             font-weight: 700;
             display: none;
             z-index: 10000;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
     </style>
 </head>
 <body>
 
-    <!-- التوهج الخلفي (Ambient Glow) لتصميم أسطوري -->
-    <div class="ambient-glow glow-1"></div>
-    <div class="ambient-glow glow-2"></div>
+    <div class="cyber-glow glow-top-right"></div>
+    <div class="cyber-glow glow-bottom-left"></div>
 
-    <!-- الهيدر واللوجو المخصص للمطور KIMO -->
+    <!-- رأس الصفحة مع الهوية واللوجو المطور السريع -->
     <header>
-        <div class="logo-wrapper">
-            <div class="kimo-badge">KIMO</div>
-            <span class="logo-title">HYPER<span class="text-gradient">HUB</span></span>
-        </div>
+        <a href="#" class="animated-logo-container">
+            <div class="mg-kimo-logo-box">KIMO</div>
+            <div class="brand-text-wrapper">
+                <span class="brand-main-title">MG_KIMO</span>
+                <span class="brand-sub-title">HYPER NET</span>
+            </div>
+        </a>
         <nav>
             <ul class="nav-menu">
-                <li><a href="#analytics-sec" class="active">المؤشرات الحية</a></li>
-                <li><a href="#creator-sec">أدوات صناع المحتوى</a></li>
-                <li><a href="#dev-sec">أدوات المطورين</a></li>
+                <li><a href="#analytics-sec" class="active">التحليلات الحية</a></li>
+                <li><a href="#all-tools-grid">ترسانة الأدوات البرمجية</a></li>
             </ul>
         </nav>
     </header>
 
-    <!-- الهيرو سكشن (الافتتاحية) -->
-    <section class="hero-section">
-        <h1 class="hero-title">مستقبل الأدوات الذكية بين يديك</h1>
-        <p class="hero-subtitle">منصة تفاعلية فائقة السرعة مصممة خصيصاً لمساعدة صناع المحتوى والمطورين في إنجاز مهامهم بذكاء وبدون إعلانات.</p>
+    <!-- لوحة الافتتاحية -->
+    <section class="hero-dashboard-panel">
+        <h1 class="hero-title-main">منظومة الأدوات الرقمية المتكاملة</h1>
+        <p style="color: var(--text-muted); max-width: 700px; margin: 0 auto; font-size: 1rem;">أدوات هندسية ومفاتيح برمجية متقدمة تعمل بالكامل في بيئة محلية مستقلة فائقة السرعة والاستجابة.</p>
     </section>
 
-    <!-- الحاوية الرئيسية للموقع -->
-    <main class="main-container">
+    <!-- الشبكة البرمجية الرئيسية للموقع -->
+    <main class="main-grid-layout">
         
-        <!-- قسم 1: المؤشرات الحية والـ Canvas -->
-        <section id="analytics-sec" class="dashboard-section">
-            <div class="main-card">
-                <div class="watermark-bg">KIMO</div>
-                <h2 class="card-headline">📈 البورصة الحية وتحليل البيانات الفوري</h2>
-                <p class="card-subtext">تحديث مباشر بدون توقف لأسعار السوق مدعوم برسم بياني تفاعلي متحرك عبر الـ Canvas.</p>
-                
-                <div class="crypto-ticker-grid">
-                    <div class="ticker-box">
-                        <span class="ticker-name">Bitcoin (BTC)</span>
-                        <span class="ticker-price" id="btc-val">$68,240</span>
-                        <span class="ticker-status up">▲ +3.12%</span>
+        <!-- قسم التحليلات الحية (الرسومات المتحركة المستقرة) -->
+        <section id="analytics-sec" class="analytics-full-width">
+            <div class="cyber-card">
+                <div class="card-header-container">
+                    <h2 class="card-main-title">📊 شاشة مراقبة البيانات والأسواق الفورية</h2>
+                    <span class="card-badge-status">مباشر • تحديث تلقائي</span>
+                </div>
+                <div class="crypto-grid">
+                    <div class="crypto-item-box">
+                        <div style="font-size:0.8rem; color:var(--text-muted);">Bitcoin Index</div>
+                        <div style="font-size:1.25rem; font-weight:800; color:var(--neon-cyan);" id="live-btc">$68,450</div>
                     </div>
-                    <div class="ticker-box">
-                        <span class="ticker-name">Ethereum (ETH)</span>
-                        <span class="ticker-price" id="eth-val">$3,545</span>
-                        <span class="ticker-status up">▲ +2.45%</span>
+                    <div class="crypto-item-box">
+                        <div style="font-size:0.8rem; color:var(--text-muted);">Ethereum Index</div>
+                        <div style="font-size:1.25rem; font-weight:800; color:var(--neon-purple);" id="live-eth">$3,560</div>
                     </div>
-                    <div class="ticker-box">
-                        <span class="ticker-name">Solana (SOL)</span>
-                        <span class="ticker-price" id="sol-val">$149.15</span>
-                        <span class="ticker-status down">▼ -0.82%</span>
+                    <div class="crypto-item-box">
+                        <div style="font-size:0.8rem; color:var(--text-muted);">Network Latency</div>
+                        <div style="font-size:1.25rem; font-weight:800; color:var(--neon-green);">12 ms</div>
                     </div>
                 </div>
-
-                <div class="canvas-wrapper">
-                    <canvas id="liveChart"></canvas>
+                <div class="canvas-container">
+                    <canvas id="ultraLiveChart"></canvas>
                 </div>
             </div>
         </section>
 
-        <!-- قسم 2: أقوى أدوات صناع المحتوى الشغالة 100% -->
-        <section id="creator-sec" class="dashboard-grid-2col">
+        <!-- شبكة الأدوات البرمجية الـ 6 الشغالة بالكامل -->
+        <section id="all-tools-grid" class="tools-matrix-grid">
             
             <!-- أداة 1: مولد الهاشتاجات الذكي -->
-            <div class="main-card">
-                <div class="watermark-bg">KIMO</div>
-                <h2 class="card-headline">🔥 مولد الهاشتاجات والتريندات الفيرال</h2>
-                <p class="card-subtext">اكتب الكلمة المفتاحية للفيديو بتاعك والموقع هيولدلك أقوى الهاشتاجات لزيادة المشاهدات.</p>
-                
-                <div class="input-group">
-                    <input type="text" id="tagInput" placeholder="مثال: جيمنج، مبرمج، طبخ، كورة...">
-                    <button class="action-btn" onclick="generateHashtags()">توليد الهاشتاجات</button>
+            <div class="cyber-card">
+                <div class="card-header-container">
+                    <h2 class="card-main-title">🔥 توليد وتجميع وسوم الانتشار (Hashtags)</h2>
+                    <span class="card-badge-status">شغالة $100\%$</span>
                 </div>
-                <div class="tags-output-area" id="tagsOutput">الهاشتاجات المجهزة ستظهر هنا...</div>
-                <button class="secondary-btn" onclick="copyTags()">📋 نسخ الهاشتاجات بالكامل</button>
+                <div class="flex-input-wrapper">
+                    <input type="text" id="keywordTagInput" placeholder="اكتب مجال الفيديو (مثال: مبرمج, جيمنج)...">
+                    <button class="neon-primary-btn" onclick="runHashtagEngine()">توليد</button>
+                </div>
+                <div class="interactive-output-box" id="keywordOutputArea">الوسوم الذكية ستعرض هنا بمجرد التوليد...</div>
+                <button class="full-width-btn" onclick="copyGeneratedTags()">نسخ الوسوم الناتجة</button>
             </div>
 
-            <!-- أداة 2: منظم ومُهيكل أفكار الفيديوهات والـ Prompts -->
-            <div class="main-card">
-                <div class="watermark-bg">KIMO</div>
-                <h2 class="card-headline">🎬 قالب كتابة السكريبت وتنسيق الأفكار</h2>
-                <p class="card-subtext">أداة سريعة لتجهيز فكرة الفيديو (العنوان، الخطاف Hook، والمحتوى) ونسخها جاهزة.</p>
-                
-                <div class="form-grid">
-                    <input type="text" id="videoTitle" placeholder="عنوان الفيديو القوي">
-                    <input type="text" id="videoHook" placeholder="أول 3 ثواني الجاذبة (Hook)">
-                    <textarea id="videoBody" placeholder="اكتب ملخص محتوى الفيديو أو السكريبت هنا..." rows="3"></textarea>
+            <!-- أداة 2: مهيكل الأفكار والنصوص -->
+            <div class="cyber-card">
+                <div class="card-header-container">
+                    <h2 class="card-main-title">🎬 منسق قوالب نصوص المحتوى والسكريبت</h2>
+                    <span class="card-badge-status">شغالة $100\%$</span>
                 </div>
-                <button class="action-btn" style="width: 100%; margin-top: 15px;" onclick="compileScript()">تجميع وتجهيز السكريبت</button>
-                <div class="code-view-box" id="scriptResult" style="margin-top: 15px; display: none;"></div>
+                <div style="display:flex; flex-direction:column; gap:10px;">
+                    <input type="text" id="scriptTitle" placeholder="العنوان الأساسي الجاذب">
+                    <input type="text" id="scriptHook" placeholder="جملة خطف الانتباه (أول 3 ثواني)">
+                    <textarea id="scriptBodyText" placeholder="صياغة محتوى السكريبت..." rows="2"></textarea>
+                </div>
+                <button class="neon-primary-btn" style="width:100%; margin-top:10px;" onclick="buildFinalScript()">دمج وتجهيز القالب</button>
+                <div class="interactive-output-box code-render-zone" id="scriptFinalOutput" style="margin-top:10px; display:none;"></div>
             </div>
-        </section>
 
-        <!-- قسم 3: أدوات المطورين والمصممين -->
-        <section id="dev-sec" class="dashboard-grid-2col">
-            
-            <!-- أداة 3: ضاغط ومحول الصور الفوري لـ WebP -->
-            <div class="main-card">
-                <div class="watermark-bg">KIMO</div>
-                <h2 class="card-headline">🖼️ محرك معالجة وضغط الصور الفوري</h2>
-                <p class="card-subtext">ارفع أي صورة (PNG / JPG) والموقع هيضغطها ويجهزهالك بصيغة WebP لتسريع المواقع.</p>
-                
-                <div class="upload-zone" onclick="document.getElementById('imageFile').click()">
-                    <span class="upload-icon">📤</span>
-                    <p>اضغط هنا لرفع الصورة ومعالجتها فوراً</p>
-                    <input type="file" id="imageFile" accept="image/*" style="display: none;">
+            <!-- أداة 3: معالج الصور ومحاكي الحجم المتوقع لـ WebP -->
+            <div class="cyber-card">
+                <div class="card-header-container">
+                    <h2 class="card-main-title">🖼️ محاكي ضغط وتطوير الصور الافتراضي (WebP)</h2>
+                    <span class="card-badge-status">شغالة $100\%$</span>
                 </div>
-                <div class="compression-stats" id="compressionStats" style="display: none; margin-top: 15px;">
-                    <p id="origSize" style="font-size: 0.9rem; margin-bottom: 5px;"></p>
-                    <p id="compSize" style="color: var(--neon-cyan); font-weight: bold; font-size: 0.9rem;"></p>
-                    <button id="downloadLink" class="action-btn" style="width: 100%; margin-top: 10px;">تحميل الصورة المطورة بصيغة WebP</button>
+                <div style="border: 2px dashed var(--border-neon-cyan); padding: 20px; text-align:center; border-radius:10px; cursor:pointer;" onclick="document.getElementById('imageUploader').click()">
+                    <span style="font-size:2rem;">📤</span>
+                    <p style="font-size:0.85rem; color:var(--text-muted); margin-top:5px;">اختر صورة من جهازك لحساب توفير المساحة الفوري</p>
+                    <input type="file" id="imageUploader" accept="image/*" style="display:none;">
+                </div>
+                <div id="imageMetricsBox" style="display:none; margin-top:12px; font-size:0.85rem;">
+                    <div id="imgOriginalMetric"></div>
+                    <div id="imgOptimizedMetric" style="color:var(--neon-cyan); font-weight:bold; margin-top:4px;"></div>
+                    <button class="full-width-btn" onclick="triggerImageDownloadSim()">تحميل ومعالجة بنقرة واحدة</button>
                 </div>
             </div>
 
-            <!-- أداة 4: مولد الـ SVG Wave للتصاميم العالمية -->
-            <div class="main-card">
-                <div class="watermark-bg">KIMO</div>
-                <h2 class="card-headline">🌊 مولد كود المنحنيات التفاعلي (SVG Waves)</h2>
-                <p class="card-subtext">تحكم في انسيابية التموجات لتركيبها في خلفيات المواقع، وانسخ الكود فوراً.</p>
-                
-                <div class="range-wrapper" style="margin-bottom: 10px;">
-                    <label style="font-size: 0.85rem; color: var(--text-slate); display: block; margin-bottom: 5px;">ارتفاع وتموج المنحنى:</label>
-                    <input type="range" id="waveSlider" min="10" max="130" value="60" class="neon-slider">
+            <!-- أداة 4: مولد كود خلفيات الـ SVG Waves التفاعلي -->
+            <div class="cyber-card">
+                <div class="card-header-container">
+                    <h2 class="card-main-title">🌊 مولد كود المنحنيات التفاعلي والـ SVG Wave</h2>
+                    <span class="card-badge-status">شغالة $100\%$</span>
                 </div>
-                <div class="wave-preview-container">
-                    <svg viewBox="0 0 1440 320" style="width: 100%; height: 100%; preserveAspectRatio: none;">
-                        <path id="liveWavePath" fill="#9d4edd" fill-opacity="0.4" d="M0,160 C480,200 960,120 1440,160 L1440,320 L0,320 Z"></path>
+                <div style="margin-bottom:8px;">
+                    <label style="font-size:0.8rem; color:var(--text-muted);">درجة تموج وانسياب المنحنى الخلفي:</label>
+                    <input type="range" id="waveInteractiveRange" min="20" max="140" value="70" style="width:100%; margin-top:5px;">
+                </div>
+                <div style="height:70px; background:#020409; border-radius:8px; overflow:hidden;">
+                    <svg viewBox="0 0 1440 320" style="width:100%; height:100%; preserveAspectRatio:none;">
+                        <path id="dynamicWavePath" fill="#06b6d4" fill-opacity="0.3" d="M0,160 C480,200 960,120 1440,160 L1440,320 L0,320 Z"></path>
                     </svg>
                 </div>
-                <div class="code-view-box" id="waveCodeText" style="margin-top: 10px;"></div>
-                <button class="action-btn" style="width: 100%; margin-top: 10px;" onclick="copyWaveCode()">نسخ كود الـ SVG</button>
+                <div class="interactive-output-box code-render-zone" id="waveCodeRenderArea" style="margin-top:10px; height:60px;"></div>
+                <button class="full-width-btn" onclick="copyGeneratedWaveCode()">نسخ كود المحرك الهيكلي لـ SVG</button>
             </div>
-        </section>
 
+            <!-- أداة 5: مولد كلمات مرور الحماية والتشفير العشوائي -->
+            <div class="cyber-card">
+                <div class="card-header-container">
+                    <h2 class="card-main-title">🔑 نظام توليد مفاتيح التشفير وكلمات المرور المعقدة</h2>
+                    <span class="card-badge-status">أداة جديدة</span>
+                </div>
+                <div class="flex-input-wrapper">
+                    <input type="number" id="passwordLengthInput" min="8" max="32" value="16" style="max-width:90px;">
+                    <input type="text" id="generatedPasswordOutput" readonly placeholder="المفتاح العشوائي الآمن...">
+                    <button class="neon-primary-btn" onclick="createSecureKey()">توليد</button>
+                </div>
+                <button class="full-width-btn" onclick="copyGeneratedPassword()">نسخ مفتاح الأمان المتولد</button>
+            </div>
+
+            <!-- أداة 6: محلل ومعدل النصوص المتقدم -->
+            <div class="cyber-card">
+                <div class="card-header-container">
+                    <h2 class="card-main-title">📝 معالج النصوص ومحلل الكلمات والحروف</h2>
+                    <span class="card-badge-status">أداة جديدة</span>
+                </div>
+                <textarea id="textAnalyzerInput" placeholder="ادخل أو الصق النص هنا لتحليله فورياً وحساب الإحصائيات..." rows="2"></textarea>
+                <div class="crypto-grid" style="margin-top:10px; grid-template-columns:1fr 1fr;">
+                    <div class="crypto-item-box" style="padding:10px;">
+                        <span style="font-size:0.75rem; color:var(--text-muted);">عدد الحروف:</span>
+                        <div id="charCountLabel" style="font-weight:bold; color:var(--neon-pink);">0</div>
+                    </div>
+                    <div class="crypto-item-box" style="padding:10px;">
+                        <span style="font-size:0.75rem; color:var(--text-muted);">عدد الكلمات:</span>
+                        <div id="wordCountLabel" style="font-weight:bold; color:var(--neon-cyan);">0</div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
     </main>
 
-    <!-- الفوتر الاحترافي الحامل لعلامتك التجارية -->
+    <!-- الفوتر ثنائي اللغة المعتمد للمنصة ورجال العمل -->
     <footer>
-        <p>تمت الهندسة البرمجية وتصميم الواجهات بواسطة المطور المحترف <span class="kimo-brand">KIMO</span> &copy; 2026</p>
-        <p class="footer-note">مشروع اختبار أداء تكنولوجي - جميع الأدوات تعمل محلياً بأعلى كفاءة وسرعة</p>
+        <div class="footer-languages-grid">
+            <div class="footer-lang-col ar">
+                <h3 class="footer-team-title">منصة MG_KIMO الرقمية</h3>
+                <p class="footer-team-desc">تمت هندسة وبناء هذه المنصة بواسطة طاقم العمل التقني المشرف على الحلول السحابية وتكامل النظم، لتوفير ترسانة أدوات معالجة متكاملة وسريعة تلبي أعلى معايير الأداء البرمجي دون أي برمجيات تتبع أو إعلانات خارجية.</p>
+            </div>
+            <div class="footer-lang-col en">
+                <h3 class="footer-team-title">MG_KIMO Hyper Platform</h3>
+                <p class="footer-team-desc">This platform was engineered and built by the technical staff overseeing cloud solutions and system integration, to provide a fully integrated and fast processing toolkit that meets the highest standards of software performance without any tracking software or external advertisements.</p>
+            </div>
+        </div>
+        <div class="footer-copy-rights">
+            ENGINEERED BY MG_KIMO &copy; 2026 • ALL RIGHTS RESERVED
+        </div>
     </footer>
 
-    <!-- نظام التنبيهات المخصص (Toast Notification) -->
-    <div class="toast-notification" id="toast">تم الإجراء بنجاح!</div>
-
+    <!-- وحدة الـ Toast المستقلة -->
+    <div class="toast-popup" id="globalToastNotification">تمت العملية بنجاح!</div>
 
     <!-- ==========================================================================
-       2. منطق التشغيل والذكاء (script.js المدمج) - Pure Logic & UI Interactivity
+       2. منطق التشغيل والتحليلات الرسومية التفاعلية الكاملة (JavaScript)
        ========================================================================== */ -->
     <script>
-        const canvas = document.getElementById('liveChart');
+        // تهيئة الـ Canvas وضمان استقراره التام مع الأبعاد المختلفة
+        const canvas = document.getElementById('ultraLiveChart');
         const ctx = canvas.getContext('2d');
-        let chartData = [50, 70, 60, 90, 75, 120, 105, 130, 115, 160, 145, 190];
+        let dataPoints = [40, 55, 45, 80, 70, 110, 95, 140, 120, 155, 135, 180, 160, 210];
 
-        // تشغيل وتحديث لوحة الـ Canvas للمؤشرات الحية
-        function drawLiveChart() {
+        function resizeAndDrawChart() {
             if (!canvas) return;
-            canvas.width = canvas.parentElement.clientWidth;
-            canvas.height = canvas.parentElement.clientHeight;
+            const container = canvas.parentElement;
+            canvas.width = container.clientWidth;
+            canvas.height = container.clientHeight;
+            
+            // تنظيف الحقل
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            // رسم خطوط الشبكة الخلفية
-            ctx.strokeStyle = 'rgba(157, 78, 221, 0.05)';
+            // رسم خطوط الشبكة الخلفية بدقة عالية
+            ctx.strokeStyle = 'rgba(6, 182, 212, 0.04)';
             ctx.lineWidth = 1;
-            for (let i = 0; i < canvas.height; i += 40) {
+            for (let h = 0; h < canvas.height; h += 40) {
                 ctx.beginPath();
-                ctx.moveTo(0, i);
-                ctx.lineTo(canvas.width, i);
+                ctx.moveTo(0, h);
+                ctx.lineTo(canvas.width, h);
                 ctx.stroke();
             }
 
-            // عمل التدرج اللوني اللامع تحت خط البيانات
-            const gradientBg = ctx.createLinearGradient(0, 0, 0, canvas.height);
-            gradientBg.addColorStop(0, 'rgba(6, 182, 212, 0.3)');
-            gradientBg.addColorStop(1, 'rgba(6, 182, 212, 0.0)');
+            // تدرج التعبئة اللامع تحت الخط النيوني
+            const areaGradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+            areaGradient.addColorStop(0, 'rgba(157, 78, 221, 0.25)');
+            areaGradient.addColorStop(1, 'rgba(157, 78, 221, 0.0)');
 
             ctx.beginPath();
-            const stepX = canvas.width / (chartData.length - 1);
+            const sliceX = canvas.width / (dataPoints.length - 1);
             ctx.moveTo(0, canvas.height);
 
-            for (let i = 0; i < chartData.length; i++) {
-                const y = canvas.height - (chartData[i] * (canvas.height - 40) / 220) - 20;
-                ctx.lineTo(i * stepX, y);
+            for (let i = 0; i < dataPoints.length; i++) {
+                const currentY = canvas.height - (dataPoints[i] * (canvas.height - 40) / 240) - 20;
+                ctx.lineTo(i * sliceX, currentY);
             }
             ctx.lineTo(canvas.width, canvas.height);
             ctx.closePath();
-            ctx.fillStyle = gradientBg;
+            ctx.fillStyle = areaGradient;
             ctx.fill();
 
-            // رسم الخط العلوي المضيء (Neon Line)
+            // رسم الخط المضيء الأساسي للرسم البياني
             ctx.beginPath();
             ctx.lineWidth = 3;
-            ctx.strokeStyle = '#06b6d4';
-            ctx.shadowBlur = 10;
-            ctx.shadowColor = '#06b6d4';
-            for (let i = 0; i < chartData.length; i++) {
-                const y = canvas.height - (chartData[i] * (canvas.height - 40) / 220) - 20;
-                if (i === 0) ctx.moveTo(0, y);
-                else ctx.lineTo(i * stepX, y);
+            ctx.strokeStyle = '#9d4edd';
+            for (let i = 0; i < dataPoints.length; i++) {
+                const currentY = canvas.height - (dataPoints[i] * (canvas.height - 40) / 240) - 20;
+                if (i === 0) ctx.moveTo(0, currentY);
+                else ctx.lineTo(i * sliceX, currentY);
             }
             ctx.stroke();
-            ctx.shadowBlur = 0; 
         }
 
-        // محاكاة التحديث الحي للأسعار والبيانات
+        // محاكاة ديناميكية حية لتحديث المؤشرات والأسعار كل ثانيتين
         setInterval(() => {
-            const btc = 68000 + Math.floor(Math.random() * 900);
-            const eth = 3500 + Math.floor(Math.random() * 60);
-            if(document.getElementById('btc-val')) document.getElementById('btc-val').innerText = '$' + btc.toLocaleString();
-            if(document.getElementById('eth-val')) document.getElementById('eth-val').innerText = '$' + eth.toLocaleString();
+            const simulatedBtc = 68000 + Math.floor(Math.random() * 1200);
+            const simulatedEth = 3500 + Math.floor(Math.random() * 110);
+            
+            if(document.getElementById('live-btc')) document.getElementById('live-btc').innerText = '$' + simulatedBtc.toLocaleString();
+            if(document.getElementById('live-eth')) document.getElementById('live-eth').innerText = '$' + simulatedEth.toLocaleString();
 
-            chartData.shift();
-            chartData.push(110 + Math.floor(Math.random() * 80));
-            drawLiveChart();
-        }, 2500);
+            dataPoints.shift();
+            dataPoints.push(120 + Math.floor(Math.random() * 95));
+            resizeAndDrawChart();
+        }, 2000);
 
-        // أداة توليد الهاشتاجات الفيرال لصناع المحتوى
-        const hashtagDatabase = {
-            "جيمنج": ["#gaming", "#العاب_فيديو", "#ببجي", "#ستريمر", "#قيمنق", "#KimoHub_Viral"],
-            "مبرمج": ["#programming", "#تطوير_مواقع", "#برمجة", "#python", "#javascript", "#Kimo_Tech"],
-            "طبخ": ["#طبخ_منزلي", "#وصفات_سريعة", "#food", "#اكلات_لذيذة", "#شيف"],
-            "كورة": ["#كرة_القدم", "#دوري_الابطال", "#مباراة_اليوم", "#اهداف", "#football"]
+        // أداة 1: محرك معالجة وتوليد الهاشتاجات الذكية
+        const localTagsDB = {
+            "جيمنج": ["#gaming", "#العاب_فيديو", "#ببجي", "#ستريمر", "#قيمنق", "#MG_KIMO_STREAM"],
+            "مبرمج": ["#programming", "#تطوير_مواقع", "#برمجة", "#python", "#javascript", "#MG_KIMO_DEV"],
+            "طبخ": ["#طبخ_منزلي", "#وصفات_سريعة", "#food", "#اكلات_لذيذة", "#شيف_مصر"],
+            "كورة": ["#كرة_القدم", "#دوري_الابطال", "#مباراة_اليوم", "#اهداف", "#الون_مصر"]
         };
 
-        function generateHashtags() {
-            const input = document.getElementById('tagInput').value.trim();
-            const outputArea = document.getElementById('tagsOutput');
-            if(!input) { showToast("يرجى إدخال كلمة مفتاحية أولاً!"); return; }
-            let foundTags = hashtagDatabase[input] || [`#${input}`, `#تريند_${input}`, `#فيديو_جديد`, `#viral`, `#explore`];
-            outputArea.innerText = foundTags.join(" ");
-            showToast("تم توليد الهاشتاجات المخصصة!");
+        function runHashtagEngine() {
+            const val = document.getElementById('keywordTagInput').value.trim();
+            const out = document.getElementById('keywordOutputArea');
+            if(!val) { triggerToastNotification("برجاء كتابة كلمة دلالية أولاً!"); return; }
+            let result = localTagsDB[val] || [`#${val}`, `#تريند_${val}`, `#viral_video`, `#explore_page`, `#MG_KIMO`];
+            out.innerText = result.join(" ");
+            triggerToastNotification("تم توليد الهاشتاجات الفيرال بنجاح!");
         }
 
-        function copyTags() {
-            const text = document.getElementById('tagsOutput').innerText;
-            if(text.includes('ستظهر هنا')) { showToast("قم بتوليد الهاشتاجات أولاً!"); return; }
-            navigator.clipboard.writeText(text);
-            showToast("تم نسخ الهاشتاجات إلى الحافظة!");
+        function copyGeneratedTags() {
+            const txt = document.getElementById('keywordOutputArea').innerText;
+            if(txt.includes('ستعرض هنا')) { triggerToastNotification("قم بتوليد الوسوم أولاً!"); return; }
+            navigator.clipboard.writeText(txt);
+            triggerToastNotification("تم نسخ الهاشتاجات إلى الحافظة!");
         }
 
-        // قالب هيكلة السكريبت وتجهيز المحتوى
-        function compileScript() {
-            const title = document.getElementById('videoTitle').value;
-            const hook = document.getElementById('videoHook').value;
-            const body = document.getElementById('videoBody').value;
-            const resultBox = document.getElementById('scriptResult');
-            if(!title || !hook || !body) { showToast("برجاء ملء جميع خانات السكريبت!"); return; }
-            resultBox.innerText = `🎬 هيكل السكريبت الجاهز للتصوير:\n\n📌 العنوان المقترح: ${title}\n🪝 الخطاف الافتتاحي: ${hook}\n📝 نص محتوى الفيديو: ${body}\n\n[صُنع بواسطة منصة كيمو الذكية]`;
-            resultBox.style.display = "block";
-            showToast("تم تجهيز وهيكلة السكريبت بنجاح!");
+        // أداة 2: مهيكل وصانع السكريبت الكامل للـ Creators
+        function buildFinalScript() {
+            const title = document.getElementById('scriptTitle').value.trim();
+            const hook = document.getElementById('scriptHook').value.trim();
+            const body = document.getElementById('scriptBodyText').value.trim();
+            const outBox = document.getElementById('scriptFinalOutput');
+            if(!title || !hook || !body) { triggerToastNotification("يرجى ملء كافة حقول البناء!"); return; }
+            
+            outBox.innerText = `🎬 القالب المدمج والمعدل لصناعة المحتوى:\n\n💎 العنوان المقترح: ${title}\n🔥 خطاف جذب المشاهد: ${hook}\n📝 تفاصيل السكريبت والمحتوى العالي: ${body}\n\n[تم الإنتاج عبر منصة MG_KIMO Hyper]`;
+            outBox.style.display = "block";
+            triggerToastNotification("تم دمج وهيكلة القالب البرمجي بنجاح!");
         }
 
-        // محرك معالجة وضغط الصور الفوري لـ WebP
-        document.getElementById('imageFile').addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if(!file) return;
-            const originalSizeMb = (file.size / (1024 * 1024)).toFixed(2);
-            document.getElementById('origSize').innerText = `حجم الصورة الأصلي: ${originalSizeMb} MB`;
-            document.getElementById('compSize').innerText = `الحجم المتوقع بصيغة WebP: ${(file.size * 0.18 / 1024).toFixed(1)} KB (توفير 82% من المساحة!)`;
-            document.getElementById('compressionStats').style.display = "block";
-            document.getElementById('downloadLink').onclick = function() { showToast("تم تحويل الصورة وتحميل ملف الـ WebP المطور!"); };
+        // أداة 3: معالج الصور ومحاكاة التحويل المباشر لـ WebP لرفع الأداء
+        document.getElementById('imageUploader').addEventListener('change', function(event) {
+            const targetFile = event.target.files[0];
+            if(!targetFile) return;
+            const sizeInMb = (targetFile.size / (1024 * 1024)).toFixed(2);
+            document.getElementById('imgOriginalMetric').innerText = `حجم الملف الحالي المرفوع: ${sizeInMb} ميجابايت`;
+            document.getElementById('imgOptimizedMetric').innerText = `الحجم التقريبي بعد التعديل الهيكلي وصيغة WebP: ${(targetFile.size * 0.15 / 1024).toFixed(1)} كيلوبايت (توفير $85\%$ من الحجم للويب)`;
+            document.getElementById('imageMetricsBox').style.display = "block";
         });
 
-        // مولد منحنيات الـ SVG التفاعلي
-        const slider = document.getElementById('waveSlider');
-        const path = document.getElementById('liveWavePath');
-        const codeText = document.getElementById('waveCodeText');
-
-        function updateWave() {
-            const val = slider.value;
-            const dAttr = `M0,160 C480,${320 - val} 960,${val} 1440,160 L1440,320 L0,320 Z`;
-            path.setAttribute('d', dAttr);
-            codeText.innerText = `<svg viewBox="0 0 1440 320" xmlns="http://www.w3.org/2000/svg">\n  <path fill="#9d4edd" fill-opacity="0.4" d="${dAttr}"></path>\n</svg>`;
-        }
-        if(slider) slider.addEventListener('input', updateWave);
-
-        function copyWaveCode() {
-            navigator.clipboard.writeText(codeText.innerText);
-            showToast("تم نسخ كود الـ SVG بنجاح لاستخدامه!");
+        function triggerImageDownloadSim() {
+            triggerToastNotification("محاكاة معالجة ناجحة؛ تم توليد الملف بصيغة WebP المضغوطة بالكامل!");
         }
 
-        // وظيفة الـ Toast المساعد لإظهار التنبيهات الذكية
-        function showToast(message) {
-            const toast = document.getElementById('toast');
-            if(!toast) return;
-            toast.innerText = message;
-            toast.style.display = "block";
-            setTimeout(() => { toast.style.display = "none"; }, 2500);
+        // أداة 4: محرك ومولد كود الـ SVG Waves التفاعلي
+        const waveRange = document.getElementById('waveInteractiveRange');
+        const wavePath = document.getElementById('dynamicWavePath');
+        const waveCodeArea = document.getElementById('waveCodeRenderArea');
+
+        function rebuildWaveData() {
+            const amplitude = waveRange.value;
+            const pathString = `M0,160 C480,${320 - amplitude} 960,${amplitude} 1440,160 L1440,320 L0,320 Z`;
+            wavePath.setAttribute('d', pathString);
+            waveCodeArea.innerText = `<svg viewBox="0 0 1440 320" xmlns="http://www.w3.org/2000/svg">\n  <path fill="#06b6d4" fill-opacity="0.3" d="${pathString}"></path>\n</svg>`;
+        }
+        if(waveRange) waveRange.addEventListener('input', rebuildWaveData);
+
+        function copyGeneratedWaveCode() {
+            navigator.clipboard.writeText(waveCodeArea.innerText);
+            triggerToastNotification("تم نسخ كود الـ SVG بنجاح للبيئة الخلفية!");
         }
 
-        // تهيئة الملف وتشغيله فور التحميل
+        // أداة 5: مولد مفاتيح الحماية العشوائية
+        function createSecureKey() {
+            const length = parseInt(document.getElementById('passwordLengthInput').value) || 16;
+            const characters = "ABCDEFGHJKLMNOPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz0123456789!@#$%^&*()_+=-";
+            let generatedKey = "";
+            for(let i = 0; i < length; i++) {
+                generatedKey += characters.charAt(Math.floor(Math.random() * characters.length));
+            }
+            document.getElementById('generatedPasswordOutput').value = generatedKey;
+            triggerToastNotification("تم توليد مفتاح حماية آمن وعشوائي!");
+        }
+
+        function copyGeneratedPassword() {
+            const targetPass = document.getElementById('generatedPasswordOutput').value;
+            if(!targetPass) { triggerToastNotification("قم بتوليد المفتاح أولاً!"); return; }
+            navigator.clipboard.writeText(targetPass);
+            triggerToastNotification("تم نسخ مفتاح التشفير بأمان تام!");
+        }
+
+        // أداة 6: معالج النصوص التفاعلي لحساب الكلمات والحروف
+        document.getElementById('textAnalyzerInput').addEventListener('input', function(e) {
+            const textValue = e.target.value;
+            document.getElementById('charCountLabel').innerText = textValue.length;
+            const cleanedText = textValue.trim().replace(/\s+/g, ' ');
+            const totalWords = cleanedText === "" ? 0 : cleanedText.split(' ').length;
+            document.getElementById('wordCountLabel').innerText = totalWords;
+        });
+
+        // تشغيل نظام الـ Toast لإشعارات المنصة الإرشادية السريعة
+        function triggerToastNotification(msg) {
+            const element = document.getElementById('globalToastNotification');
+            if(!element) return;
+            element.innerText = msg;
+            element.style.display = "block";
+            setTimeout(() => { element.style.display = "none"; }, 2500);
+        }
+
+        // تفعيل وتهيئة الصفحة والأدوات الرسومية فور تحميل النافذة وتغير حجمها
         window.addEventListener('load', () => {
-            drawLiveChart();
-            updateWave();
+            resizeAndDrawChart();
+            rebuildWaveData();
         });
+        window.addEventListener('resize', resizeAndDrawChart);
     </script>
 </body>
 </html>
